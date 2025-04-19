@@ -1,0 +1,39 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
+  
+  .sidenav-container {
+    height: 100vh;
+    display: flex;
+  }
+  
+
+  mat-sidenav {
+    width: 250px; /* Define un ancho fijo para el sidebar */
+    height: 100%;
+  }
+  
+mat-sidenav-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+mat-sidenav-content {
+  max-width: 1400px;
+  width: 90%; /* ✔ Corrección: antes era 900%, lo cual es incorrecto */
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: auto; /* ✔ Mantiene el contenido centrado */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* ✔ Centra verticalmente */
+  align-items: center; /* ✔ Centra horizontalmente */
+  height: 100vh;
+}
+
