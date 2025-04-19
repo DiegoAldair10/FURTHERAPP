@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>Actualizar Cliente</h2>
+<div mat-dialog-content>
+  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido" required />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" required />
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="direccion" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Ciudad</mat-label>
+        <input matInput formControlName="ciudad" required />
+      </mat-form-field>
+
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>País</mat-label>
+        <input matInput formControlName="pais" required />
+      </mat-form-field>
+
+    </div>
+    <div mat-dialog-actions align="end">
+      <button mat-button (click)="closeDialog()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit"  [disabled]="customerForm.invalid">
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

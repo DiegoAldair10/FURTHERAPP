@@ -1,0 +1,57 @@
+  <div class="container">
+    <div class="demo-button-container">
+      <button mat-raised-button color="primary" (click)="openDialog()">Agregar Cliente
+      </button>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.clienteId }}</td>
+      </ng-container>
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.nombre + customer.apellido}}</td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
+      </ng-container>
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef>Telefono</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.telefono }}</td>
+      </ng-container>
+      <ng-container matColumnDef="direccion">
+        <th mat-header-cell *matHeaderCellDef>Direeción</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.direccion }}</td>
+      </ng-container>
+      <ng-container matColumnDef="ciudad">
+        <th mat-header-cell *matHeaderCellDef>Ciudad</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.ciudad }}</td>
+      </ng-container>
+      <ng-container matColumnDef="pais">
+        <th mat-header-cell *matHeaderCellDef>Pais</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.pais }}</td>
+      </ng-container>
+      <ng-container matColumnDef="fechaRegistro">
+        <th mat-header-cell *matHeaderCellDef>Registro</th>
+        <td mat-cell *matCellDef="let customer">
+          {{ customer.fechaRegistro | date: 'dd/MM/yyyy' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let customer">
+          <button mat-icon-button (click)="deleteCustomer(customer.clienteId, $event)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button (click)="openEditDialog(customer, $event)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>

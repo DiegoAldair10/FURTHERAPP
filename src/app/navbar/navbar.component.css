@@ -1,0 +1,19 @@
+.title {
+  margin-left: 10px;
+}
+
+.mat-toolbar {
+  font-size: 18px;
+  font-weight: bold;
+  color: white !important;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+mat-icon {
+  color: white;
+}
