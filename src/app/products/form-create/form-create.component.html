@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>Agregar Cliente</h2>
+<h2 mat-dialog-title>Agregar Producto</h2>
 <div mat-dialog-content>
-  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="productsForm" (ngSubmit)="onSubmit()">
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Nombre</mat-label>
@@ -8,31 +8,35 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Apellido</mat-label>
-        <input matInput formControlName="apellido" required />
+        <mat-label>Descripcíon</mat-label>
+        <input matInput formControlName="descripcion" required />
       </mat-form-field>
     </div>
 
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required />
+        <mat-label>Precio</mat-label>
+        <input matInput  formControlName="precio" required />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono" required />
+        <mat-label>Categoría</mat-label>
+        <mat-select formControlName="categoria" required>
+          <mat-option *ngFor="let cat of categorias" [value]="cat.nombre">
+            {{ cat.nombre }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Cargo</mat-label>
-        <input matInput formControlName="cargo" required />
+        <mat-label>Stock</mat-label>
+        <input matInput formControlName="stock" required />
       </mat-form-field>
     </div>
     <div mat-dialog-actions align="end">
       <button mat-button (click)="closeDialog()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit"  [disabled]="employeeForm.invalid">
+      <button mat-raised-button color="primary" type="submit"  [disabled]="productsForm.invalid">
         Guardar
       </button>
     </div>

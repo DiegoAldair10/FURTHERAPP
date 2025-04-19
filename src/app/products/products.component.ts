@@ -4,14 +4,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTable, MatTableModule } from '@angular/material/table';
-import { Employe } from '../model/employe';
-import { EmployeeService } from '../services/employee.service';
+import { ProductService } from '../services/product.service';
+import { Product } from '../model/product';
 import Swal from 'sweetalert2';
 import { FormCreateComponent } from './form-create/form-create.component';
 import { FormUpdateComponent } from './form-update/form-update.component';
 
 @Component({
-  selector: 'app-employee',
+  selector: 'app-products',
   imports: [
     CommonModule,
     MatTableModule,
@@ -19,35 +19,36 @@ import { FormUpdateComponent } from './form-update/form-update.component';
     MatIconModule,
     MatDialogModule,
   ],
-  templateUrl: './employee.component.html',
-  styleUrl: './employee.component.css',
+  templateUrl: './products.component.html',
+  styleUrl: './products.component.css',
 })
-export class EmployeeComponent implements OnInit {
+export class ProductsComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'nombre',
-    'email',
-    'telefono',
-    'cargo',
-    'fechaContratacion',
+    'descripcion',
+    'precio',
+    'categoria',
+    'stock',
+    'fechaCreacion',
     'actions',
   ];
 
   constructor(
-    private employeeService: EmployeeService,
+    private productsService: ProductService,
     public dialog: MatDialog,
     public dialogUpdate: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.getEmploye();
+    this.getProducts();
   }
 
-  dataSource: Employe[] = [];
-  @ViewChild(MatTable) table!: MatTable<Employe>;
+  dataSource: Product[] = [];
+  @ViewChild(MatTable) table!: MatTable<Product>;
 
-  getEmploye(): void {
-    this.employeeService.getEmployees().subscribe(
+  getProducts(): void {
+    this.productsService.getProducts().subscribe(
       (data) => {
         console.log('Datos recibidos:', data); // ← Añade esto
         this.dataSource = data;
@@ -56,10 +57,10 @@ export class EmployeeComponent implements OnInit {
     );
   }
 
-  deleteEmployees(id: number, event: Event): void {
+  deleteProducts(id: number, event: Event): void {
     (event.currentTarget as HTMLElement).blur();
     Swal.fire({
-      title: '¿Eliminar empleado?',
+      title: '¿Eliminar producto?',
       text: '¡No podrás revertir esto!',
       icon: 'warning',
       showCancelButton: true,
@@ -69,14 +70,14 @@ export class EmployeeComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.employeeService.deleteEmployees(id).subscribe(() => {
+        this.productsService.deleteProducts(id).subscribe(() => {
           Swal.fire(
             '¡Eliminado!',
-            'El empleado ha sido eliminado.',
+            'El producto ha sido eliminado.',
             'success'
           ).then(() => {
             this.dataSource = this.dataSource.filter(
-              (employee) => employee.empleadoId !== id
+              (product) => product.productoId !== id
             );
             this.table.renderRows();
           });
@@ -84,6 +85,7 @@ export class EmployeeComponent implements OnInit {
       }
     });
   }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(FormCreateComponent, {
       width: '600px',
@@ -91,28 +93,28 @@ export class EmployeeComponent implements OnInit {
       maxHeight: '90vh',
     });
 
-    dialogRef.afterClosed().subscribe((employee: Employe) => {
-      if (employee) {
-        this.dataSource = [...this.dataSource, employee];
+    dialogRef.afterClosed().subscribe((products: Product) => {
+      if (products) {
+        this.dataSource = [...this.dataSource, products];
       }
     });
   }
 
-  openEditDialog(employee: Employe, event: Event): void {
+  openEditDialog(product: Product, event: Event): void {
     (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
 
     const dialogRef = this.dialog.open(FormUpdateComponent, {
       width: '600px',
-      data: { employee },
+      data: { product },
     });
 
-    dialogRef.afterClosed().subscribe((employee: Employe) => {
-      if (employee) {
+    dialogRef.afterClosed().subscribe((product: Product) => {
+      if (product) {
         const index = this.dataSource.findIndex(
-          (e) => e.empleadoId === employee.empleadoId
+          (p) => p.productoId === product.productoId
         );
         if (index !== -1) {
-          this.dataSource[index] = employee;
+          this.dataSource[index] = product;
           this.dataSource = [...this.dataSource];
           this.table.renderRows();
         }

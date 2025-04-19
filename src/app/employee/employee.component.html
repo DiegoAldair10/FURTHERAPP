@@ -1,6 +1,6 @@
 <div class="container">
     <div class="demo-button-container">
-        <button mat-raised-button color="primary">Agregar Empleado
+        <button mat-raised-button color="primary" (click)="openDialog()">Agregar Empleado
         </button>
     </div>
 
@@ -25,6 +25,12 @@
             <th mat-header-cell *matHeaderCellDef>Cargo</th>
             <td mat-cell *matCellDef="let employee">{{ employee.cargo }}</td>
         </ng-container>
+        <ng-container matColumnDef="fechaContratacion">
+            <th mat-header-cell *matHeaderCellDef>Contratación</th>
+            <td mat-cell *matCellDef="let employee">
+              {{ employee.fechaContratacion | date: 'dd/MM/yyyy' }}
+            </td>
+          </ng-container>
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Acciones</th>
             <td mat-cell *matCellDef="let employee">

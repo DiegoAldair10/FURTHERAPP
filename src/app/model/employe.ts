@@ -5,4 +5,5 @@ export interface Employe {
   email: string;
   telefono: string;
   cargo: string;
+  fechaContratacion: Date;
 }

@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Actulizar Producto</h2>
+<div mat-dialog-content>
+    <form [formGroup]="productsForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" required />
+                <mat-error *ngIf="productsForm.get('nombre')?.hasError('required')">
+                    El nombre es obligatorio.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Descripcíon</mat-label>
+                <input matInput formControlName="descripcion" required />
+                <mat-error *ngIf="productsForm.get('descripcion')?.hasError('required')">
+                    La descripcion es obligatorio.
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Precio</mat-label>
+                <input matInput formControlName="precio" required />
+                <mat-error *ngIf="productsForm.get('precio')?.hasError('required')">
+                    El precio es obligatorio.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Categoría</mat-label>
+                <mat-select formControlName="categoria" required>
+                  <mat-option *ngFor="let cat of categorias" [value]="cat.nombre">
+                    {{ cat.nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
+        <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Stock</mat-label>
+                <input matInput formControlName="stock" />
+                <mat-error *ngIf="productsForm.get('stock')?.hasError('required')">
+                    El stock es obligatoria.
+                </mat-error>
+            </mat-form-field>
+
+        </div>
+        <div mat-dialog-actions align="end">
+            <button mat-button type="button" (click)="closeDialogUpdate()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="productsForm.invalid">
+                Guardar
+            </button>
+        </div>
+    </form>
+</div>
