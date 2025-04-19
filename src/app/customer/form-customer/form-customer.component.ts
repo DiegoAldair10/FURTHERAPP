@@ -46,7 +46,6 @@ export class FormCustomerComponent {
     });
   }
 
-  // Método para enviar el formulario
   onSubmit(): void {
     if (this.customerForm.valid) {
       const customer = {

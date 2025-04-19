@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>Agregar Cliente</h2>
+<h2 mat-dialog-title>Actualizar Cliente</h2>
 <div mat-dialog-content>
-  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Nombre</mat-label>
@@ -26,26 +26,13 @@
     </div>
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Dirección</mat-label>
-        <input matInput formControlName="direccion" required />
+        <mat-label>Cargo</mat-label>
+        <input matInput formControlName="cargo" required />
       </mat-form-field>
-
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Ciudad</mat-label>
-        <input matInput formControlName="ciudad" required />
-      </mat-form-field>
-
-    </div>
-    <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>País</mat-label>
-        <input matInput formControlName="pais" required />
-      </mat-form-field>
-
     </div>
     <div mat-dialog-actions align="end">
       <button mat-button (click)="closeDialog()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit"  [disabled]="customerForm.invalid">
+      <button mat-raised-button color="primary" type="submit"  [disabled]="employeeForm.invalid">
         Guardar
       </button>
     </div>
