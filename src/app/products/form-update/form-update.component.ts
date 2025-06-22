@@ -1,10 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ProductService } from '../../services/product.service';
@@ -22,14 +31,13 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule, 
+    MatNativeDateModule,
     MatSelectModule,
   ],
   templateUrl: './form-update.component.html',
-  styleUrl: './form-update.component.css'
+  styleUrl: './form-update.component.css',
 })
-export class FormUpdateComponent  implements OnInit{
-
+export class FormUpdateComponent implements OnInit {
   productsForm!: FormGroup;
   isUpdating = false; // Para evitar múltiples envíos
   categorias = [
@@ -51,7 +59,7 @@ export class FormUpdateComponent  implements OnInit{
     this.productsForm = this.fb.group({
       nombre: [this.data.product.nombre, Validators.required],
       descripcion: [this.data.product.descripcion, Validators.required],
-      precio: [ this.data.product.precio, Validators.required],
+      precio: [this.data.product.precio, Validators.required],
       categoria: [this.data.product.categoria, Validators.required],
       stock: [this.data.product.stock, Validators.required],
     });
@@ -70,7 +78,11 @@ export class FormUpdateComponent  implements OnInit{
         .updateProducts(this.data.product.productoId, updatedProducts)
         .subscribe({
           next: () => {
-            Swal.fire('Éxito', 'Producto actualizado correctamente', 'success');
+            Swal.fire(
+              'Se actualizo producto',
+              'Producto actualizado correctamente',
+              'success'
+            );
             this.dialogRef.close(updatedProducts); // ← devolvemos cliente actualizado
           },
           error: () => {

@@ -77,7 +77,11 @@ export class FormUpdateComponent implements OnInit {
         .updateCustomers(this.data.customer.clienteId, updatedCustomer)
         .subscribe({
           next: () => {
-            Swal.fire('Éxito', 'Cliente actualizado correctamente', 'success');
+            Swal.fire(
+              'Se actualizo cliente',
+              'Cliente actualizado correctamente',
+              'success'
+            );
             this.dialogRef.close(updatedCustomer); // ← devolvemos cliente actualizado
           },
           error: () => {

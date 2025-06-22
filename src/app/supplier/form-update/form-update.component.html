@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>Actulizar Cliente</h2>
+<div mat-dialog-content>
+  <form [formGroup]="supplirsForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" required />
+        <mat-error *ngIf="supplirsForm.get('nombre')?.hasError('required')">
+          El nombre es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Contacto</mat-label>
+        <input matInput formControlName="contacto" required />
+        <mat-error *ngIf="supplirsForm.get('contacto')?.hasError('required')">
+          El contacto es obligatorio.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="supplirsForm.get('email')?.hasError('required')">
+          El email es obligatorio.
+        </mat-error>
+        <mat-error *ngIf="supplirsForm.get('email')?.hasError('email')">
+          Ingresa un email válido.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" />
+        <mat-error *ngIf="supplirsForm.get('telefono')?.hasError('required')">
+          El teléfono es obligatorio.
+        </mat-error>
+        <mat-error *ngIf="supplirsForm.get('telefono')?.hasError('pattern')">
+          Debe contener exactamente 9 dígitos.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="direccion" />
+        <mat-error *ngIf="supplirsForm.get('direccion')?.hasError('required')">
+          La dirección es obligatoria.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions align="end">
+      <button mat-button  type="button" (click)="closeDialogUpdate()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="supplirsForm.invalid">
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

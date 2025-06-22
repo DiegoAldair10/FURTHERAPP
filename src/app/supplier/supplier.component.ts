@@ -1,18 +1,17 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatTable, MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { CustomerService } from '../services/customer.service';
-import { Customer } from '../model/customer';
-import { FormUpdateComponent } from './form-update/form-update.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTable, MatTableModule } from '@angular/material/table';
+import { Supplier } from '../model/supplier';
+import { SupplierService } from '../services/supplier.service';
 import Swal from 'sweetalert2';
-import { FormCustomerComponent } from './form-customer/form-customer.component';
+import { FormCreateComponent } from './form-create/form-create.component';
+import { FormUpdateComponent } from './form-update/form-update.component';
 
 @Component({
-  selector: 'app-customer',
-
+  selector: 'app-supplier',
   imports: [
     CommonModule,
     MatTableModule,
@@ -20,37 +19,36 @@ import { FormCustomerComponent } from './form-customer/form-customer.component';
     MatIconModule,
     MatDialogModule,
   ],
-  templateUrl: './customer.component.html',
-  styleUrl: './customer.component.css',
+  templateUrl: './supplier.component.html',
+  styleUrl: './supplier.component.css',
 })
-export class CustomerComponent implements OnInit {
+export class SupplierComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'nombre',
+    'contacto',
     'email',
     'telefono',
     'direccion',
-    'ciudad',
-    'pais',
-    'fechaRegistro',
     'actions',
   ];
-  dataSource: Customer[] = [];
 
-  @ViewChild(MatTable) table!: MatTable<Customer>;
+  dataSource: Supplier[] = [];
+
+  @ViewChild(MatTable) table!: MatTable<Supplier>;
 
   constructor(
-    private customerService: CustomerService,
+    private supplierService: SupplierService,
     public dialog: MatDialog,
     public dialogUpdate: MatDialog
   ) {}
 
-  ngOnInit() {
-    this.getCustomer();
+  ngOnInit(): void {
+    this.getSuppliers();
   }
 
-  getCustomer(): void {
-    this.customerService.getCustomers().subscribe(
+  getSuppliers(): void {
+    this.supplierService.getSupplier().subscribe(
       (data) => {
         console.log('Datos recibidos:', data); // ← Añade esto
         this.dataSource = data;
@@ -59,11 +57,11 @@ export class CustomerComponent implements OnInit {
     );
   }
 
-  deleteCustomer(id: number, event: Event): void {
+  deleteSuppliers(id: number, event: Event): void {
     (event.currentTarget as HTMLElement).blur();
 
     Swal.fire({
-      title: '¿Eliminar cliente?',
+      title: '¿Eliminar proveedor?',
       text: '¡No podrás revertir esto!',
       icon: 'warning',
       showCancelButton: true,
@@ -73,15 +71,15 @@ export class CustomerComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.customerService.deleteCustomers(id).subscribe(() => {
+        this.supplierService.deleteSuppliers(id).subscribe(() => {
           Swal.fire(
             '¡Eliminado!',
-            'El cliente ha sido eliminado.',
+            'El proveedor ha sido eliminado.',
             'success'
           ).then(() => {
             // Actualizar la tabla o recargar los datos
             this.dataSource = this.dataSource.filter(
-              (customer) => customer.clienteId !== id
+              (supplier) => supplier.proveedorId !== id
             );
             this.table.renderRows();
           });
@@ -91,39 +89,38 @@ export class CustomerComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(FormCustomerComponent, {
+    const dialogRef = this.dialog.open(FormCreateComponent, {
       width: '600px',
       height: 'auto',
       maxHeight: '90vh',
     });
 
-    dialogRef.afterClosed().subscribe((customer: Customer) => {
-      if (customer) {
-        this.dataSource = [...this.dataSource, customer];
+    dialogRef.afterClosed().subscribe((supplier: Supplier) => {
+      if (supplier) {
+        this.dataSource = [...this.dataSource, supplier];
       }
     });
   }
 
-  openEditDialog(customer: Customer, event: Event): void {
+  openEditDialog(supplier: Supplier, event: Event): void {
     (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
-  
+
     const dialogRef = this.dialog.open(FormUpdateComponent, {
       width: '600px',
-      data: { customer },
+      data: { supplier },
     });
-  
-    dialogRef.afterClosed().subscribe((customer: Customer) => {
-      if (customer) {
+
+    dialogRef.afterClosed().subscribe((supplier: Supplier) => {
+      if (supplier) {
         const index = this.dataSource.findIndex(
-          (c) => c.clienteId === customer.clienteId
+          (s) => s.proveedorId === supplier.proveedorId
         );
         if (index !== -1) {
-          this.dataSource[index] = customer;
+          this.dataSource[index] = supplier;
           this.dataSource = [...this.dataSource];
           this.table.renderRows();
         }
       }
     });
   }
-  
 }
