@@ -1,0 +1,79 @@
+<h2 mat-dialog-title class="venta-title"> Crear Venta</h2>
+
+<div mat-dialog-content class="venta-container">
+  <form [formGroup]="salesForm" (ngSubmit)="onSubmit()">
+
+    <!-- Cliente y Empleado -->
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="cliente">
+          <mat-option *ngFor="let customer of customers" [value]="customer">
+            {{ customer.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Empleado</mat-label>
+        <mat-select formControlName="empleado">
+          <mat-option *ngFor="let employee of employees" [value]="employee">
+            {{ employee.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Detalles -->
+    <div formArrayName="detalles">
+      <div *ngFor="let detalle of detalles.controls; let i = index" [formGroupName]="i" class="detalle-group">
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Producto</mat-label>
+            <mat-select formControlName="producto">
+              <mat-option *ngFor="let product of products" [value]="product">
+                {{ product.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field small">
+            <mat-label>Cantidad</mat-label>
+            <input matInput type="number" formControlName="cantidad" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field small">
+            <mat-label>Precio Unitario</mat-label>
+            <input matInput type="number" formControlName="precioUnitario" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-row" class="buttons">
+        <button mat-flat-button color="primary" type="button" (click)="agregarDetalle()">
+          + Agregar Producto
+        </button>
+        <!-- Botón Eliminar -->
+        <button mat-flat-button type="button" class="boton-eliminar" (click)="eliminarUltimoDetalle()">
+          - Eliminar Producto
+        </button>
+      </div>
+    </div>
+    <br />
+    <!-- Total -->
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field full">
+        <mat-label>Total Venta</mat-label>
+        <input matInput type="number" formControlName="totalVenta" readonly />
+      </mat-form-field>
+    </div>
+
+    <!-- Botones -->
+    <div mat-dialog-actions align="end">
+      <button mat-button type="button" (click)="closeDialog()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="salesForm.invalid">
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

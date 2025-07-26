@@ -2,8 +2,8 @@ export interface Product {
   productoId: number;
   nombre: string;
   descripcion: string;
-  precio: DoubleRange;
+  precio: number;
   categoria: string;
-  stock: BigInteger;
+  stock: number;
   fechaCreacion: Date;
 }

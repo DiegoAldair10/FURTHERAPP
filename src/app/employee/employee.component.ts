@@ -84,6 +84,7 @@ export class EmployeeComponent implements OnInit {
       }
     });
   }
+  
   openDialog(): void {
     const dialogRef = this.dialog.open(FormCreateComponent, {
       width: '600px',
