@@ -131,7 +131,6 @@ export class FormCreateComponent implements OnInit {
     );
     this.salesForm.get('totalVenta')?.setValue(total);
   }
-
   onSubmit(): void {
     if (this.salesForm.valid) {
       this.calcularTotal();
@@ -139,20 +138,35 @@ export class FormCreateComponent implements OnInit {
       const formValue = this.salesForm.getRawValue();
       const total = this.salesForm.get('totalVenta')?.value;
 
+      // Validar que todos los productos estén definidos
+      const detallesValidos = formValue.detalles.every(
+        (d: any) => d.producto && d.producto.productoId
+      );
+
+      if (!detallesValidos) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Producto no seleccionado',
+          text: 'Asegúrate de seleccionar todos los productos antes de guardar.',
+        });
+        return;
+      }
+
       const sale = {
-        ventaId: undefined as any,
+        clienteId: formValue.cliente.clienteId,
+        empleadoId: formValue.empleado.empleadoId,
         fechaVenta: new Date().toISOString(),
         totalVenta: total,
-        cliente: { clienteId: formValue.cliente.clienteId },
-        empleado: { empleadoId: formValue.empleado.empleadoId },
         detalles: formValue.detalles.map((d: any) => ({
-          producto: { productoId: d.producto.productoId },
+          productoId: d.producto.productoId,
           cantidad: d.cantidad,
           precioUnitario: d.precioUnitario,
         })),
       };
 
-      this.saleService.createSales(sale).subscribe({
+
+
+      this.saleService.createSales(sale as any).subscribe({
         next: (response) => {
           Swal.fire({
             icon: 'success',
@@ -174,7 +188,6 @@ export class FormCreateComponent implements OnInit {
       });
     }
   }
-
   closeDialog(): void {
     this.dialogRef.close();
   }

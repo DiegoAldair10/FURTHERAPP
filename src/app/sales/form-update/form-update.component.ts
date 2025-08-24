@@ -13,6 +13,8 @@ import { DetailSale } from '../../model/detailSale';
 import pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmlToPdfmake from 'html-to-pdfmake';
+import { CustomerService } from '../../services/customer.service';
+import { EmployeeService } from '../../services/employee.service';
 
 // Asignar fuentes PDFMake
 (pdfMake as any).vfs = (pdfFonts as any).vfs;
@@ -26,10 +28,10 @@ import htmlToPdfmake from 'html-to-pdfmake';
     ReactiveFormsModule,
     MatTableModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
   ],
   templateUrl: './form-update.component.html',
-  styleUrls: ['./form-update.component.css']
+  styleUrls: ['./form-update.component.css'],
 })
 export class FormUpdateComponent implements OnInit {
   sale!: Sales;
@@ -37,6 +39,8 @@ export class FormUpdateComponent implements OnInit {
   displayedColumns = ['producto', 'cantidad', 'precioUnitario', 'subtotal'];
 
   private productoService = inject(ProductService);
+  private clienteService = inject(CustomerService);
+  private empleadoService = inject(EmployeeService);
 
   constructor(
     public dialogRef: MatDialogRef<FormUpdateComponent>,
@@ -44,33 +48,30 @@ export class FormUpdateComponent implements OnInit {
   ) {
     this.sale = data.sale;
   }
-
-  ngOnInit(): void {
+ ngOnInit(): void {
+    // Cargar productos
     this.productoService.getProducts().subscribe((productos) => {
       this.products = productos;
 
-      this.sale.detalles = this.sale.detalles.map((detalle) => {
-        const productoId =
-          detalle.producto?.productoId ?? (detalle as any).productoId;
-
-        const productoCompleto = productos.find(
-          (p) => p.productoId === productoId
-        );
-
-        return {
-          ...detalle,
-          producto:
-            productoCompleto ?? {
-              productoId,
-              nombre: '',
+      if (this.sale?.detalles) {
+        this.sale.detalles = this.sale.detalles.map((detalle: any) => {
+          const productoCompleto = productos.find(
+            (p) => p.productoId === detalle.productoId
+          );
+          return {
+            ...detalle,
+            producto: productoCompleto ?? {
+              productoId: detalle.productoId,
+              nombre: 'Producto no encontrado',
               descripcion: '',
               precio: 0,
               categoria: '',
               stock: 0,
-              fechaCreacion: new Date().toISOString()
-            } as unknown as Product
-        };
-      });
+              fechaCreacion: new Date().toISOString(),
+            },
+          };
+        });
+      }
     });
   }
 
@@ -81,31 +82,35 @@ export class FormUpdateComponent implements OnInit {
   }
 
   cerrar(event: Event): void {
-      (event.currentTarget as HTMLElement).blur();
+    (event.currentTarget as HTMLElement).blur();
     this.dialogRef.close();
   }
-printBoleta(): void {
-  const boletaElement = document.querySelector('.boleta-container') as HTMLElement;
+  printBoleta(): void {
+    const boletaElement = document.querySelector(
+      '.boleta-container'
+    ) as HTMLElement;
 
-  if (!boletaElement) {
-    console.error('No se encontró la boleta.');
-    return;
-  }
+    if (!boletaElement) {
+      console.error('No se encontró la boleta.');
+      return;
+    }
 
-  const boletaHTML = boletaElement.outerHTML;
+    const boletaHTML = boletaElement.outerHTML;
 
-  const ventanaImpresion = window.open('', '_blank', 'width=800,height=1000');
-  if (!ventanaImpresion) {
-    console.error('No se pudo abrir la ventana de impresión.');
-    return;
-  }
+    const ventanaImpresion = window.open('', '_blank', 'width=800,height=1000');
+    if (!ventanaImpresion) {
+      console.error('No se pudo abrir la ventana de impresión.');
+      return;
+    }
 
-  // Obtiene los estilos aplicados desde el documento principal
-  const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
-    .map((el) => el.outerHTML)
-    .join('\n');
+    // Obtiene los estilos aplicados desde el documento principal
+    const styles = Array.from(
+      document.querySelectorAll('style, link[rel="stylesheet"]')
+    )
+      .map((el) => el.outerHTML)
+      .join('\n');
 
-  ventanaImpresion.document.write(`
+    ventanaImpresion.document.write(`
     <html>
       <head>
         <title>Boleta de Venta</title>
@@ -123,7 +128,6 @@ printBoleta(): void {
       </body>
     </html>
   `);
-  ventanaImpresion.document.close();
-}
-
+    ventanaImpresion.document.close();
+  }
 }

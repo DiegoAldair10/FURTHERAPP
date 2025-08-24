@@ -57,6 +57,7 @@ export class SalesComponent implements OnInit {
       }
     );
   }
+  
   deleteSales(id: number, event: Event): void {
     (event.currentTarget as HTMLElement).blur();
     Swal.fire({

@@ -1,9 +1,12 @@
-import { DetailSale } from "./detailSale";
+import { DetailSale } from './detailSale';
+
 
 export interface Sales {
   ventaId: number;
-  cliente: any;
-  empleado: any;
+  clienteId: number;
+  clienteNombre: string;
+  empleadoId: number;
+  empleadoNombre: string;
   fechaVenta: string;
   totalVenta: number;
   detalles: DetailSale[];
