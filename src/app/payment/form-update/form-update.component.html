@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Actulizar Metodo de Pago</h2>
+<div mat-dialog-content>
+  <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" required />
+        <mat-error *ngIf="paymentForm.get('nombre')?.hasError('required')">
+          El nombre es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Descripción</mat-label>
+        <input matInput formControlName="descripcion" required />
+        <mat-error *ngIf="paymentForm.get('descripcion')?.hasError('required')">
+          La descripción es obligatoria.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions align="end">
+      <button mat-button  type="button" (click)="closeDialogUpdate()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="paymentForm.invalid">
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>
