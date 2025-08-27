@@ -7,5 +7,7 @@ export interface Customer {
   direccion: string;
   ciudad: string;
   pais: string;
+  numeroDocumento: string;
+  documento: string;
   fechaRegistro: Date;
 }

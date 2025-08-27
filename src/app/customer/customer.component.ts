@@ -32,6 +32,8 @@ export class CustomerComponent implements OnInit {
     'direccion',
     'ciudad',
     'pais',
+    'documento',
+    'numeroDocumento',
     'fechaRegistro',
     'actions',
   ];
@@ -106,12 +108,12 @@ export class CustomerComponent implements OnInit {
 
   openEditDialog(customer: Customer, event: Event): void {
     (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
-  
+
     const dialogRef = this.dialog.open(FormUpdateComponent, {
       width: '600px',
       data: { customer },
     });
-  
+
     dialogRef.afterClosed().subscribe((customer: Customer) => {
       if (customer) {
         const index = this.dataSource.findIndex(
@@ -125,5 +127,4 @@ export class CustomerComponent implements OnInit {
       }
     });
   }
-  
 }
