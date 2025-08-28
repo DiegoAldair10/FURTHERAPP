@@ -113,7 +113,7 @@ export class FormUpdateComponent implements OnInit {
     ventanaImpresion.document.write(`
     <html>
       <head>
-        <title>Boleta de Venta</title>
+        <title>${this.sale.tipoComprobante}: ${this.sale.numeroComprobante}</title>
         ${styles}
         <style>
           @media print {

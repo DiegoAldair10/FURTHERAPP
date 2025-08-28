@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Actulizar Empleado</h2>
+<h2 mat-dialog-title>Actualizar Empleado</h2>
 <div mat-dialog-content>
   <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
     <div class="form-row">
@@ -45,16 +45,17 @@
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Cargo</mat-label>
-        <input matInput formControlName="cargo" />
-        <mat-error *ngIf="employeeForm.get('cargo')?.hasError('required')">
-          La cargo es obligatoria.
-        </mat-error>
+        <mat-select formControlName="cargo" required>
+          <mat-option *ngFor="let cargo of cargos" [value]="cargo.nombre">
+            {{ cargo.nombre }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
     </div>
 
     <div mat-dialog-actions align="end">
-      <button mat-button  type="button" (click)="closeDialogUpdate()">Cancelar</button>
+      <button mat-button type="button" (click)="closeDialogUpdate()">Cancelar</button>
       <button mat-raised-button color="primary" type="submit" [disabled]="employeeForm.invalid">
         Guardar
       </button>

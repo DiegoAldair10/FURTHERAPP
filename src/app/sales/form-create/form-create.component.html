@@ -2,6 +2,29 @@
 
 <div mat-dialog-content class="venta-container">
   <form [formGroup]="salesForm" (ngSubmit)="onSubmit()">
+<div class="form-row">
+  <!-- Tipo de comprobante -->
+  <mat-form-field appearance="fill" class="form-field">
+    <mat-label>Tipo de Comprobante</mat-label>
+    <mat-select 
+      formControlName="tipoComprobante" 
+      (selectionChange)="onTipoComprobanteChange($event.value)">
+      
+      <!-- Solo pasamos el nombre como value -->
+      <mat-option *ngFor="let tipo_Comprobante of comprobantes" 
+                  [value]="tipo_Comprobante.nombre">
+        {{ tipo_Comprobante.nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Número de comprobante -->
+  <mat-form-field appearance="fill" class="form-field small">
+    <mat-label>Número Comprobante</mat-label>
+    <input matInput formControlName="numeroComprobante" readonly />
+  </mat-form-field>
+</div>
+
 
     <!-- Cliente y Empleado -->
     <div class="form-row">

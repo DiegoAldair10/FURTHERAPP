@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -9,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { EmployeeService } from '../../services/employee.service';
 import Swal from 'sweetalert2';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-form-create',
@@ -20,19 +26,24 @@ import Swal from 'sweetalert2';
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSelectModule,
   ],
   templateUrl: './form-create.component.html',
-  styleUrl: './form-create.component.css'
+  styleUrl: './form-create.component.css',
 })
 export class FormCreateComponent {
   private fb = inject(FormBuilder);
   private employeeService = inject(EmployeeService);
 
-  employeeForm:FormGroup;
+  cargos = [
+    { id: 1, nombre: 'ADMINISTRADOR' },
+    { id: 2, nombre: 'P-VENDEDOR' },
+  ];
 
-  constructor(
-    public dialogRef: MatDialogRef<FormCreateComponent>) {
+  employeeForm: FormGroup;
+
+  constructor(public dialogRef: MatDialogRef<FormCreateComponent>) {
     this.employeeForm = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
@@ -42,12 +53,10 @@ export class FormCreateComponent {
     });
   }
 
-
   onSubmit(): void {
     if (this.employeeForm.valid) {
       const customer = {
         ...this.employeeForm.value,
-    
       };
 
       this.employeeService.createEmployees(customer).subscribe({
@@ -56,9 +65,9 @@ export class FormCreateComponent {
             icon: 'success',
             title: 'Empleado creado',
             text: 'El Empleado ha sido registrado exitosamente.',
-            confirmButtonColor: '#3085d6'
+            confirmButtonColor: '#3085d6',
           }).then(() => {
-            this.dialogRef.close(response); 
+            this.dialogRef.close(response);
           });
         },
         error: (error) => {
@@ -71,9 +80,9 @@ export class FormCreateComponent {
             icon: 'error',
             title: 'Error',
             text: errorMessage,
-            confirmButtonColor: '#d33'
+            confirmButtonColor: '#d33',
           });
-        }
+        },
       });
     }
   }
@@ -81,5 +90,4 @@ export class FormCreateComponent {
   closeDialog(): void {
     this.dialogRef.close();
   }
-
 }

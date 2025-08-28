@@ -16,10 +16,10 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Customer } from '../../model/customer';
 import { EmployeeService } from '../../services/employee.service';
 import { Employe } from '../../model/employe';
 import Swal from 'sweetalert2';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-form-update',
@@ -32,6 +32,7 @@ import Swal from 'sweetalert2';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSelectModule,
   ],
   templateUrl: './form-update.component.html',
   styleUrl: './form-update.component.css',
@@ -46,6 +47,11 @@ export class FormUpdateComponent implements OnInit {
     private dialogRef: MatDialogRef<FormUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { employee: Employe }
   ) {}
+
+  cargos = [
+    { id: 1, nombre: 'ADMINISTRADOR' },
+    { id: 2, nombre: 'P-VENDEDOR' },
+  ];
 
   ngOnInit(): void {
     this.employeeForm = this.fb.group({

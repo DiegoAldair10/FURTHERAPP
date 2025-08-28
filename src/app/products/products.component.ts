@@ -88,9 +88,10 @@ export class ProductsComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(FormCreateComponent, {
-      width: '600px',
-      height: 'auto',
-      maxHeight: '90vh',
+      width: '700px', // ancho fijo pero responsive
+      maxWidth: '90vw', // limite responsive
+      maxHeight: '90vh', // límite de altura de la pantalla
+      panelClass: 'custom-dialog', // para aplicar estilos CSS específicos
     });
 
     dialogRef.afterClosed().subscribe((products: Product) => {

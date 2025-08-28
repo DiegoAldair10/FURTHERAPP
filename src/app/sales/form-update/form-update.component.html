@@ -1,10 +1,13 @@
 <div class="boleta-container mat-elevation-z4" style="padding: 20px; background-color: white;">
   <div class="boleta-header" style="text-align: center; margin-bottom: 20px;">
-    <h2>Boleta de Venta #{{ sale.ventaId }}</h2>
+    <h2> {{ sale.tipoComprobante }}: {{ sale.numeroComprobante }}</h2>
   </div>
 
   <mat-card class="mat-elevation-z2" style="margin-bottom: 20px;">
+    <mat-card-title>Datos:</mat-card-title>
     <mat-card-content>
+      <p><strong>Tipo de Comprobante:</strong> {{ sale.tipoComprobante }}</p>
+      <p><strong>Numero de Comprobante:</strong> {{ sale.numeroComprobante }}</p>
       <p><strong>Cliente:</strong> {{ sale.clienteNombre }}</p>
       <p><strong>Empleado:</strong> {{ sale.empleadoNombre }}</p>
       <p><strong>Fecha:</strong> {{ sale.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}</p>
@@ -12,7 +15,7 @@
   </mat-card>
 
   <mat-card class="mat-elevation-z2" style="margin-bottom: 20px;">
-    <mat-card-title>Productos</mat-card-title>
+    <mat-card-title>Detalle de productos:</mat-card-title>
     <mat-card-content>
       <table mat-table [dataSource]="sale.detalles" class="mat-elevation-z1" style="width: 100%;">
         <ng-container matColumnDef="producto">

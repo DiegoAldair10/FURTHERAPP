@@ -9,5 +9,7 @@ export interface Sales {
   empleadoNombre: string;
   fechaVenta: string;
   totalVenta: number;
+  tipoComprobante: string;
+  numeroComprobante: string;
   detalles: DetailSale[];
 }

@@ -17,6 +17,12 @@ export class SalesService {
       .pipe(catchError(this.manejarError));
   }
 
+  getNextComprobante(tipoComprobante: string) {
+    return this.http.get(`${this.endPoint}/proximo-numero/${tipoComprobante}`, {
+      responseType: 'text',
+    });
+  }
+
   getSalesId(id: number): Observable<Sales> {
     if (!id || id <= 0) {
       return throwError(() => new Error('ID de venta no válido'));
@@ -52,7 +58,6 @@ export class SalesService {
     );
   }
 
-  
   deleteSales(id: number): Observable<void> {
     if (!id || id <= 0) {
       return throwError(() => new Error('ID de venta no válido'));

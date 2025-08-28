@@ -54,18 +54,50 @@ export class FormCreateComponent implements OnInit {
   products: Product[] = [];
   salesForm: FormGroup;
 
+  comprobantes = [
+    { id: 1, nombre: 'FACTURA' },
+    { id: 2, nombre: 'BOLETA' },
+  ];
+
   constructor(public dialogRef: MatDialogRef<FormCreateComponent>) {
     this.salesForm = this.fb.group({
       cliente: [null, Validators.required],
       empleado: [null, Validators.required],
+      tipoComprobante: [null, Validators.required], // ✅ nuevo
+      numeroComprobante: [''],
       detalles: this.fb.array([]),
       totalVenta: [{ value: 0, disabled: true }],
+    });
+  }
+
+  onTipoComprobanteChange(tipo: any) {
+    this.saleService.getNextComprobante(tipo.nombre).subscribe({
+      next: (num) => {
+        this.salesForm.get('numeroComprobante')?.setValue(num);
+      },
+      error: (err) => {
+        console.error('Error al obtener número de comprobante', err);
+      },
     });
   }
 
   ngOnInit(): void {
     this.cargarDatos();
     this.agregarDetalle();
+    this.salesForm
+      .get('tipocomprobante')
+      ?.valueChanges.subscribe((tipo: string) => {
+        if (tipo) {
+          this.saleService.getNextComprobante(tipo).subscribe({
+            next: (num: string) =>
+              this.salesForm.get('numeroComprobante')?.setValue(num),
+            error: () =>
+              this.salesForm.get('numeroComprobante')?.setValue('ERROR'),
+          });
+        } else {
+          this.salesForm.get('numeroComprobante')?.setValue('');
+        }
+      });
   }
 
   get detalles(): FormArray {
@@ -155,6 +187,8 @@ export class FormCreateComponent implements OnInit {
       const sale = {
         clienteId: formValue.cliente.clienteId,
         empleadoId: formValue.empleado.empleadoId,
+        tipoComprobante: formValue.tipoComprobante,
+        numeroComprobante: formValue.numeroComprobante,
         fechaVenta: new Date().toISOString(),
         totalVenta: total,
         detalles: formValue.detalles.map((d: any) => ({
@@ -164,14 +198,20 @@ export class FormCreateComponent implements OnInit {
         })),
       };
 
-
-
       this.saleService.createSales(sale as any).subscribe({
         next: (response) => {
+          const nro = response?.numeroComprobante;
+          if (nro) {
+            this.salesForm.get('numeroComprobante')?.setValue(nro);
+          }
+
           Swal.fire({
             icon: 'success',
             title: 'Venta creada',
-            text: 'La venta ha sido registrada exitosamente.',
+            text: nro
+              ? `Comprobante generado: ${nro}`
+              : 'La venta ha sido registrada exitosamente.',
+
             confirmButtonColor: '#3085d6',
           }).then(() => {
             this.dialogRef.close(response);

@@ -84,9 +84,10 @@ export class PaymentComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(FormCreateComponent, {
-      width: '600px',
-      height: 'auto',
-      maxHeight: '90vh',
+      width: '700px', // ancho fijo pero responsive
+      maxWidth: '90vw', // limite responsive
+      maxHeight: '90vh', // límite de altura de la pantalla
+      panelClass: 'custom-dialog', // para aplicar estilos CSS específicos
     });
 
     dialogRef.afterClosed().subscribe((payment: Payment) => {
@@ -96,26 +97,25 @@ export class PaymentComponent implements OnInit {
     });
   }
 
+  openEditDialog(payment: Payment, event: Event): void {
+    (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
 
-    openEditDialog(payment: Payment, event: Event): void {
-      (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
-  
-      const dialogRef = this.dialog.open(FormUpdateComponent, {
-        width: '600px',
-        data: { payment },
-      });
+    const dialogRef = this.dialog.open(FormUpdateComponent, {
+      width: '600px',
+      data: { payment },
+    });
 
-      dialogRef.afterClosed().subscribe((payment: Payment) => {
-        if (payment) {
-          const index = this.dataSource.findIndex(
-            (e) => e.metodoPagoId === payment.metodoPagoId
-          );
-          if (index !== -1) {
-            this.dataSource[index] = payment;
-            this.dataSource = [...this.dataSource];
-            this.table.renderRows();
-          }
+    dialogRef.afterClosed().subscribe((payment: Payment) => {
+      if (payment) {
+        const index = this.dataSource.findIndex(
+          (e) => e.metodoPagoId === payment.metodoPagoId
+        );
+        if (index !== -1) {
+          this.dataSource[index] = payment;
+          this.dataSource = [...this.dataSource];
+          this.table.renderRows();
         }
-      });
-    }
+      }
+    });
+  }
 }
