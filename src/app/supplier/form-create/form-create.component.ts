@@ -39,6 +39,7 @@ export class FormCreateComponent {
   constructor(public dialogRef: MatDialogRef<FormCreateComponent>) {
     this.supplierForm = this.fb.group({
       nombre: ['', Validators.required],
+      ruc: ['', Validators.required],
       contacto: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       telefono: ['', Validators.required],

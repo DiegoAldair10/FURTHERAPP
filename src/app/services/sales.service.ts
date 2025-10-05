@@ -58,6 +58,16 @@ export class SalesService {
     );
   }
 
+updateSales(id: number, sales: any): Observable<any> {
+  if (!id || id <= 0) {
+    return throwError(() => new Error('ID de venta no válido'));
+  }
+
+  return this.http
+    .put<any>(`${this.endPoint}/${id}`, sales)
+    .pipe(catchError(this.manejarError));
+}
+
   deleteSales(id: number): Observable<void> {
     if (!id || id <= 0) {
       return throwError(() => new Error('ID de venta no válido'));

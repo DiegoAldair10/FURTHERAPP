@@ -49,6 +49,7 @@ export class FormUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.supplirsForm = this.fb.group({
       nombre: [this.data.supplier.nombre, Validators.required],
+      ruc: [this.data.supplier.ruc, Validators.required],
       contacto: [this.data.supplier.contacto, Validators.required],
       email: [
         this.data.supplier.email,

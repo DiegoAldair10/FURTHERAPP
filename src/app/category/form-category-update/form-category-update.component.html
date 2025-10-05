@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Actualizar Categoria</h2>
+<div mat-dialog-content>
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" required />
+        <mat-error *ngIf="categoryForm.get('nombre')?.hasError('required')">
+          El nombre es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Descripción</mat-label>
+        <input matInput formControlName="descripcion" required />
+        <mat-error *ngIf="categoryForm.get('descripcion')?.hasError('required')">
+          La descripción es obligatoria.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions align="end">
+      <button mat-button  type="button" (click)="closeDialogUpdate()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="categoryForm.invalid">
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

@@ -20,9 +20,12 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../model/product';
 import Swal from 'sweetalert2';
 import { MatSelectModule } from '@angular/material/select';
+import { Category } from '../../model/category';
+import { CategoryService } from '../../services/category.service';
+
 
 @Component({
-  selector: 'app-form-update',
+  selector: 'app-form-products-update',
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -34,24 +37,19 @@ import { MatSelectModule } from '@angular/material/select';
     MatNativeDateModule,
     MatSelectModule,
   ],
-  templateUrl: './form-update.component.html',
-  styleUrl: './form-update.component.css',
+  templateUrl: './form-products-update.component.html',
+  styleUrl: './form-products-update.component.css',
 })
-export class FormUpdateComponent implements OnInit {
+export class FormProductsUpdateComponent implements OnInit {
   productsForm!: FormGroup;
   isUpdating = false; // Para evitar múltiples envíos
-  categorias = [
-    { id: 1, nombre: 'Celulares' },
-    { id: 2, nombre: 'Computadoras' },
-    { id: 3, nombre: 'Placas' },
-    { id: 4, nombre: 'CPU' },
-    { id: 5, nombre: 'Monitores' },
-  ];
+  categorias: Category[] = [];
 
   constructor(
     private fb: FormBuilder,
     private productsService: ProductService,
-    private dialogRef: MatDialogRef<FormUpdateComponent>,
+    private categoryService: CategoryService,
+    private dialogRef: MatDialogRef<FormProductsUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { product: Product }
   ) {}
 
@@ -59,11 +57,25 @@ export class FormUpdateComponent implements OnInit {
     this.productsForm = this.fb.group({
       nombre: [this.data.product.nombre, Validators.required],
       descripcion: [this.data.product.descripcion, Validators.required],
-      precio: [this.data.product.precio, Validators.required],
-      categoria: [this.data.product.categoria, Validators.required],
+      precio_venta: [this.data.product.precio_venta, Validators.required],
+      costo_promedio: [this.data.product.costo_promedio, Validators.required],
+      estado: [this.data.product.estado, Validators.required],
+      categoriaId: [this.data.product.categoriaId, Validators.required],
       stock: [this.data.product.stock, Validators.required],
     });
+
+    this.categoryService.getCategories().subscribe({
+      next: (cats) => {
+        this.categorias = cats;
+      },
+    });
   }
+
+  compareCategorias = (option: Category, value: number) => {
+    return option && typeof value === 'number'
+      ? option.categoriaId === value
+      : false;
+  };
 
   onSubmit(): void {
     if (this.productsForm.valid && !this.isUpdating) {

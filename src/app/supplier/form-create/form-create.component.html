@@ -6,25 +6,26 @@
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre" required />
       </mat-form-field>
-
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Ruc</mat-label>
+        <input matInput formControlName="ruc" required />
+      </mat-form-field>
+    </div>
+    <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Contacto</mat-label>
         <input matInput formControlName="contacto" required />
       </mat-form-field>
-    </div>
-
-    <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" required />
       </mat-form-field>
-
+    </div>
+    <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Teléfono</mat-label>
         <input matInput formControlName="telefono" required />
       </mat-form-field>
-    </div>
-    <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Dirección</mat-label>
         <input matInput formControlName="direccion" required />
@@ -32,7 +33,7 @@
     </div>
     <div mat-dialog-actions align="end">
       <button mat-button (click)="closeDialog()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit"  [disabled]="supplierForm.invalid">
+      <button mat-raised-button color="primary" type="submit" [disabled]="supplierForm.invalid">
         Guardar
       </button>
     </div>

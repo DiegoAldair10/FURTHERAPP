@@ -29,7 +29,7 @@ export class EmployeeComponent implements OnInit {
     'email',
     'telefono',
     'cargo',
-    'fechaContratacion',
+    'fecha_Contratacion',
     'actions',
   ];
 

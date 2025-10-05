@@ -1,0 +1,22 @@
+.full-width {
+  width: 100%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espaciado entre filas */
+}
+
+.form-row {
+  display: flex;
+  gap: 20px; /* Espaciado entre los form-fields */
+}
+
+.form-field {
+  flex: 1; /* Hace que ambos campos ocupen el mismo espacio */
+  min-width: 200px; /* Asegura que no sean demasiado pequeños */
+}
+.mat-focus-indicator {
+  box-shadow: none !important;
+}

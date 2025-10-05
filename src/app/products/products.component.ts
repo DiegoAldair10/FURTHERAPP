@@ -7,8 +7,8 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { ProductService } from '../services/product.service';
 import { Product } from '../model/product';
 import Swal from 'sweetalert2';
-import { FormCreateComponent } from './form-create/form-create.component';
-import { FormUpdateComponent } from './form-update/form-update.component';
+import { FormProductsCreateComponent } from './form-products-create/form-products-create.component';
+import { FormProductsUpdateComponent } from './form-products-update/form-products-update.component';
 
 @Component({
   selector: 'app-products',
@@ -27,10 +27,12 @@ export class ProductsComponent implements OnInit {
     'id',
     'nombre',
     'descripcion',
-    'precio',
+    'precio_venta',
+    'costo_promedio',
     'categoria',
     'stock',
-    'fechaCreacion',
+    'fecha_Creacion',
+    'estado',
     'actions',
   ];
 
@@ -87,7 +89,7 @@ export class ProductsComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(FormCreateComponent, {
+    const dialogRef = this.dialog.open(FormProductsCreateComponent, {
       width: '700px', // ancho fijo pero responsive
       maxWidth: '90vw', // limite responsive
       maxHeight: '90vh', // límite de altura de la pantalla
@@ -104,7 +106,7 @@ export class ProductsComponent implements OnInit {
   openEditDialog(product: Product, event: Event): void {
     (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
 
-    const dialogRef = this.dialog.open(FormUpdateComponent, {
+    const dialogRef = this.dialog.open(FormProductsUpdateComponent, {
       width: '600px',
       data: { product },
     });

@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="demo-button-container">
+        <button mat-raised-button color="primary" (click)="openDialog()">Crear Pago
+        </button>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let salePayments">{{ salePayments.pagoId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="venta">
+            <th mat-header-cell *matHeaderCellDef>Venta</th>
+            <td mat-cell *matCellDef="let salePayments"> {{ salePayments.venta?.numeroComprobante ?
+                salePayments.venta.numeroComprobante : salePayments.tipoComprobante + ' - ' +
+                salePayments.numeroComprobante }}</td>
+        </ng-container>
+        <ng-container matColumnDef="metodoPago">
+            <th mat-header-cell *matHeaderCellDef>Método de Pago</th>
+            <td mat-cell *matCellDef="let salePayments">{{ salePayments.metodoPago?.nombre || salePayments.nombre }}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="monto">
+            <th mat-header-cell *matHeaderCellDef>Monto</th>
+            <td mat-cell *matCellDef="let salePayments">{{ salePayments.monto }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fechaPago">
+            <th mat-header-cell *matHeaderCellDef>Fecha de Pago</th>
+            <td mat-cell *matCellDef="let salePayments">
+                {{ salePayments.fechaPago | date: 'dd/MM/yyyy' }}
+            </td>
+        </ng-container>
+            <ng-container matColumnDef="detalles">
+            <th mat-header-cell *matHeaderCellDef>Detalles</th>
+            <td mat-cell *matCellDef="let salePayments">
+                <button mat-icon-button (click)="openEditDialog(salePayments, $event)">
+                     <mat-icon>visibility</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let salePayments">
+                <button mat-icon-button (click)="deleteSales(salePayments.pagosId, $event)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

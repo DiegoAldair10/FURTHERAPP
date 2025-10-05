@@ -27,6 +27,7 @@ export class SupplierComponent implements OnInit {
     'id',
     'nombre',
     'contacto',
+    'ruc',
     'email',
     'telefono',
     'direccion',

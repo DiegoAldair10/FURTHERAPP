@@ -15,9 +15,10 @@ import { MatInputModule } from '@angular/material/input';
 import { ProductService } from '../../services/product.service';
 import Swal from 'sweetalert2';
 import { MatSelectModule } from '@angular/material/select';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
-  selector: 'app-form-create',
+  selector: 'app-form-products-create',
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -29,30 +30,41 @@ import { MatSelectModule } from '@angular/material/select';
     MatNativeDateModule,
     MatSelectModule,
   ],
-  templateUrl: './form-create.component.html',
-  styleUrl: './form-create.component.css',
+  templateUrl: './form-products-create.component.html',
+  styleUrl: './form-products-create.component.css',
 })
-export class FormCreateComponent {
+export class FormProductsCreateComponent {
   private fb = inject(FormBuilder);
   private productsService = inject(ProductService);
+  private categorysService = inject(CategoryService);
 
   productsForm: FormGroup;
 
-  categorias = [
-    { id: 1, nombre: 'Celulares' },
-    { id: 2, nombre: 'Computadoras' },
-    { id: 3, nombre: 'Placas' },
-    { id: 4, nombre: 'CPU' },
-    { id: 5, nombre: 'Monitores' },
-  ];
+  Categorys: any[] = [];
 
-  constructor(public dialogRef: MatDialogRef<FormCreateComponent>) {
+  constructor(public dialogRef: MatDialogRef<FormProductsCreateComponent>) {
     this.productsForm = this.fb.group({
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required],
-      precio: ['', [Validators.required]],
-      categoria: ['', Validators.required],
+      precio_venta: ['', [Validators.required]],
+      costo_promedio: ['', [Validators.required]],
+      categoriaId: ['', Validators.required],
       stock: ['', Validators.required],
+      estado: ['Y', Validators.required],
+    });
+
+    this.loadCategorys();
+  }
+
+  // Método para cargar categorías
+  loadCategorys(): void {
+    this.categorysService.getCategories().subscribe({
+      next: (data) => {
+        this.Categorys = data;
+      },
+      error: (err) => {
+        console.error('Error cargando categorías', err);
+      },
     });
   }
 

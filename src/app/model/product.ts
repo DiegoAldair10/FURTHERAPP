@@ -1,9 +1,12 @@
 export interface Product {
+  [x: string]: any;
   productoId: number;
   nombre: string;
   descripcion: string;
-  precio: number;
-  categoria: string;
+  categoriaId: number;
+  precio_venta: number;
+  costo_promedio: number;
+  estado: string;
   stock: number;
-  fechaCreacion: Date;
+  fecha_Creacion: Date;
 }

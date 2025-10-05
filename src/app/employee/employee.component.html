@@ -25,10 +25,10 @@
             <th mat-header-cell *matHeaderCellDef>Cargo</th>
             <td mat-cell *matCellDef="let employee">{{ employee.cargo }}</td>
         </ng-container>
-        <ng-container matColumnDef="fechaContratacion">
+        <ng-container matColumnDef="fecha_Contratacion">
             <th mat-header-cell *matHeaderCellDef>Contratación</th>
             <td mat-cell *matCellDef="let employee">
-              {{ employee.fechaContratacion | date: 'dd/MM/yyyy' }}
+              {{ employee.fecha_Contratacion | date: 'dd/MM/yyyy' }}
             </td>
           </ng-container>
         <ng-container matColumnDef="actions">

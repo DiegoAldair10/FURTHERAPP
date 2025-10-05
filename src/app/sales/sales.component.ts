@@ -9,6 +9,7 @@ import { SalesService } from '../services/sales.service';
 import Swal from 'sweetalert2';
 import { FormUpdateComponent } from './form-update/form-update.component';
 import { FormCreateComponent } from './form-create/form-create.component';
+import { FormDetailsComponent } from './form-details/form-details.component';
 
 @Component({
   selector: 'app-sales',
@@ -28,7 +29,7 @@ export class SalesComponent implements OnInit {
     'cliente',
     'empleado',
     'fechaVenta',
-    'totalVenta',
+    'total',
     'detalles',
     'actions',
   ];
@@ -57,7 +58,7 @@ export class SalesComponent implements OnInit {
       }
     );
   }
-  
+
   deleteSales(id: number, event: Event): void {
     (event.currentTarget as HTMLElement).blur();
     Swal.fire({
@@ -92,10 +93,10 @@ export class SalesComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(FormCreateComponent, {
-     width: '700px',        // ancho fijo pero responsive
-    maxWidth: '90vw',      // limite responsive
-    maxHeight: '90vh',     // límite de altura de la pantalla
-    panelClass: 'custom-dialog' // para aplicar estilos CSS específicos
+      width: '700px', // ancho fijo pero responsive
+      maxWidth: '90vw', // limite responsive
+      maxHeight: '90vh', // límite de altura de la pantalla
+      panelClass: 'custom-dialog', // para aplicar estilos CSS específicos
     });
 
     dialogRef.afterClosed().subscribe((sales: Sales) => {
@@ -109,6 +110,31 @@ export class SalesComponent implements OnInit {
     (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
 
     const dialogRef = this.dialog.open(FormUpdateComponent, {
+      width: '700px', // ancho fijo pero responsive
+      maxWidth: '90vw', // limite responsive
+      maxHeight: '90vh', // límite de altura de la pantalla
+
+      data: { venta: sale },
+    });
+
+    dialogRef.afterClosed().subscribe((sale: Sales) => {
+      if (sale) {
+        const index = this.dataSource.findIndex(
+          (p) => p.ventaId === sale.ventaId
+        );
+        if (index !== -1) {
+          this.dataSource[index] = sale;
+          this.dataSource = [...this.dataSource];
+          this.table.renderRows();
+        }
+      }
+    });
+  }
+
+  openDetailsDialog(sale: Sales, event: Event): void {
+    (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
+
+    const dialogRef = this.dialog.open(FormDetailsComponent, {
       width: '600px',
       data: { sale },
     });

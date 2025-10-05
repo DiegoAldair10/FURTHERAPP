@@ -1,133 +1,280 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatTableModule } from '@angular/material/table';
+import { Component, Inject, OnInit, inject } from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ProductService } from '../../services/product.service';
-import { Product } from '../../model/product';
-import { Sales } from '../../model/sales';
-import { DetailSale } from '../../model/detailSale';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
-import pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import htmlToPdfmake from 'html-to-pdfmake';
+import Swal from 'sweetalert2';
+import { SalesService } from '../../services/sales.service';
 import { CustomerService } from '../../services/customer.service';
 import { EmployeeService } from '../../services/employee.service';
-
-// Asignar fuentes PDFMake
-(pdfMake as any).vfs = (pdfFonts as any).vfs;
+import { ProductService } from '../../services/product.service';
+import { VentaUtilsService } from '../../services/venta-utils.service';
+import { Product } from '../../model/product';
+import { forkJoin } from 'rxjs';
+import { Sales } from '../../model/sales';
 
 @Component({
   selector: 'app-form-update',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     ReactiveFormsModule,
-    MatTableModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
-    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatIconModule,
   ],
   templateUrl: './form-update.component.html',
   styleUrls: ['./form-update.component.css'],
 })
 export class FormUpdateComponent implements OnInit {
-  sale!: Sales;
-  products: Product[] = [];
-  displayedColumns = ['producto', 'cantidad', 'precioUnitario', 'subtotal'];
+  salesForm: FormGroup;
+  isUpdating = false;
 
-  private productoService = inject(ProductService);
-  private clienteService = inject(CustomerService);
-  private empleadoService = inject(EmployeeService);
+  customers: any[] = [];
+  employees: any[] = [];
+  products: Product[] = [];
+
+  comprobantes = [{ nombre: 'BOLETA' }, { nombre: 'FACTURA' }];
+
+  // IGV_RATE ahora se gestiona en VentaUtilsService
 
   constructor(
-    public dialogRef: MatDialogRef<FormUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { sale: Sales }
+    private fb: FormBuilder,
+    private saleService: SalesService,
+    private customerService: CustomerService,
+    private employeeService: EmployeeService,
+    private productService: ProductService,
+    private ventaUtils: VentaUtilsService,
+    private dialogRef: MatDialogRef<FormUpdateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { venta: Sales }
   ) {
-    this.sale = data.sale;
-  }
- ngOnInit(): void {
-    // Cargar productos
-    this.productoService.getProducts().subscribe((productos) => {
-      this.products = productos;
-
-      if (this.sale?.detalles) {
-        this.sale.detalles = this.sale.detalles.map((detalle: any) => {
-          const productoCompleto = productos.find(
-            (p) => p.productoId === detalle.productoId
-          );
-          return {
-            ...detalle,
-            producto: productoCompleto ?? {
-              productoId: detalle.productoId,
-              nombre: 'Producto no encontrado',
-              descripcion: '',
-              precio: 0,
-              categoria: '',
-              stock: 0,
-              fechaCreacion: new Date().toISOString(),
-            },
-          };
-        });
-      }
+    // Inicializamos el formulario vacío
+    this.salesForm = this.fb.group({
+      cliente: [null, Validators.required],
+      empleado: [null, Validators.required],
+      tipoComprobante: ['', Validators.required],
+      numeroComprobante: ['', Validators.required],
+      serie: [''],
+      moneda: [''],
+      fechaVenta: [null, Validators.required],
+      subTotal: [0],
+      igv: [0],
+      total: [0],
+      estado: [''],
+      estadoPago: [''],
+      fecha_Creacion: [null, Validators.required],
+      detalles: this.fb.array([]),
     });
   }
 
-  calcularSubtotal(detalle: DetailSale): number {
-    const cantidad = Number(detalle.cantidad);
-    const precioUnitario = Number(detalle.precioUnitario);
-    return cantidad * precioUnitario;
+  ngOnInit(): void {
+    this.cargarDatos();
   }
 
-  cerrar(event: Event): void {
-    (event.currentTarget as HTMLElement).blur();
+  get detalles(): FormArray {
+    return this.salesForm.get('detalles') as FormArray;
+  }
+
+  agregarDetalle(): void {
+    const detalleGroup = this.fb.group({
+      producto: [null as Product | null, Validators.required],
+      cantidad: [1, Validators.required],
+      precioUnitario: [0, Validators.required],
+    });
+
+    // Autocompletar precio al seleccionar producto
+    detalleGroup
+      .get('producto')
+      ?.valueChanges.subscribe((producto: Product | null) => {
+        detalleGroup
+          .get('precioUnitario')
+          ?.setValue(producto?.precio_venta ?? 0);
+        this.calcularMontos();
+      });
+
+    detalleGroup
+      .get('cantidad')
+      ?.valueChanges.subscribe(() => this.calcularMontos());
+    detalleGroup
+      .get('precioUnitario')
+      ?.valueChanges.subscribe(() => this.calcularMontos());
+
+    this.detalles.push(detalleGroup);
+    this.calcularMontos();
+  }
+
+  eliminarDetalle(index: number): void {
+    this.detalles.removeAt(index);
+    this.calcularMontos();
+  }
+
+  cargarDatos(): void {
+    forkJoin({
+      customers: this.customerService.getCustomers(),
+      employees: this.employeeService.getEmployees(),
+      products: this.productService.getProducts(),
+    }).subscribe(({ customers, employees, products }) => {
+      this.customers = customers;
+      this.employees = employees;
+      this.products = products;
+
+      if (!this.data.venta) {
+        this.dialogRef.close();
+        return;
+      }
+
+      // Parcheamos formulario con datos de la venta
+      this.salesForm.patchValue({
+        cliente: customers.find(
+          (c) => c.clienteId === this.data.venta.clienteId
+        ),
+        empleado: employees.find(
+          (e) => e.empleadoId === this.data.venta.empleadoId
+        ),
+        tipoComprobante: this.data.venta.tipoComprobante,
+        numeroComprobante: this.data.venta.numeroComprobante,
+        serie: this.data.venta.serie,
+        moneda: this.data.venta.moneda,
+        fechaVenta: this.data.venta.fechaVenta ? formatDate(this.data.venta.fechaVenta) : null,
+        subTotal: this.data.venta.subTotal,
+        igv: this.data.venta.igv,
+        total: this.data.venta.total,
+        estado: this.data.venta.estado,
+        estadoPago: this.data.venta.estadoPago,
+        fecha_Creacion: this.data.venta.fecha_Creacion ? formatDate(this.data.venta.fecha_Creacion) : null,
+      });
+
+      // Cargar detalles
+      const detallesArray = this.detalles;
+      detallesArray.clear();
+      this.data.venta.detalles?.forEach((d) => {
+        const detalleGroup = this.fb.group({
+          producto: [
+            products.find((p) => p.productoId === d.productoId) ??
+              (null as Product | null),
+            Validators.required,
+          ],
+          cantidad: [d.cantidad, Validators.required],
+          precioUnitario: [d.precioUnitario, Validators.required],
+        });
+
+        detalleGroup
+          .get('producto')
+          ?.valueChanges.subscribe((producto: Product | null) => {
+            detalleGroup
+              .get('precioUnitario')
+              ?.setValue(producto?.precio_venta ?? 0);
+            this.calcularMontos();
+          });
+        detalleGroup
+          .get('cantidad')
+          ?.valueChanges.subscribe(() => this.calcularMontos());
+        detalleGroup
+          .get('precioUnitario')
+          ?.valueChanges.subscribe(() => this.calcularMontos());
+
+        detallesArray.push(detalleGroup);
+      });
+
+      this.calcularMontos();
+    });
+  }
+
+  onTipoComprobanteChange(value: string): void {
+    if (value === 'BOLETA') {
+      this.salesForm.patchValue({ serie: 'B001' });
+    } else if (value === 'FACTURA') {
+      this.salesForm.patchValue({ serie: 'F001' });
+    }
+  }
+
+  calcularMontos(): void {
+    const detalles = this.salesForm.getRawValue().detalles || [];
+    const { subTotal, igv, total } = this.ventaUtils.calcularMontos(detalles);
+    this.salesForm.get('subTotal')?.setValue(subTotal, { emitEvent: false });
+    this.salesForm.get('igv')?.setValue(igv, { emitEvent: false });
+    this.salesForm.get('total')?.setValue(total, { emitEvent: false });
+  }
+
+  onSubmit(): void {
+    if (this.salesForm.valid && !this.isUpdating) {
+      this.isUpdating = true;
+
+      const formValue = this.salesForm.getRawValue();
+
+      const updatedSale: Sales = {
+        ...this.data.venta,
+        clienteId: formValue.cliente.clienteId,
+        empleadoId: formValue.empleado.empleadoId,
+        tipoComprobante: formValue.tipoComprobante,
+        numeroComprobante: formValue.numeroComprobante,
+        serie: formValue.serie,
+        moneda: formValue.moneda,
+        fechaVenta: formValue.fechaVenta,
+        subTotal: formValue.subTotal,
+        igv: formValue.igv,
+        total: formValue.total,
+        estado: formValue.estado,
+        estadoPago: formValue.estadoPago,
+        fecha_Creacion: formValue.fecha_Creacion,
+        detalles: formValue.detalles.map((d: any) => ({
+          productoId: d.producto.productoId,
+          cantidad: d.cantidad,
+          precioUnitario: d.precioUnitario,
+        })),
+      };
+
+      this.saleService
+        .updateSales(this.data.venta.ventaId, updatedSale)
+        .subscribe({
+          next: (response) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Venta actualizada',
+              text: 'Los cambios han sido guardados.',
+              confirmButtonColor: '#3085d6',
+            }).then(() => this.dialogRef.close(response));
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo actualizar la venta.',
+              confirmButtonColor: '#d33',
+            });
+            this.isUpdating = false;
+          },
+        });
+    }
+  }
+
+  closeDialogUpdate(): void {
     this.dialogRef.close();
   }
-  printBoleta(): void {
-    const boletaElement = document.querySelector(
-      '.boleta-container'
-    ) as HTMLElement;
+}
 
-    if (!boletaElement) {
-      console.error('No se encontró la boleta.');
-      return;
-    }
-
-    const boletaHTML = boletaElement.outerHTML;
-
-    const ventanaImpresion = window.open('', '_blank', 'width=800,height=1000');
-    if (!ventanaImpresion) {
-      console.error('No se pudo abrir la ventana de impresión.');
-      return;
-    }
-
-    // Obtiene los estilos aplicados desde el documento principal
-    const styles = Array.from(
-      document.querySelectorAll('style, link[rel="stylesheet"]')
-    )
-      .map((el) => el.outerHTML)
-      .join('\n');
-
-    ventanaImpresion.document.write(`
-    <html>
-      <head>
-        <title>${this.sale.tipoComprobante}: ${this.sale.numeroComprobante}</title>
-        ${styles}
-        <style>
-          @media print {
-            body {
-              margin: 0;
-            }
-          }
-        </style>
-      </head>
-      <body onload="window.print(); window.close();">
-        ${boletaHTML}
-      </body>
-    </html>
-  `);
-    ventanaImpresion.document.close();
-  }
+function formatDate(dateString: string): string {
+  return new Date(dateString).toISOString().split('T')[0];
 }
