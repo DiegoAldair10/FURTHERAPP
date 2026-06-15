@@ -1,78 +1,101 @@
-<div class="pago-container mat-elevation-z4" style="padding: 20px; background-color: white;">
-  <div class="pago-header" style="text-align: center; margin-bottom: 20px;">
-    <h2>Comprobante de Pago</h2>
-  </div>
+<div class="pago-container">
 
-  <mat-card class="mat-elevation-z2" style="margin-bottom: 20px;">
-    <mat-card-title>Datos:</mat-card-title>
-    <mat-card-content>
-      <p><strong>Tipo de Comprobante:</strong> {{ salePayment.tipoComprobante }}</p>
-      <p><strong>Numero de Comprobante:</strong> {{ salePayment.numeroComprobante }}</p>
-      <p><strong>Cliente:</strong> {{ salePayment.clienteNombre }}</p>
-      <p><strong>Empleado:</strong> {{ salePayment.empleadoNombre }}</p>
-      <p><strong>Método de Pago:</strong> {{ salePayment.nombre }}</p>
-      <p><strong>Fecha:</strong> {{ salePayment.fechaPago | date: 'dd/MM/yyyy HH:mm' }}</p>
-    </mat-card-content>
-  </mat-card>
+  <!-- ================= VISUAL ================= -->
+  <div class="pago-visual">
 
+    <div class="pago-header">
+      <h2>Comprobante de Pago</h2>
+    </div>
 
-  <mat-card class="mat-elevation-z2" style="margin-bottom: 20px;">
-    <mat-card-title>Detalle de productos:</mat-card-title>
-    <mat-card-content>
-      <table mat-table [dataSource]="salePayment.detalles" class="mat-elevation-z1" style="width: 100%;">
-        <ng-container matColumnDef="producto">
-          <th mat-header-cell *matHeaderCellDef>Producto</th>
-          <td mat-cell *matCellDef="let d">{{ d.producto?.nombre || d.productoNombre }}</td>
-        </ng-container>
+    <!-- DATOS -->
+    <div class="pago-card">
+      <h3>Datos</h3>
 
-        <ng-container matColumnDef="cantidad">
-          <th mat-header-cell *matHeaderCellDef>Cantidad</th>
-          <td mat-cell *matCellDef="let d">{{ d.cantidad }}</td>
-        </ng-container>
+      <div class="datos-grid">
+        <div><strong>Tipo de Comprobante:</strong> {{ salePayment.tipoComprobante }}</div>
+        <div><strong>Numero de Comprobante:</strong> {{ salePayment.numeroComprobante }}</div>
+        <div><strong>Cliente:</strong> {{ salePayment.clienteNombre }}</div>
+        <div><strong>Empleado:</strong> {{ salePayment.empleadoNombre }}</div>
+        <div><strong>Método de Pago:</strong> {{ salePayment.nombre }}</div>
+        <div><strong>Fecha:</strong> {{ salePayment.fecha_Pago | date: 'dd/MM/yyyy HH:mm' }}</div>
+      </div>
+    </div>
 
-        <ng-container matColumnDef="precioUnitario">
-          <th mat-header-cell *matHeaderCellDef>Precio Unitario</th>
-          <td mat-cell *matCellDef="let d">S/. {{ d.precioUnitario }}</td>
-        </ng-container>
+    <!-- DETALLE -->
+    <div class="pago-card">
+      <h3>Detalle de productos</h3>
 
-        <ng-container matColumnDef="subtotal">
-          <th mat-header-cell *matHeaderCellDef>Subtotal</th>
-          <td mat-cell *matCellDef="let det">S/. {{ det.subtotal | number:'1.2-2' }}</td>
-        </ng-container>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of salePayment.detalles">
+              <td>{{ d.producto?.nombre || d.productoNombre }}</td>
+              <td>{{ d.cantidad }}</td>
+              <td>S/{{ d.precioUnitario }}</td>
+              <td>S/{{ d.cantidad * d.precioUnitario }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <div class="total-box">
+        <div><span>Subtotal</span><span>S/{{ salePayment.totalVenta }}</span></div>
+        <div class="total"><span>Total</span><span>S/{{ salePayment.totalVenta }}</span></div>
+
+      </div>
+
+      <!-- BOTONES -->
+      <div class="pago-actions no-print">
+        <button mat-stroked-button (click)="cerrar($event)">Cerrar</button>
+        <button mat-raised-button color="primary" (click)="printPago()">Imprimir Pago</button>
+      </div>
+
+    </div>
+
+    <!-- ================= PRINT ================= -->
+    <div class="tabla-imprimir" style="display: none;">
+      <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-family: Roboto, sans-serif;">
+        <div class="pago-card">
+          <h3>Datos</h3>
+
+          <div class="datos-grid">
+            <div><strong>Tipo de Comprobante:</strong> {{ salePayment.tipoComprobante }}</div>
+            <div><strong>Numero de Comprobante:</strong> {{ salePayment.numeroComprobante }}</div>
+            <div><strong>Cliente:</strong> {{ salePayment.clienteNombre }}</div>
+            <div><strong>Empleado:</strong> {{ salePayment.empleadoNombre }}</div>
+            <div><strong>Método de Pago:</strong> {{ salePayment.nombre }}</div>
+            <div><strong>Fecha:</strong> {{ salePayment.fecha_Pago | date: 'dd/MM/yyyy HH:mm' }}</div>
+
+          </div>
+        </div>
+
+        <thead>
+          <tr>
+            <th style="border: 1px solid #ccc; padding: 6px;">Producto</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Cantidad</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Precio Unitario</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of salePayment.detalles">
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.producto?.nombre || d.productoNombre }}</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad }}</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.precioUnitario }}</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad * d.precioUnitario }}</td>
+          </tr>
+        </tbody>
       </table>
-    </mat-card-content>
-  </mat-card>
 
-  <mat-card style="text-align: right; padding: 10px;">
-    <strong>Total Venta:</strong>S/. {{ salePayment.totalVenta }}
-  </mat-card>
 
-  <div class="no-print" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-    <button mat-raised-button color="accent" (click)="cerrar($event)">Cerrar</button>
-    <button mat-raised-button color="accent" (click)="printPago()">Imprimir Pago</button>
+    </div>
+
   </div>
-</div>
-
-<!-- Tabla oculta solo para impresión PDF -->
-<div class="tabla-imprimir" style="display: none;">
-  <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-family: Roboto, sans-serif;">
-    <thead>
-      <tr>
-        <th style="border: 1px solid #ccc; padding: 6px;">Producto</th>
-        <th style="border: 1px solid #ccc; padding: 6px;">Cantidad</th>
-        <th style="border: 1px solid #ccc; padding: 6px;">Precio Unitario</th>
-        <th style="border: 1px solid #ccc; padding: 6px;">Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let d of salePayment.detalles">
-        <td style="border: 1px solid #ccc; padding: 6px;">{{d.producto?.nombre || d.productoNombre}}</td>
-        <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad }}</td>
-        <td style="border: 1px solid #ccc; padding: 6px;">{{ d.precioUnitario | currency }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>

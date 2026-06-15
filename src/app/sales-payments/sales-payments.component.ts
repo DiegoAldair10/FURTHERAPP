@@ -29,7 +29,7 @@ export class SalesPaymentsComponent implements OnInit {
     'venta',
     'metodoPago',
     'monto',
-    'fechaPago',
+    'fecha_Pago',
     'detalles',
     'actions',
   ];

@@ -59,13 +59,14 @@ export class FormCreateComponent implements OnInit {
   selectedTipoComprobante: string | null = null;
   selectedTotal: number | null = null;
   selectedDetalles: any[] = [];
+  selectFechaPago: Date | null = null;
 
   constructor(public dialogRef: MatDialogRef<FormCreateComponent>) {
     this.salesPaymentsForm = this.fb.group({
       ventaId: [null, Validators.required],
       metodoPagoId: [null, Validators.required],
       monto: [null, [Validators.required, Validators.min(0.01)]],
-      fechaPago: [new Date(), Validators.required],
+      fecha_Pago: [new Date(), Validators.required],
     });
   }
 
@@ -90,7 +91,17 @@ export class FormCreateComponent implements OnInit {
         this.selectedCliente = venta.clienteNombre || '---';
         this.selectedEmpleado = venta.empleadoNombre || '---';
         this.selectedTipoComprobante = venta.tipoComprobante || '---';
-        this.selectedTotal = venta.totalVenta || 0;
+        this.selectFechaPago = venta.fechaVenta
+          ? new Date(venta.fechaVenta)
+          : null;
+        // El modelo Sales usa la propiedad 'total'
+        this.selectedTotal = venta.total ?? venta.totalVenta ?? 0;
+        console.log(
+          'Venta seleccionada:',
+          venta,
+          'selectedTotal:',
+          this.selectedTotal
+        );
 
         // 👇 importante: traer los detalles (array)
         this.selectedDetalles = venta.detalles || [];
@@ -108,11 +119,22 @@ export class FormCreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.salesPaymentsForm.valid) {
-      const salesPayments = {
+      // Obtener el valor real del control (se definió como 'fecha_Pago' en el form)
+      const rawFecha: any =
+        this.salesPaymentsForm.get('fecha_Pago')?.value ??
+        this.salesPaymentsForm.value.fechaPago;
+
+      // Validar que la fecha sea válida antes de convertirla a ISO
+      let fechaIso: string | null = null;
+      const parsedDate = rawFecha ? new Date(rawFecha) : null;
+      if (parsedDate && !isNaN(parsedDate.getTime())) {
+        fechaIso = parsedDate.toISOString();
+      }
+
+      const salesPayments: any = {
         ...this.salesPaymentsForm.value,
-        fechaPago: new Date(
-          this.salesPaymentsForm.value.fechaPago
-        ).toISOString(),
+        // Enviar la fecha en formato ISO sólo si es válida, si no enviamos null
+        fechaPago: fechaIso,
       };
 
       this.salesPaymentsService.createSalesPayment(salesPayments).subscribe({

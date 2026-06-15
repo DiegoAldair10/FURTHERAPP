@@ -242,7 +242,6 @@ export class FormUpdateComponent implements OnInit {
         detalles: formValue.detalles.map((d: any) => ({
           productoId: d.producto.productoId,
           cantidad: d.cantidad,
-          precioUnitario: d.precioUnitario,
         })),
       };
 

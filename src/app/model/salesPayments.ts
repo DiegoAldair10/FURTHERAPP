@@ -1,8 +1,6 @@
 import { DetailSale } from './detailSale';
-import { Payment } from './payment';
-import { Sales } from './sales';
 
-export interface SalesPayments {
+export interface  SalesPayments {
   pagosId: number;
   ventaId: number;
   numeroComprobante: string;
@@ -11,11 +9,13 @@ export interface SalesPayments {
   clienteNombre: string;
   empleadoId: number;
   empleadoNombre: string;
+  estado: string;
+  estadoPago: string;
   fechaVenta: string;
   totalVenta: number;
   detalles: DetailSale[];
   metodoPagoId: number;
   nombre: string;
   monto: number;
-  fechaPago: string;
+  fecha_Pago: string;
 }

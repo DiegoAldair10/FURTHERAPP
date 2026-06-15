@@ -120,8 +120,7 @@ export class FormCreateComponent implements OnInit {
       producto: [null, Validators.required],
       cantidad: [1, [Validators.required, Validators.min(1)]],
       precioUnitario: [
-        { value: 0, disabled: false },
-        [Validators.required, Validators.min(0)],
+        { value: 0, disabled: true }
       ],
     });
 
@@ -211,8 +210,7 @@ export class FormCreateComponent implements OnInit {
         fecha_Creacion: formValue.fecha_Creacion, // 👈 agregado
         detalles: formValue.detalles.map((d: any) => ({
           productoId: d.producto.productoId,
-          cantidad: d.cantidad,
-          precioUnitario: d.precioUnitario,
+          cantidad: d.cantidad
         })),
       };
 

@@ -34,6 +34,7 @@
         <p><strong>Número de Comprobante:</strong> {{ selectedNumero }}</p>
         <p><strong>Cliente:</strong> {{ selectedCliente }}</p>
         <p><strong>Empleado:</strong> {{ selectedEmpleado }}</p>
+        <p><strong>Fecha:</strong> {{ selectFechaPago | date: 'dd/MM/yyyy' }}</p>
         <!-- 👇 Mostrar detalles en tabla -->
         <h3 style="margin-top: 16px; color: #1976d2;">Productos</h3>
         <table mat-table [dataSource]="selectedDetalles" class="mat-elevation-z2 full-width">
@@ -53,13 +54,13 @@
           <!-- Precio -->
           <ng-container matColumnDef="precio">
             <th mat-header-cell *matHeaderCellDef> Precio </th>
-            <td mat-cell *matCellDef="let detalle"> {{ detalle.precioUnitario }} </td>
+            <td mat-cell *matCellDef="let detalle"> {{ detalle.precioUnitario | currency:'S/' }} </td>
           </ng-container>
 
           <!-- Subtotal -->
           <ng-container matColumnDef="subtotal">
             <th mat-header-cell *matHeaderCellDef> Subtotal </th>
-            <td mat-cell *matCellDef="let detalle"> {{ detalle.subtotal}} </td>
+            <td mat-cell *matCellDef="let detalle"> {{ detalle.subtotal | currency:'S/'}} </td>
           </ng-container>
 
           <!-- Encabezado y filas -->
@@ -67,7 +68,7 @@
           <tr mat-row *matRowDef="let row; columns: ['producto', 'cantidad', 'precio', 'subtotal'];"></tr>
         </table>
 
-        <p><strong>Total:</strong> {{ selectedTotal}}</p>
+        <p><strong>Total:</strong> {{ selectedTotal | currency:'S/'}}</p>
       </mat-card-content>
     </mat-card>
     <br />

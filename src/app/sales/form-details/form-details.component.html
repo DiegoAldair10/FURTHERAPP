@@ -1,96 +1,112 @@
-<div class="boleta-container mat-elevation-z4" style="padding: 20px; background-color: white;">
-  <div class="boleta-header" style="text-align: center; margin-bottom: 20px;">
-    <h2>{{ sale.tipoComprobante }}: {{ sale.serie }} - {{ sale.numeroComprobante }}</h2>
+<div class="boleta-container">
+
+  <!-- ================= VISUAL ================= -->
+  <div class="boleta-visual">
+
+    <div class="boleta-header">
+      <h2>{{ sale.tipoComprobante }}</h2>
+      <span>{{ sale.serie }} - {{ sale.numeroComprobante }}</span>
+    </div>
+
+    <!-- DATOS -->
+    <div class="boleta-card">
+      <h3>Datos</h3>
+
+      <div class="datos-grid">
+        <div><strong>Cliente:</strong> {{ sale.clienteNombre }}</div>
+        <div><strong>Empleado:</strong> {{ sale.empleadoNombre }}</div>
+        <div><strong>Fecha Venta:</strong> {{ sale.fechaVenta | date:'dd/MM/yyyy HH:mm' }}</div>
+        <div><strong>Fecha Creación:</strong> {{ sale.fecha_Creacion | date:'dd/MM/yyyy HH:mm' }}</div>
+        <div><strong>Moneda:</strong> {{ sale.moneda }}</div>
+        <div><strong>Estado Venta:</strong> {{ sale.estado }}</div>
+        <div><strong>Estado Pago:</strong> {{ sale.estadoPago }}</div>
+      </div>
+    </div>
+    
+    <!-- DETALLE -->
+    <div class="boleta-card">
+      <h3>Detalle de productos</h3>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of sale.detalles">
+              <td>{{ d.producto?.nombre || d.productoNombre }}</td>
+              <td>{{ d.cantidad }}</td>
+              <td>S/{{ d.precioUnitario }}</td>
+              <td>S/{{ calcularSubtotal(d) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="total-box">
+        <div><span>Subtotal</span><span>S/{{ sale.subTotal }}</span></div>
+        <div><span>IGV</span><span>S/{{ sale.igv }}</span></div>
+        <div class="total"><span>Total</span><span>S/{{ sale.total }}</span></div>
+      </div>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="boleta-actions no-print">
+      <button mat-stroked-button (click)="cerrar($event)">Cerrar</button>
+      <button mat-raised-button color="primary" (click)="printBoleta()">Imprimir Boleta</button>
+    </div>
+
   </div>
 
-  <mat-card class="mat-elevation-z2" style="margin-bottom: 20px;">
-    <mat-card-title>Datos:</mat-card-title>
-    <mat-card-content>
-      <p><strong>Cliente:</strong> {{ sale.clienteNombre }}</p>
-      <p><strong>Empleado:</strong> {{ sale.empleadoNombre }}</p>
-      <p><strong>Fecha de Venta:</strong> {{ sale.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}</p>
-      <p><strong>Fecha de Creación:</strong> {{ sale.fecha_Creacion | date: 'dd/MM/yyyy HH:mm' }}</p>
-      <p><strong>Moneda:</strong> {{ sale.moneda }}</p>
-      <p><strong>Estado Venta:</strong> {{ sale.estado }}</p>
-      <p><strong>Estado Pago:</strong> {{ sale.estadoPago }}</p>
-    </mat-card-content>
-  </mat-card>
+  <!-- ================= PRINT ================= -->
+  <div class="tabla-imprimir" style="display: none;">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-family: Roboto, sans-serif;">
+      <div class="boleta-card">
+        <h3>Datos</h3>
 
-  <mat-card class="mat-elevation-z2" style="margin-bottom: 20px;">
-    <mat-card-title>Detalle de productos:</mat-card-title>
-    <mat-card-content>
-      <table mat-table [dataSource]="sale.detalles" class="mat-elevation-z1" style="width: 100%;">
-        <ng-container matColumnDef="producto">
-          <th mat-header-cell *matHeaderCellDef>Producto</th>
-          <td mat-cell *matCellDef="let d">{{ d.producto?.nombre || d.productoNombre }}</td>
-        </ng-container>
+        <div class="datos-grid">
+          <div><strong>Cliente:</strong> {{ sale.clienteNombre }}</div>
+          <div><strong>Empleado:</strong> {{ sale.empleadoNombre }}</div>
 
-        <ng-container matColumnDef="cantidad">
-          <th mat-header-cell *matHeaderCellDef>Cantidad</th>
-          <td mat-cell *matCellDef="let d">{{ d.cantidad }}</td>
-        </ng-container>
+          <div><strong>Fecha Venta:</strong> {{ sale.fechaVenta | date:'dd/MM/yyyy HH:mm' }}</div>
+          <div><strong>Fecha Creación:</strong> {{ sale.fecha_Creacion | date:'dd/MM/yyyy HH:mm' }}</div>
 
-        <ng-container matColumnDef="precioUnitario">
-          <th mat-header-cell *matHeaderCellDef>Precio Unitario</th>
-          <td mat-cell *matCellDef="let d">S/{{ d.precioUnitario}}</td>
-        </ng-container>
+          <div><strong>Moneda:</strong> {{ sale.moneda }}</div>
+          <div><strong>Estado Venta:</strong> {{ sale.estado }}</div>
 
-        <ng-container matColumnDef="subtotal">
-          <th mat-header-cell *matHeaderCellDef>Subtotal</th>
-          <td mat-cell *matCellDef="let d">S/{{ calcularSubtotal(d)}}</td>
-        </ng-container>
+          <div><strong>Estado Pago:</strong> {{ sale.estadoPago }}</div>
+        </div>
+      </div>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
+      <thead>
+        <tr>
+          <th style="border: 1px solid #ccc; padding: 6px;">Producto</th>
+          <th style="border: 1px solid #ccc; padding: 6px;">Cantidad</th>
+          <th style="border: 1px solid #ccc; padding: 6px;">Precio Unitario</th>
+          <th style="border: 1px solid #ccc; padding: 6px;">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of sale.detalles">
+          <td style="border: 1px solid #ccc; padding: 6px;">{{ d.producto?.nombre || d.productoNombre }}</td>
+          <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad }}</td>
+          <td style="border: 1px solid #ccc; padding: 6px;">{{ d.precioUnitario | currency:sale.moneda:'symbol' }}</td>
+          <td style="border: 1px solid #ccc; padding: 6px;">{{ calcularSubtotal(d) | currency:sale.moneda:'symbol' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-<mat-card style="text-align: right; padding: 10px;">
-  <div style="display: flex; justify-content: flex-end;">
-    <span style="min-width: 100px;"><strong>Subtotal: </strong></span>
-    <span>{{ sale.subTotal | currency:sale.moneda:'S/' }}</span>
+    <p style="text-align: right; margin-top: 10px;">
+      <strong>Subtotal:</strong> {{ sale.subTotal | currency:sale.moneda:'symbol' }} <br>
+      <strong>IGV:</strong> {{ sale.igv | currency:sale.moneda:'symbol' }} <br>
+      <strong>Total:</strong> {{ sale.total | currency:sale.moneda:'symbol' }}
+    </p>
   </div>
-  <div style="display: flex; justify-content: flex-end;">
-    <span style="min-width: 100px;"><strong>IGV: </strong></span>
-    <span>{{ sale.igv | currency :sale.moneda:'S/' }}</span>
-  </div>
-  <div style="display: flex; justify-content: flex-end;">
-    <span style="min-width: 100px;"><strong>Total: </strong></span>
-    <span>{{ sale.total | currency:sale.moneda:'S/' }}</span>
-  </div>
-</mat-card>
 
-  <div class="no-print" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-    <button mat-raised-button color="accent" (click)="cerrar($event)">Cerrar</button>
-    <button mat-raised-button color="accent" (click)="printBoleta()">Imprimir Boleta</button>
-  </div>
-</div>
-
-<!-- Tabla oculta solo para impresión PDF -->
-<div class="tabla-imprimir" style="display: none;">
-  <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-family: Roboto, sans-serif;">
-    <thead>
-      <tr>
-        <th style="border: 1px solid #ccc; padding: 6px;">Producto</th>
-        <th style="border: 1px solid #ccc; padding: 6px;">Cantidad</th>
-        <th style="border: 1px solid #ccc; padding: 6px;">Precio Unitario</th>
-        <th style="border: 1px solid #ccc; padding: 6px;">Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let d of sale.detalles">
-        <td style="border: 1px solid #ccc; padding: 6px;">{{ d.producto?.nombre || d.productoNombre }}</td>
-        <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad }}</td>
-        <td style="border: 1px solid #ccc; padding: 6px;">{{ d.precioUnitario | currency:sale.moneda:'symbol' }}</td>
-        <td style="border: 1px solid #ccc; padding: 6px;">{{ calcularSubtotal(d) | currency:sale.moneda:'symbol' }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p style="text-align: right; margin-top: 10px;">
-    <strong>Subtotal:</strong> {{ sale.subTotal | currency:sale.moneda:'symbol' }} <br>
-    <strong>IGV:</strong> {{ sale.igv | currency:sale.moneda:'symbol' }} <br>
-    <strong>Total:</strong> {{ sale.total | currency:sale.moneda:'symbol' }}
-  </p>
 </div>

@@ -1,0 +1,169 @@
+<div class="dashboard">
+
+  <div class="dashboard-header">
+    <div>
+      <h1>Bienvenido, Administrador</h1>
+      <p>Resumen general del sistema</p>
+    </div>
+
+    <div class="date-box">
+      <mat-icon>calendar_month</mat-icon>
+      <span>Dashboard</span>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    Cargando información...
+  </div>
+
+  <ng-container *ngIf="!loading">
+
+    <div class="cards-grid">
+
+      <mat-card class="summary-card">
+        <div class="card-content">
+          <div class="icon-box blue">
+            <mat-icon>shopping_cart</mat-icon>
+          </div>
+
+          <div class="card-info">
+            <p>Productos</p>
+            <h2>{{ totalProductos }}</h2>
+            <span>registrados</span>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <div class="card-content">
+          <div class="icon-box green">
+            <mat-icon>groups</mat-icon>
+          </div>
+
+          <div class="card-info">
+            <p>Clientes</p>
+            <h2>{{ totalClientes }}</h2>
+            <span>registrados</span>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <div class="card-content">
+          <div class="icon-box orange">
+            <mat-icon>attach_money</mat-icon>
+          </div>
+
+          <div class="card-info">
+            <p>Ventas</p>
+            <h2>S/ {{ montoVentas | number:'1.2-2' }}</h2>
+            <span>{{ totalVentas }} ventas</span>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <div class="card-content">
+          <div class="icon-box purple">
+            <mat-icon>manage_accounts</mat-icon>
+          </div>
+
+          <div class="card-info">
+            <p>Usuarios</p>
+            <h2>{{ totalUsuarios }}</h2>
+            <span>registrados</span>
+          </div>
+        </div>
+      </mat-card>
+
+    </div>
+
+    <div class="dashboard-grid">
+
+      <mat-card class="chart-card">
+        <h3>Resumen del sistema</h3>
+
+        <div class="bars">
+
+          <div class="bar-row">
+            <span>Productos</span>
+            <div class="bar-bg">
+              <div class="bar-fill blue-bar" [style.width.%]="totalProductos"></div>
+            </div>
+            <strong>{{ totalProductos }}</strong>
+          </div>
+
+          <div class="bar-row">
+            <span>Clientes</span>
+            <div class="bar-bg">
+              <div class="bar-fill green-bar" [style.width.%]="totalClientes"></div>
+            </div>
+            <strong>{{ totalClientes }}</strong>
+          </div>
+
+          <div class="bar-row">
+            <span>Ventas</span>
+            <div class="bar-bg">
+              <div class="bar-fill orange-bar" [style.width.%]="totalVentas"></div>
+            </div>
+            <strong>{{ totalVentas }}</strong>
+          </div>
+
+          <div class="bar-row">
+            <span>Usuarios</span>
+            <div class="bar-bg">
+              <div class="bar-fill purple-bar" [style.width.%]="totalUsuarios"></div>
+            </div>
+            <strong>{{ totalUsuarios }}</strong>
+          </div>
+
+        </div>
+      </mat-card>
+
+      <mat-card class="category-card">
+        <h3>Distribución</h3>
+
+        <div class="donut"></div>
+
+        <div class="legend">
+          <p><span class="dot blue-dot"></span> Productos <b>{{ totalProductos }}</b></p>
+          <p><span class="dot green-dot"></span> Clientes <b>{{ totalClientes }}</b></p>
+          <p><span class="dot orange-dot"></span> Ventas <b>{{ totalVentas }}</b></p>
+          <p><span class="dot purple-dot"></span> Usuarios <b>{{ totalUsuarios }}</b></p>
+        </div>
+      </mat-card>
+
+    </div>
+
+    <mat-card class="activity-card">
+
+      <div class="activity-header">
+        <h3>Actividad reciente</h3>
+
+        <button mat-stroked-button color="primary" (click)="cargarDashboard()">
+          Actualizar
+        </button>
+      </div>
+
+      <div class="activity-row" *ngFor="let item of actividades">
+
+        <div class="activity-left">
+          <div class="activity-icon">
+            <mat-icon>{{ item.icon }}</mat-icon>
+          </div>
+
+          <div>
+            <h4>{{ item.titulo }}</h4>
+            <p>{{ item.descripcion }}</p>
+          </div>
+        </div>
+
+        <span class="status">{{ item.estado }}</span>
+
+      </div>
+
+    </mat-card>
+
+  </ng-container>
+
+</div>

@@ -22,12 +22,12 @@
         </ng-container>
         <ng-container matColumnDef="monto">
             <th mat-header-cell *matHeaderCellDef>Monto</th>
-            <td mat-cell *matCellDef="let salePayments">{{ salePayments.monto }}</td>
+            <td mat-cell *matCellDef="let salePayments">{{ salePayments.monto | currency:'S/'}}</td>
         </ng-container>
-        <ng-container matColumnDef="fechaPago">
+        <ng-container matColumnDef="fecha_Pago">
             <th mat-header-cell *matHeaderCellDef>Fecha de Pago</th>
             <td mat-cell *matCellDef="let salePayments">
-                {{ salePayments.fechaPago | date: 'dd/MM/yyyy' }}
+                {{ salePayments.fecha_Pago | date: 'dd/MM/yyyy' }}
             </td>
         </ng-container>
             <ng-container matColumnDef="detalles">
