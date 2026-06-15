@@ -1,6 +1,104 @@
-<mat-toolbar color="primary" style="background-color: #072146">
-  <button mat-icon-button (click)="toggleSidebar()" >
-    <mat-icon>menu</mat-icon>
+<mat-toolbar class="navbar">
+
+  <!-- MENU -->
+  <div class="left-section">
+
+    <button mat-icon-button class="menu-btn" (click)="toggleSidebar()">
+
+      <mat-icon>menu</mat-icon>
+
+    </button>
+
+    <!-- LOGO -->
+    <div class="brand-container">
+      <div class="brand-info">
+        <span class="brand-title">
+          SCANET
+        </span>
+
+        <small>
+          Sistema de Gestión
+        </small>
+      </div>
+
+    </div>
+
+  </div>
+
+  <span class="spacer"></span>
+
+  <!-- NOTIFICACIONES -->
+  <button mat-icon-button class="notification-btn" matTooltip="Notificaciones">
+
+    <mat-icon>
+      notifications_none
+    </mat-icon>
+
+    <span class="badge">
+      3
+    </span>
+
   </button>
-  <span class="title">Mi Aplicación</span>
-</mat-toolbar>
+
+  <!-- FULLSCREEN -->
+  <button mat-icon-button class="nav-icon" matTooltip="Pantalla completa">
+
+    <mat-icon>
+      fullscreen
+    </mat-icon>
+
+  </button>
+
+  <!-- PERFIL -->
+ <div
+  class="user-profile"
+  [matMenuTriggerFor]="menuUsuario">
+
+  <div class="avatar">
+    {{ usuarioNombre.charAt(0).toUpperCase() }}
+  </div>
+
+  <div class="user-info">
+    <span>Administrador</span>
+    <small>{{ usuarioNombre }}</small>
+  </div>
+
+  <mat-icon class="arrow">
+    keyboard_arrow_down
+  </mat-icon>
+
+</div>
+
+<!-- MENU PERFIL -->
+
+<mat-menu #menuUsuario="matMenu">
+
+  <button mat-menu-item>
+    <mat-icon>person</mat-icon>
+    <span>
+      Mi Perfil
+    </span>
+  </button>
+  <button mat-menu-item>
+
+    <mat-icon>settings</mat-icon>
+
+    <span>
+      Configuración
+    </span>
+
+  </button>
+
+  <mat-divider></mat-divider>
+
+  <button mat-menu-item (click)="logout()">
+
+    <mat-icon>logout</mat-icon>
+
+    <span>
+      Cerrar Sesión
+    </span>
+
+  </button>
+
+</mat-menu>

@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Agregar Cliente</h2>
+<h2 mat-dialog-title>Actualizar Cliente</h2>
 <div mat-dialog-content>
   <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
     <div class="form-row">
@@ -60,6 +60,24 @@
       </mat-form-field>
 
     </div>
+    <div class="form-row">
+       <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Documento</mat-label>
+        <mat-select formControlName="documento" required>
+          <mat-option *ngFor="let doc of documentos" [value]="doc.nombre">
+            {{ doc.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Numero de documentos</mat-label>
+        <input matInput formControlName="numeroDocumento" required />
+      </mat-form-field>
+
+    </div>
+
+
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>País</mat-label>

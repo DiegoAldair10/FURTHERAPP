@@ -1,0 +1,76 @@
+.full-width {
+    width: 100%;
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Espaciado entre filas */
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 20px; /* Espaciado entre los form-fields */
+  }
+  
+  .form-field {
+    flex: 1; /* Hace que ambos campos ocupen el mismo espacio */
+    min-width: 200px; /* Asegura que no sean demasiado pequeños */
+  }
+  
+
+/* Estilo para la tarjeta del detalle de venta */
+mat-card {
+  background: #fafafa; /* fondo suave */
+  border: 1px solid #e0e0e0; /* borde ligero */
+  border-radius: 12px; /* esquinas redondeadas */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* sombra sutil */
+  padding: 16px;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* títulos dentro del mat-card */
+mat-card-title {
+  font-weight: 600;
+  color: #1976d2; /* azul Material */
+}
+
+mat-card-subtitle {
+  font-size: 14px;
+  color: #666;
+}
+
+/* texto dentro del detalle */
+mat-card-content p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* Ajustes tabla Angular Material */
+table {
+  margin-top: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th.mat-header-cell {
+  background-color: #1976d2; /* azul Material */
+  color: white;
+  font-weight: 500;
+  text-align: center;
+}
+
+td.mat-cell, th.mat-header-cell {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+td.mat-cell {
+  text-align: center;
+}
+
+/* Hover en filas */
+tr.mat-row:hover {
+  background-color: #f1f1f1;
+}
+

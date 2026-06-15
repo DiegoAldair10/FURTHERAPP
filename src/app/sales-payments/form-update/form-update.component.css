@@ -1,0 +1,213 @@
+/* ================= PRINT ================= */
+@media print {
+  body {
+    background: white !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .pago-container {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .tabla-imprimir {
+    display: block !important;
+  }
+
+  .pago-visual {
+    display: none !important;
+  }
+}
+
+/* ================= CONTAINER ================= */
+.pago-container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+  font-family: Roboto, sans-serif;
+  color: #2c3e50;
+}
+
+/* ================= HEADER ================= */
+.pago-header {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.pago-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #1565c0;
+  letter-spacing: 1px;
+}
+
+.pago-header span {
+  font-size: 13px;
+  color: #607d8b;
+}
+
+/* ================= CARD ================= */
+.pago-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 22px;
+  background: #fafafa;
+}
+
+.pago-card h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+  color: #0d47a1;
+}
+
+/* ================= DATOS GRID ================= */
+.datos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 8px;
+  column-gap: 20px;
+  font-size: 13px;
+}
+
+/* ================= TABLE ================= */
+.table-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f1f5f9;
+}
+
+th {
+  font-size: 13px;
+  text-align: left;
+  padding: 10px;
+  color: #0d47a1;
+}
+
+td {
+  padding: 10px;
+  font-size: 13px;
+  border-top: 1px solid #eee;
+}
+
+/* ================= TOTAL ================= */
+.total-box {
+  max-width: 280px;
+  margin-left: auto;
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.total-box div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.total-box .total {
+  font-size: 16px;
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  padding-top: 8px;
+}
+
+/* ================= BUTTONS ================= */
+.pago-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+/* ================= PRINT TABLE ================= */
+.tabla-imprimir {
+  display: none;
+  font-family: Roboto, sans-serif;
+}
+
+.tabla-imprimir table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-imprimir th,
+.tabla-imprimir td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  font-size: 12px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+
+  /* CONTENEDOR */
+  .pago-container {
+    margin: 10px;
+    padding: 16px;
+  }
+
+  /* HEADER */
+  .pago-header h2 {
+    font-size: 18px;
+  }
+
+  .pago-header span {
+    font-size: 12px;
+  }
+
+  /* DATOS EN UNA SOLA COLUMNA */
+  .datos-grid {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+  }
+
+  /* TABLA RESPONSIVE CON SCROLL */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px; /* CLAVE */
+  }
+
+  th,
+  td {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* TOTALES */
+  .total-box {
+    max-width: 100%;
+    margin-left: 0;
+    font-size: 14px;
+  }
+
+  /* BOTONES EN COLUMNA */
+  .pago-actions {
+    flex-direction: column;
+  }
+
+  .pago-actions button {
+    width: 100%;
+    padding: 12px;
+  }
+}

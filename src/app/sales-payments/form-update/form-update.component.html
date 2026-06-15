@@ -1,0 +1,101 @@
+<div class="pago-container">
+
+  <!-- ================= VISUAL ================= -->
+  <div class="pago-visual">
+
+    <div class="pago-header">
+      <h2>Comprobante de Pago</h2>
+    </div>
+
+    <!-- DATOS -->
+    <div class="pago-card">
+      <h3>Datos</h3>
+
+      <div class="datos-grid">
+        <div><strong>Tipo de Comprobante:</strong> {{ salePayment.tipoComprobante }}</div>
+        <div><strong>Numero de Comprobante:</strong> {{ salePayment.numeroComprobante }}</div>
+        <div><strong>Cliente:</strong> {{ salePayment.clienteNombre }}</div>
+        <div><strong>Empleado:</strong> {{ salePayment.empleadoNombre }}</div>
+        <div><strong>Método de Pago:</strong> {{ salePayment.nombre }}</div>
+        <div><strong>Fecha:</strong> {{ salePayment.fecha_Pago | date: 'dd/MM/yyyy HH:mm' }}</div>
+      </div>
+    </div>
+
+    <!-- DETALLE -->
+    <div class="pago-card">
+      <h3>Detalle de productos</h3>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of salePayment.detalles">
+              <td>{{ d.producto?.nombre || d.productoNombre }}</td>
+              <td>{{ d.cantidad }}</td>
+              <td>S/{{ d.precioUnitario }}</td>
+              <td>S/{{ d.cantidad * d.precioUnitario }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="total-box">
+        <div><span>Subtotal</span><span>S/{{ salePayment.totalVenta }}</span></div>
+        <div class="total"><span>Total</span><span>S/{{ salePayment.totalVenta }}</span></div>
+
+      </div>
+
+      <!-- BOTONES -->
+      <div class="pago-actions no-print">
+        <button mat-stroked-button (click)="cerrar($event)">Cerrar</button>
+        <button mat-raised-button color="primary" (click)="printPago()">Imprimir Pago</button>
+      </div>
+
+    </div>
+
+    <!-- ================= PRINT ================= -->
+    <div class="tabla-imprimir" style="display: none;">
+      <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-family: Roboto, sans-serif;">
+        <div class="pago-card">
+          <h3>Datos</h3>
+
+          <div class="datos-grid">
+            <div><strong>Tipo de Comprobante:</strong> {{ salePayment.tipoComprobante }}</div>
+            <div><strong>Numero de Comprobante:</strong> {{ salePayment.numeroComprobante }}</div>
+            <div><strong>Cliente:</strong> {{ salePayment.clienteNombre }}</div>
+            <div><strong>Empleado:</strong> {{ salePayment.empleadoNombre }}</div>
+            <div><strong>Método de Pago:</strong> {{ salePayment.nombre }}</div>
+            <div><strong>Fecha:</strong> {{ salePayment.fecha_Pago | date: 'dd/MM/yyyy HH:mm' }}</div>
+
+          </div>
+        </div>
+
+        <thead>
+          <tr>
+            <th style="border: 1px solid #ccc; padding: 6px;">Producto</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Cantidad</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Precio Unitario</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of salePayment.detalles">
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.producto?.nombre || d.productoNombre }}</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad }}</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.precioUnitario }}</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad * d.precioUnitario }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+
+  </div>

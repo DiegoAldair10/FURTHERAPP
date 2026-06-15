@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Agregar Usuario</h2>
+<div mat-dialog-content>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" required />
+            </mat-form-field>
+
+           <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="estado" required>
+                    <mat-option [value]="1">Activo</mat-option>
+                    <mat-option [value]="0">Inactivo</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" type="password" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Roles</mat-label>
+                <mat-select formControlName="roles" required>
+                    <mat-option *ngFor="let role of roles" [value]="role.nombre">
+                        {{ role.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions align="end">
+            <button mat-button (click)="closeDialog()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">
+                Guardar
+            </button>
+        </div>
+    </form>
+</div>

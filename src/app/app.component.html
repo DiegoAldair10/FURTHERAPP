@@ -1,8 +1,9 @@
-<app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
-<app-sidebar [isOpen]="isSidebarOpen">
-  <div class="content">
-    <h1>Bienvenido a la Aplicación</h1>
-  </div>
-  
-</app-sidebar>
-<router-outlet />
+<ng-container *ngIf="!isLoginPage; else loginOnly">
+  <app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
+
+  <app-sidebar [isOpen]="isSidebarOpen"></app-sidebar>
+</ng-container>
+
+<ng-template #loginOnly>
+  <router-outlet></router-outlet>
+</ng-template>

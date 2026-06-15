@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-form-update',
@@ -32,6 +33,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSelectModule,
   ],
   templateUrl: './form-update.component.html',
   styleUrls: ['./form-update.component.css'],
@@ -47,6 +49,11 @@ export class FormUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer }
   ) {}
 
+  documentos = [
+    { id: 1, nombre: 'DNI' },
+    { id: 2, nombre: 'RUC' },
+  ];
+  
   ngOnInit(): void {
     this.customerForm = this.fb.group({
       nombre: [this.data.customer.nombre, Validators.required],
@@ -61,6 +68,8 @@ export class FormUpdateComponent implements OnInit {
       ],
       direccion: [this.data.customer.direccion, Validators.required],
       ciudad: [this.data.customer.ciudad, Validators.required],
+      documento: [this.data.customer.documento, Validators.required],
+      numeroDocumento: [this.data.customer.numeroDocumento, Validators.required], 
       pais: [this.data.customer.pais, Validators.required],
     });
   }
@@ -77,7 +86,11 @@ export class FormUpdateComponent implements OnInit {
         .updateCustomers(this.data.customer.clienteId, updatedCustomer)
         .subscribe({
           next: () => {
-            Swal.fire('Éxito', 'Cliente actualizado correctamente', 'success');
+            Swal.fire(
+              'Se actualizo cliente',
+              'Cliente actualizado correctamente',
+              'success'
+            );
             this.dialogRef.close(updatedCustomer); // ← devolvemos cliente actualizado
           },
           error: () => {

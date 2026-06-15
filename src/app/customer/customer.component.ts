@@ -32,6 +32,8 @@ export class CustomerComponent implements OnInit {
     'direccion',
     'ciudad',
     'pais',
+    'documento',
+    'numeroDocumento',
     'fechaRegistro',
     'actions',
   ];
@@ -63,7 +65,7 @@ export class CustomerComponent implements OnInit {
     (event.currentTarget as HTMLElement).blur();
 
     Swal.fire({
-      title: '¿Estás seguro?',
+      title: '¿Eliminar cliente?',
       text: '¡No podrás revertir esto!',
       icon: 'warning',
       showCancelButton: true,
@@ -92,9 +94,10 @@ export class CustomerComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(FormCustomerComponent, {
-      width: '600px',
-      height: 'auto',
-      maxHeight: '90vh',
+   width: '700px',        // ancho fijo pero responsive
+    maxWidth: '90vw',      // limite responsive
+    maxHeight: '90vh',     // límite de altura de la pantalla
+    panelClass: 'custom-dialog' // para aplicar estilos CSS específicos
     });
 
     dialogRef.afterClosed().subscribe((customer: Customer) => {
@@ -106,12 +109,12 @@ export class CustomerComponent implements OnInit {
 
   openEditDialog(customer: Customer, event: Event): void {
     (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
-  
+
     const dialogRef = this.dialog.open(FormUpdateComponent, {
       width: '600px',
       data: { customer },
     });
-  
+
     dialogRef.afterClosed().subscribe((customer: Customer) => {
       if (customer) {
         const index = this.dataSource.findIndex(
@@ -125,5 +128,4 @@ export class CustomerComponent implements OnInit {
       }
     });
   }
-  
 }
