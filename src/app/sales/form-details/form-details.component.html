@@ -22,7 +22,7 @@
         <div><strong>Estado Pago:</strong> {{ sale.estadoPago }}</div>
       </div>
     </div>
-    
+
     <!-- DETALLE -->
     <div class="boleta-card">
       <h3>Detalle de productos</h3>
@@ -42,7 +42,7 @@
               <td>{{ d.producto?.nombre || d.productoNombre }}</td>
               <td>{{ d.cantidad }}</td>
               <td>S/{{ d.precioUnitario }}</td>
-              <td>S/{{ calcularSubtotal(d) }}</td>
+              <td>S/{{ d.subtotal}}</td>
             </tr>
           </tbody>
         </table>

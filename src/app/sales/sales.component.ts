@@ -37,7 +37,7 @@ export class SalesComponent implements OnInit {
   constructor(
     private salesServices: SalesService,
     public dialog: MatDialog,
-    public dialogUpdate: MatDialog
+    public dialogUpdate: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class SalesComponent implements OnInit {
       },
       (error) => {
         console.error('Error al obtener ventas:', error);
-      }
+      },
     );
   }
 
@@ -83,7 +83,7 @@ export class SalesComponent implements OnInit {
             Swal.fire(
               'Error',
               err.message || 'No se pudo eliminar la venta.',
-              'error'
+              'error',
             );
           },
         });
@@ -98,10 +98,9 @@ export class SalesComponent implements OnInit {
       maxHeight: '90vh', // límite de altura de la pantalla
       panelClass: 'custom-dialog', // para aplicar estilos CSS específicos
     });
-
     dialogRef.afterClosed().subscribe((sales: Sales) => {
       if (sales) {
-        this.dataSource = [...this.dataSource, sales];
+        this.getSales();
       }
     });
   }
@@ -119,14 +118,7 @@ export class SalesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((sale: Sales) => {
       if (sale) {
-        const index = this.dataSource.findIndex(
-          (p) => p.ventaId === sale.ventaId
-        );
-        if (index !== -1) {
-          this.dataSource[index] = sale;
-          this.dataSource = [...this.dataSource];
-          this.table.renderRows();
-        }
+        this.getSales();
       }
     });
   }
@@ -142,7 +134,7 @@ export class SalesComponent implements OnInit {
     dialogRef.afterClosed().subscribe((sale: Sales) => {
       if (sale) {
         const index = this.dataSource.findIndex(
-          (e) => e.ventaId === sale.ventaId
+          (e) => e.ventaId === sale.ventaId,
         );
         if (index !== -1) {
           this.dataSource[index] = sale;

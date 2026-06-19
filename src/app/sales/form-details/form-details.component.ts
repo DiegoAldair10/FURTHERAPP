@@ -73,11 +73,9 @@ sale!: Sales;
     });
   }
 
-  calcularSubtotal(detalle: DetailSale): number {
-    const cantidad = Number(detalle.cantidad);
-    const precioUnitario = Number(detalle.precioUnitario);
-    return cantidad * precioUnitario;
-  }
+calcularSubtotal(detalle: any): number {
+  return Number(detalle.subtotal || 0);
+}
 
   cerrar(event: Event): void {
     (event.currentTarget as HTMLElement).blur();

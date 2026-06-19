@@ -7,5 +7,5 @@ export interface DetailSale {
   producto?: Product;
   cantidad: number;
   precioUnitario: number;
-  subTotal?: number;
+  subtotal?: number;
 }

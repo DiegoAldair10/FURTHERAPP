@@ -80,17 +80,19 @@ export class FormCreateComponent implements OnInit {
     });
   }
 
- onTipoComprobanteChange(tipo: string) {
-  this.saleService.getNextComprobante(tipo).subscribe((comprobante: string) => {
-    // comprobante llega como "F001-000002"
-    const [serie, numero] = comprobante.split('-');
+  onTipoComprobanteChange(tipo: string) {
+    this.saleService
+      .getNextComprobante(tipo)
+      .subscribe((comprobante: string) => {
+        // comprobante llega como "F001-000002"
+        const [serie, numero] = comprobante.split('-');
 
-    this.salesForm.patchValue({
-      serie: serie,                   // se llena F001
-      numeroComprobante: numero       // se llena 000002
-    });
-  });
-}
+        this.salesForm.patchValue({
+          serie: serie, // se llena F001
+          numeroComprobante: numero, // se llena 000002
+        });
+      });
+  }
 
   ngOnInit(): void {
     this.cargarDatos();
@@ -119,9 +121,7 @@ export class FormCreateComponent implements OnInit {
     const detalleGroup = this.fb.group({
       producto: [null, Validators.required],
       cantidad: [1, [Validators.required, Validators.min(1)]],
-      precioUnitario: [
-        { value: 0, disabled: true }
-      ],
+      precioUnitario: [{ value: 0, disabled: true }],
     });
 
     // Cuando cambia el producto, autocompletar precio
@@ -182,7 +182,7 @@ export class FormCreateComponent implements OnInit {
 
       // Validar que todos los productos estén definidos
       const detallesValidos = formValue.detalles.every(
-        (d: any) => d.producto && d.producto.productoId
+        (d: any) => d.producto && d.producto.productoId,
       );
 
       if (!detallesValidos) {
@@ -199,18 +199,17 @@ export class FormCreateComponent implements OnInit {
         empleadoId: formValue.empleado.empleadoId,
         tipoComprobante: formValue.tipoComprobante,
         numeroComprobante: formValue.numeroComprobante,
-        serie: formValue.serie, // 👈 agregado
+        serie: formValue.serie,
         moneda: formValue.moneda,
         fechaVenta: new Date().toISOString(),
-        subTotal: this.salesForm.get('subTotal')?.value,
-        igv: this.salesForm.get('igv')?.value,
-        total: this.salesForm.get('total')?.value,
-        estado: formValue.estado, // 👈 agregado
-        estadoPago: formValue.estadoPago, // 👈 agregado
-        fecha_Creacion: formValue.fecha_Creacion, // 👈 agregado
+
+        estado: formValue.estado,
+        estadoPago: formValue.estadoPago,
+        fecha_Creacion: formValue.fecha_Creacion,
+
         detalles: formValue.detalles.map((d: any) => ({
           productoId: d.producto.productoId,
-          cantidad: d.cantidad
+          cantidad: d.cantidad,
         })),
       };
 

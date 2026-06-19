@@ -68,7 +68,7 @@ export class FormUpdateComponent implements OnInit {
     private productService: ProductService,
     private ventaUtils: VentaUtilsService,
     private dialogRef: MatDialogRef<FormUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { venta: Sales }
+    @Inject(MAT_DIALOG_DATA) public data: { venta: Sales },
   ) {
     // Inicializamos el formulario vacío
     this.salesForm = this.fb.group({
@@ -101,7 +101,7 @@ export class FormUpdateComponent implements OnInit {
     const detalleGroup = this.fb.group({
       producto: [null as Product | null, Validators.required],
       cantidad: [1, Validators.required],
-      precioUnitario: [0, Validators.required],
+      precioUnitario: [{ value: 0, disabled: true }],
     });
 
     // Autocompletar precio al seleccionar producto
@@ -148,22 +148,26 @@ export class FormUpdateComponent implements OnInit {
       // Parcheamos formulario con datos de la venta
       this.salesForm.patchValue({
         cliente: customers.find(
-          (c) => c.clienteId === this.data.venta.clienteId
+          (c) => c.clienteId === this.data.venta.clienteId,
         ),
         empleado: employees.find(
-          (e) => e.empleadoId === this.data.venta.empleadoId
+          (e) => e.empleadoId === this.data.venta.empleadoId,
         ),
         tipoComprobante: this.data.venta.tipoComprobante,
         numeroComprobante: this.data.venta.numeroComprobante,
         serie: this.data.venta.serie,
         moneda: this.data.venta.moneda,
-        fechaVenta: this.data.venta.fechaVenta ? formatDate(this.data.venta.fechaVenta) : null,
+        fechaVenta: this.data.venta.fechaVenta
+          ? formatDate(this.data.venta.fechaVenta)
+          : null,
         subTotal: this.data.venta.subTotal,
         igv: this.data.venta.igv,
         total: this.data.venta.total,
         estado: this.data.venta.estado,
         estadoPago: this.data.venta.estadoPago,
-        fecha_Creacion: this.data.venta.fecha_Creacion ? formatDate(this.data.venta.fecha_Creacion) : null,
+        fecha_Creacion: this.data.venta.fecha_Creacion
+          ? formatDate(this.data.venta.fecha_Creacion)
+          : null,
       });
 
       // Cargar detalles
@@ -224,8 +228,7 @@ export class FormUpdateComponent implements OnInit {
 
       const formValue = this.salesForm.getRawValue();
 
-      const updatedSale: Sales = {
-        ...this.data.venta,
+      const updatedSale = {
         clienteId: formValue.cliente.clienteId,
         empleadoId: formValue.empleado.empleadoId,
         tipoComprobante: formValue.tipoComprobante,
@@ -233,9 +236,6 @@ export class FormUpdateComponent implements OnInit {
         serie: formValue.serie,
         moneda: formValue.moneda,
         fechaVenta: formValue.fechaVenta,
-        subTotal: formValue.subTotal,
-        igv: formValue.igv,
-        total: formValue.total,
         estado: formValue.estado,
         estadoPago: formValue.estadoPago,
         fecha_Creacion: formValue.fecha_Creacion,
