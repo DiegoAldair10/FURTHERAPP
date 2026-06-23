@@ -1,53 +1,236 @@
-<div class="container">
-    <div class="demo-button-container">
-        <button mat-raised-button color="primary" (click)="openDialog()">Crear Pago
-        </button>
+<div class="payments-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Pagos</h1>
+      <p>Gestiona los pagos registrados de las ventas</p>
     </div>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let salePayments">{{ salePayments.pagoId }}</td>
-        </ng-container>
-        <ng-container matColumnDef="venta">
-            <th mat-header-cell *matHeaderCellDef>Venta</th>
-            <td mat-cell *matCellDef="let salePayments"> {{ salePayments.venta?.numeroComprobante ?
-                salePayments.venta.numeroComprobante : salePayments.tipoComprobante + ' - ' +
-                salePayments.numeroComprobante }}</td>
-        </ng-container>
-        <ng-container matColumnDef="metodoPago">
-            <th mat-header-cell *matHeaderCellDef>Método de Pago</th>
-            <td mat-cell *matCellDef="let salePayments">{{ salePayments.metodoPago?.nombre || salePayments.nombre }}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="monto">
-            <th mat-header-cell *matHeaderCellDef>Monto</th>
-            <td mat-cell *matCellDef="let salePayments">{{ salePayments.monto | currency:'S/'}}</td>
-        </ng-container>
-        <ng-container matColumnDef="fecha_Pago">
-            <th mat-header-cell *matHeaderCellDef>Fecha de Pago</th>
-            <td mat-cell *matCellDef="let salePayments">
-                {{ salePayments.fecha_Pago | date: 'dd/MM/yyyy' }}
-            </td>
-        </ng-container>
-            <ng-container matColumnDef="detalles">
-            <th mat-header-cell *matHeaderCellDef>Detalles</th>
-            <td mat-cell *matCellDef="let salePayments">
-                <button mat-icon-button (click)="openEditDialog(salePayments, $event)">
-                     <mat-icon>visibility</mat-icon>
-                </button>
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Acciones</th>
-            <td mat-cell *matCellDef="let salePayments">
-                <button mat-icon-button (click)="deleteSales(salePayments.pagosId, $event)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+    <button mat-raised-button class="add-button" (click)="openDialog()">
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <mat-icon>add</mat-icon>
+
+      Crear Pago
+
+    </button>
+
+  </div>
+
+  <div class="table-card">
+
+    <table mat-table [dataSource]="dataSource" class="payments-table">
+
+      <!-- ID -->
+
+      <ng-container matColumnDef="id">
+
+        <th mat-header-cell *matHeaderCellDef>
+          ID
+        </th>
+
+        <td mat-cell *matCellDef="let salePayments">
+
+          #{{ salePayments.pagoId || salePayments.pagosId }}
+
+        </td>
+
+      </ng-container>
+
+      <!-- COMPROBANTE -->
+
+      <ng-container matColumnDef="venta">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Comprobante
+        </th>
+
+        <td mat-cell *matCellDef="let salePayments">
+
+          <div class="entity-info">
+
+            <div class="entity-avatar">
+
+              {{
+              (
+              salePayments.tipoComprobante ||
+              'P'
+              ).charAt(0)
+              }}
+
+            </div>
+
+            <div>
+
+              <strong>
+
+                {{
+                salePayments.tipoComprobante
+                }}
+
+              </strong>
+
+              <span>
+
+                {{
+                salePayments.numeroComprobante
+                }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <!-- MÉTODO PAGO -->
+
+      <ng-container matColumnDef="metodoPago">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Método
+        </th>
+
+        <td mat-cell *matCellDef="let salePayments">
+
+          <span class="method-badge">
+
+            {{
+            salePayments.metodoPago?.nombre
+            || salePayments.nombre
+            }}
+
+          </span>
+
+        </td>
+
+      </ng-container>
+
+      <!-- ESTADO -->
+
+      <ng-container matColumnDef="estado">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Estado
+        </th>
+
+        <td mat-cell *matCellDef="let salePayments">
+
+          <span class="status-badge" [ngClass]="{
+              'success': salePayments.estado === 'PAGADO',
+              'danger': salePayments.estado === 'ANULADO'
+            }">
+
+            {{ salePayments.estado }}
+
+          </span>
+
+        </td>
+
+      </ng-container>
+
+
+      <!-- MONTO -->
+
+      <ng-container matColumnDef="monto">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Monto
+        </th>
+
+        <td mat-cell *matCellDef="let salePayments">
+
+          <span class="money-badge">
+
+            S/
+            {{ salePayments.monto | number:'1.2-2' }}
+
+          </span>
+
+        </td>
+
+      </ng-container>
+
+      <!-- FECHA -->
+
+      <ng-container matColumnDef="fecha_Pago">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Fecha Pago
+        </th>
+
+        <td mat-cell *matCellDef="let salePayments">
+
+          {{ salePayments.fecha_Pago | date:'dd/MM/yyyy' }}
+
+        </td>
+
+      </ng-container>
+
+      <!-- DETALLES -->
+
+      <ng-container matColumnDef="detalles">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Detalle
+        </th>
+
+        <td mat-cell *matCellDef="let salePayments">
+
+          <button mat-icon-button class="view-btn" (click)="openEditDialog(salePayments,$event)">
+
+            <mat-icon>visibility</mat-icon>
+
+          </button>
+
+        </td>
+
+      </ng-container>
+
+      <!-- ACCIONES -->
+
+      <ng-container matColumnDef="actions">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Acciones
+        </th>
+
+        <td mat-cell *matCellDef="let salePayments">
+
+          <div class="actions">
+
+            <button *ngIf="salePayments.estado === 'PAGADO'" mat-icon-button class="delete-btn" (click)="deleteSales(
+      salePayments.pagoId || salePayments.pagosId,
+      $event
+  )">
+  
+              <mat-icon>block</mat-icon>
+
+            </button>
+
+            <button *ngIf="salePayments.estado === 'ANULADO'" mat-icon-button class="delete-btn">
+
+            <mat-icon>block</mat-icon>
+
+            </button>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns">
+      </tr>
+
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+
     </table>
+
+  </div>
+
 </div>

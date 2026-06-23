@@ -1,112 +1,169 @@
-<div class="boleta-container">
+<div class="pago-container">
 
-  <!-- ================= VISUAL ================= -->
-  <div class="boleta-visual">
+  <div class="pago-content">
 
-    <div class="boleta-header">
-      <h2>{{ sale.tipoComprobante }}</h2>
-      <span>{{ sale.serie }} - {{ sale.numeroComprobante }}</span>
+    <!-- HEADER -->
+    <div class="pago-header">
+
+      <div>
+        <h2>Detalle de Venta</h2>
+        <span>
+          {{ sale.tipoComprobante }}
+          -
+          {{ sale.serie }} - {{ sale.numeroComprobante }}
+        </span>
+      </div>
+
+      <div class="estado-pago pagada">
+        <span class="estado-venta" [ngClass]="{
+      'borrador': sale.estado === 'BORRADOR',
+      'emitida': sale.estado === 'EMITIDA',
+      'anulada': sale.estado === 'ANULADA'
+    }">
+          {{ sale.estado }}
+        </span>
+      </div>
+
     </div>
 
+
     <!-- DATOS -->
-    <div class="boleta-card">
-      <h3>Datos</h3>
+    <div class="pago-card">
+
+      <h3>Información del Pago</h3>
 
       <div class="datos-grid">
-        <div><strong>Cliente:</strong> {{ sale.clienteNombre }}</div>
-        <div><strong>Empleado:</strong> {{ sale.empleadoNombre }}</div>
-        <div><strong>Fecha Venta:</strong> {{ sale.fechaVenta | date:'dd/MM/yyyy HH:mm' }}</div>
-        <div><strong>Fecha Creación:</strong> {{ sale.fecha_Creacion | date:'dd/MM/yyyy HH:mm' }}</div>
-        <div><strong>Moneda:</strong> {{ sale.moneda }}</div>
-        <div><strong>Estado Venta:</strong> {{ sale.estado }}</div>
-        <div><strong>Estado Pago:</strong> {{ sale.estadoPago }}</div>
+
+        <div class="info-card">
+          <span>Cliente</span>
+          <strong>{{ sale.clienteNombre }}</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Empleado</span>
+          <strong> {{ sale.empleadoNombre }}</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Fecha de Venta</span>
+          <strong> {{ sale.fechaVenta | date:'dd/MM/yyyy HH:mm' }}</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Fecha de Creación</span>
+          <strong>
+            {{ sale.fecha_Creacion | date:'dd/MM/yyyy HH:mm' }}
+          </strong>
+        </div>
+        <div class="info-card">
+          <span>Moneda</span>
+          <strong>
+            {{ sale.moneda }}
+          </strong>
+        </div>
+
+        <div class="info-card">
+          <span>Estado de Venta </span>
+          <strong>
+            {{ sale.estado }}
+          </strong>
+        </div>
+
+
       </div>
+
     </div>
 
     <!-- DETALLE -->
-    <div class="boleta-card">
+    <div class="pago-card">
+
       <h3>Detalle de productos</h3>
 
       <div class="table-wrapper">
+
         <table>
+
           <thead>
             <tr>
               <th>Producto</th>
-              <th>Cantidad</th>
-              <th>Precio Unitario</th>
-              <th>Subtotal</th>
+              <th class="center">Cantidad</th>
+              <th class="right">Precio Unitario</th>
+              <th class="right">Subtotal</th>
             </tr>
           </thead>
+
           <tbody>
+
             <tr *ngFor="let d of sale.detalles">
-              <td>{{ d.producto?.nombre || d.productoNombre }}</td>
-              <td>{{ d.cantidad }}</td>
-              <td>S/{{ d.precioUnitario }}</td>
-              <td>S/{{ d.subtotal}}</td>
+
+              <td>
+                {{ d.producto?.nombre || d.productoNombre }}
+              </td>
+
+              <td class="center">
+                {{ d.cantidad }}
+              </td>
+
+              <td class="right">
+                S/ {{ d.precioUnitario | number:'1.2-2' }}
+              </td>
+
+              <td class="right">
+                S/ {{ d.subtotal | number:'1.2-2' }}
+              </td>
+
             </tr>
+
           </tbody>
+
         </table>
+
       </div>
 
       <div class="total-box">
-        <div><span>Subtotal</span><span>S/{{ sale.subTotal }}</span></div>
-        <div><span>IGV</span><span>S/{{ sale.igv }}</span></div>
-        <div class="total"><span>Total</span><span>S/{{ sale.total }}</span></div>
-      </div>
-    </div>
 
-    <!-- BOTONES -->
-    <div class="boleta-actions no-print">
-      <button mat-stroked-button (click)="cerrar($event)">Cerrar</button>
-      <button mat-raised-button color="primary" (click)="printBoleta()">Imprimir Boleta</button>
+        <div>
+          <span>Subtotal</span>
+          <span>
+            S/ {{ sale.subTotal | number:'1.2-2' }}
+          </span>
+        </div>
+
+        <div class="total">
+          <span>IGV 18%</span>
+          <span>
+            S/ {{ sale.igv | number:'1.2-2' }}
+          </span>
+        </div>
+        <div class="total">
+          <span>Total</span>
+          <span>
+            S/ {{ sale.total | number:'1.2-2' }}
+          </span>
+        </div>
+
+      </div>
+
     </div>
 
   </div>
 
-  <!-- ================= PRINT ================= -->
-  <div class="tabla-imprimir" style="display: none;">
-    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-family: Roboto, sans-serif;">
-      <div class="boleta-card">
-        <h3>Datos</h3>
+  <!-- BOTONES -->
+  <div class="pago-actions no-print">
 
-        <div class="datos-grid">
-          <div><strong>Cliente:</strong> {{ sale.clienteNombre }}</div>
-          <div><strong>Empleado:</strong> {{ sale.empleadoNombre }}</div>
+    <button mat-stroked-button color="primary" (click)="cerrar($event)">
 
-          <div><strong>Fecha Venta:</strong> {{ sale.fechaVenta | date:'dd/MM/yyyy HH:mm' }}</div>
-          <div><strong>Fecha Creación:</strong> {{ sale.fecha_Creacion | date:'dd/MM/yyyy HH:mm' }}</div>
+      Cerrar
 
-          <div><strong>Moneda:</strong> {{ sale.moneda }}</div>
-          <div><strong>Estado Venta:</strong> {{ sale.estado }}</div>
+    </button>
 
-          <div><strong>Estado Pago:</strong> {{ sale.estadoPago }}</div>
-        </div>
-      </div>
+    <button mat-raised-button color="primary" (click)="printBoleta()">
+      <mat-icon>print</mat-icon>
 
-      <thead>
-        <tr>
-          <th style="border: 1px solid #ccc; padding: 6px;">Producto</th>
-          <th style="border: 1px solid #ccc; padding: 6px;">Cantidad</th>
-          <th style="border: 1px solid #ccc; padding: 6px;">Precio Unitario</th>
-          <th style="border: 1px solid #ccc; padding: 6px;">Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let d of sale.detalles">
-          <td style="border: 1px solid #ccc; padding: 6px;">{{ d.producto?.nombre || d.productoNombre }}</td>
-          <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad }}</td>
-          <td style="border: 1px solid #ccc; padding: 6px;">{{ d.precioUnitario | currency:sale.moneda:'symbol' }}</td>
-          <td style="border: 1px solid #ccc; padding: 6px;">{{ calcularSubtotal(d) | currency:sale.moneda:'symbol' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      Imprimir Detalle de Venta
 
-    <p style="text-align: right; margin-top: 10px;">
-      <strong>Subtotal:</strong> {{ sale.subTotal | currency:sale.moneda:'symbol' }} <br>
-      <strong>IGV:</strong> {{ sale.igv | currency:sale.moneda:'symbol' }} <br>
-      <strong>Total:</strong> {{ sale.total | currency:sale.moneda:'symbol' }}
-    </p>
+    </button>
+
   </div>
 
 </div>

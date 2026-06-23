@@ -1,43 +1,177 @@
-<div class="container">
-    <div class="demo-button-container">
-        <button mat-raised-button color="primary" (click)="openDialog()">Agregar Usuario
-        </button>
+<div class="users-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Usuarios</h1>
+      <p>
+        Administra los usuarios y permisos del sistema.
+      </p>
     </div>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let usuario">{{ usuario.usuariosId }}</td>
-        </ng-container>
+    <button
+      mat-raised-button
+      class="add-button"
+      (click)="openDialog()">
 
-        <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let usuario">{{ usuario.email }}</td>
-        </ng-container>
+      <mat-icon>person_add</mat-icon>
 
-        <ng-container matColumnDef="roles">
-            <th mat-header-cell *matHeaderCellDef>Roles</th>
-            <td mat-cell *matCellDef="let usuario"> {{ getRoles(usuario.roles) }}
-        </ng-container>
-        
-          <ng-container matColumnDef="estado">
-            <th mat-header-cell *matHeaderCellDef>Estado</th>
-            <td mat-cell *matCellDef="let usuario"> {{ usuario.estado === 1 ? 'Activo' : 'Inactivo' }}</td>
-        </ng-container>
+      Agregar Usuario
 
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Acciones</th>
-            <td mat-cell *matCellDef="let usuario">
-                <button mat-icon-button (click)="deleteUser(usuario.usuariosId, $event)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button (click)="openEditDialog(usuario, $event)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+    </button>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </div>
+
+  <div class="table-card">
+
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="users-table">
+
+      <!-- ID -->
+
+      <ng-container matColumnDef="id">
+
+        <th mat-header-cell *matHeaderCellDef>
+          ID
+        </th>
+
+        <td mat-cell *matCellDef="let usuario">
+          #{{ usuario.usuariosId }}
+        </td>
+
+      </ng-container>
+
+      <!-- EMAIL -->
+
+      <ng-container matColumnDef="email">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Usuario
+        </th>
+
+        <td mat-cell *matCellDef="let usuario">
+
+          <div class="user-info">
+
+            <div class="user-avatar">
+
+              {{ usuario.email?.charAt(0)?.toUpperCase() }}
+
+            </div>
+
+            <div>
+
+              <strong>
+                {{ usuario.email }}
+              </strong>
+
+              <span>
+                Cuenta del sistema
+              </span>
+
+            </div>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <!-- ROLES -->
+
+      <ng-container matColumnDef="roles">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Roles
+        </th>
+
+        <td mat-cell *matCellDef="let usuario">
+
+          <span class="role-badge">
+
+            {{ getRoles(usuario.roles) }}
+
+          </span>
+
+        </td>
+
+      </ng-container>
+
+      <!-- ESTADO -->
+
+      <ng-container matColumnDef="estado">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Estado
+        </th>
+
+        <td mat-cell *matCellDef="let usuario">
+
+          <span
+            class="status-badge"
+            [ngClass]="{
+              'activo': usuario.estado === 1,
+              'inactivo': usuario.estado === 0
+            }">
+
+            {{ usuario.estado === 1 ? 'Activo' : 'Inactivo' }}
+
+          </span>
+
+        </td>
+
+      </ng-container>
+
+      <!-- ACCIONES -->
+
+      <ng-container matColumnDef="actions">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Acciones
+        </th>
+
+        <td mat-cell *matCellDef="let usuario">
+
+          <div class="actions">
+
+            <button
+              mat-icon-button
+              class="edit-btn"
+              (click)="openEditDialog(usuario,$event)">
+
+              <mat-icon>edit</mat-icon>
+
+            </button>
+
+            <button
+              mat-icon-button
+              class="delete-btn"
+              (click)="deleteUser(usuario.usuariosId,$event)">
+
+              <mat-icon>delete</mat-icon>
+
+            </button>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns">
+      </tr>
+
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+
     </table>
+
+  </div>
+
 </div>

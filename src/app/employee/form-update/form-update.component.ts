@@ -20,6 +20,7 @@ import { EmployeeService } from '../../services/employee.service';
 import { Employe } from '../../model/employe';
 import Swal from 'sweetalert2';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-form-update',
@@ -33,7 +34,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-  ],
+    MatIcon
+],
   templateUrl: './form-update.component.html',
   styleUrl: './form-update.component.css',
 })

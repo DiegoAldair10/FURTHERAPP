@@ -1,22 +1,85 @@
-<h2 mat-dialog-title>Agregar Metodo de Pago</h2>
-<div mat-dialog-content>
+<div class="payment-modal">
+
+  <div class="modal-header">
+
+    <div class="header-icon">
+      <mat-icon>payments</mat-icon>
+    </div>
+
+    <div>
+      <h2>Agregar Método de Pago</h2>
+      <p>
+        Registra un nuevo método de pago para utilizar en ventas.
+      </p>
+    </div>
+
+  </div>
+
   <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+
+    <div class="section-title">
+      Información General
+    </div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" required />
+
+        <input
+          matInput
+          formControlName="nombre"
+          required />
+
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Descripción</mat-label>
-        <input matInput formControlName="descripcion" required />
+
+        <input
+          matInput
+          formControlName="descripcion"
+          required />
+
       </mat-form-field>
+
     </div>
-    <div mat-dialog-actions align="end">
-      <button mat-button (click)="closeDialog()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit"  [disabled]="paymentForm.invalid">
-        Guardar
+
+    <div class="info-box">
+
+      <mat-icon>info</mat-icon>
+
+      Los métodos de pago estarán disponibles al registrar pagos y ventas.
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="closeDialog()">
+
+        Cancelar
+
       </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="paymentForm.invalid">
+
+        <mat-icon>save</mat-icon>
+
+        Guardar Método
+
+      </button>
+
     </div>
+
   </form>
+
 </div>

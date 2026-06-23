@@ -107,7 +107,10 @@ export class ProductsComponent implements OnInit {
     (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
 
     const dialogRef = this.dialog.open(FormProductsUpdateComponent, {
-      width: '600px',
+      width: '700px', // ancho fijo pero responsive
+      maxWidth: '90vw', // limite responsive
+      maxHeight: '90vh', // límite de altura de la pantalla
+      panelClass: 'custom-dialog', // para aplicar estilos CSS específicos
       data: { product },
     });
 

@@ -1,98 +1,143 @@
-<h2 mat-dialog-title>Actualizar Cliente</h2>
-<div mat-dialog-content>
+<div class="customer-modal">
+
+  <div class="modal-header">
+    <div class="header-icon edit">
+      <mat-icon>edit</mat-icon>
+    </div>
+
+    <div>
+      <h2>Actualizar cliente</h2>
+      <p>Modifica la información del cliente seleccionado</p>
+    </div>
+  </div>
+
   <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+
+    <div class="section-title">Datos personales</div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" required />
+        <input matInput formControlName="nombre" />
+
         <mat-error *ngIf="customerForm.get('nombre')?.hasError('required')">
           El nombre es obligatorio.
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Apellido</mat-label>
-        <input matInput formControlName="apellido" required />
+        <input matInput formControlName="apellido" />
+
         <mat-error *ngIf="customerForm.get('apellido')?.hasError('required')">
           El apellido es obligatorio.
         </mat-error>
       </mat-form-field>
     </div>
 
+    <div class="section-title">Contacto</div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" />
+
         <mat-error *ngIf="customerForm.get('email')?.hasError('required')">
           El email es obligatorio.
         </mat-error>
+
         <mat-error *ngIf="customerForm.get('email')?.hasError('email')">
           Ingresa un email válido.
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Teléfono</mat-label>
         <input matInput formControlName="telefono" />
+
         <mat-error *ngIf="customerForm.get('telefono')?.hasError('required')">
           El teléfono es obligatorio.
         </mat-error>
+
         <mat-error *ngIf="customerForm.get('telefono')?.hasError('pattern')">
           Debe contener exactamente 9 dígitos.
         </mat-error>
       </mat-form-field>
     </div>
+
+    <div class="section-title">Dirección</div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Dirección</mat-label>
         <input matInput formControlName="direccion" />
+
         <mat-error *ngIf="customerForm.get('direccion')?.hasError('required')">
           La dirección es obligatoria.
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Ciudad</mat-label>
         <input matInput formControlName="ciudad" />
+
         <mat-error *ngIf="customerForm.get('ciudad')?.hasError('required')">
           La ciudad es obligatoria.
         </mat-error>
       </mat-form-field>
-
     </div>
+
+    <mat-form-field appearance="outline" class="form-field full">
+      <mat-label>País</mat-label>
+      <input matInput formControlName="pais" />
+
+      <mat-error *ngIf="customerForm.get('pais')?.hasError('required')">
+        El país es obligatorio.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="section-title">Documento</div>
+
     <div class="form-row">
-       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Documento</mat-label>
-        <mat-select formControlName="documento" required>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Tipo de documento</mat-label>
+
+        <mat-select formControlName="documento">
           <mat-option *ngFor="let doc of documentos" [value]="doc.nombre">
             {{ doc.nombre }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Numero de documentos</mat-label>
-        <input matInput formControlName="numeroDocumento" required />
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Número de documento</mat-label>
+        <input matInput formControlName="numeroDocumento" />
       </mat-form-field>
-
     </div>
 
-
-    <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>País</mat-label>
-        <input matInput formControlName="pais" />
-        <mat-error *ngIf="customerForm.get('pais')?.hasError('required')">
-          La pais es obligatoria.
-        </mat-error>
-      </mat-form-field>
-
+    <div class="info-box">
+      <mat-icon>info</mat-icon>
+      Los cambios se aplicarán inmediatamente al cliente.
     </div>
-    <div mat-dialog-actions align="end">
-      <button mat-button  type="button" (click)="closeDialogUpdate()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="customerForm.invalid">
-        Guardar
+
+    <div class="modal-actions">
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="closeDialogUpdate()">
+        Cancelar
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="customerForm.invalid">
+        <mat-icon>save</mat-icon>
+        Actualizar cliente
       </button>
     </div>
+
   </form>
+
 </div>

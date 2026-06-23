@@ -1,41 +1,146 @@
-<h2 mat-dialog-title>Agregar Proveedor</h2>
-<div mat-dialog-content>
+<div class="supplier-modal">
+
+  <div class="modal-header">
+
+    <div class="header-icon">
+      <mat-icon>local_shipping</mat-icon>
+    </div>
+
+    <div>
+      <h2>Agregar Proveedor</h2>
+      <p>
+        Registra un nuevo proveedor para abastecimiento de productos.
+      </p>
+    </div>
+
+  </div>
+
   <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+
+    <div class="section-title">
+      Información General
+    </div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" required />
+
+        <input
+          matInput
+          formControlName="nombre"
+          required />
+
       </mat-form-field>
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Ruc</mat-label>
-        <input matInput formControlName="ruc" required />
+
+      <mat-form-field appearance="outline" class="form-field">
+
+        <mat-label>RUC</mat-label>
+
+        <input
+          matInput
+          formControlName="ruc"
+          required />
+
       </mat-form-field>
+
     </div>
+
+    <div class="section-title">
+      Contacto
+    </div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Contacto</mat-label>
-        <input matInput formControlName="contacto" required />
+
+      <mat-form-field appearance="outline" class="form-field">
+
+        <mat-label>Persona de Contacto</mat-label>
+
+        <input
+          matInput
+          formControlName="contacto"
+          required />
+
       </mat-form-field>
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required />
+
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          required />
+
       </mat-form-field>
+
     </div>
+
+    <div class="section-title">
+      Ubicación
+    </div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono" required />
+
+        <input
+          matInput
+          formControlName="telefono"
+          required />
+
       </mat-form-field>
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Dirección</mat-label>
-        <input matInput formControlName="direccion" required />
+
+        <input
+          matInput
+          formControlName="direccion"
+          required />
+
       </mat-form-field>
+
     </div>
-    <div mat-dialog-actions align="end">
-      <button mat-button (click)="closeDialog()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="supplierForm.invalid">
-        Guardar
+
+    <div class="info-box">
+
+      <mat-icon>info</mat-icon>
+
+      El proveedor podrá ser asociado a compras y productos del sistema.
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="closeDialog()">
+
+        Cancelar
+
       </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="supplierForm.invalid">
+
+        <mat-icon>save</mat-icon>
+
+        Guardar Proveedor
+
+      </button>
+
     </div>
+
   </form>
+
 </div>

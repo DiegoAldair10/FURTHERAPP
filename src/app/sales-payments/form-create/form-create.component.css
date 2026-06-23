@@ -1,76 +1,247 @@
-.full-width {
+.payment-modal {
+  width: 820px;
+  max-width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.header-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: #dcfce7;
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon mat-icon {
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #072146;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.modal-header p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.section-title {
+  margin: 18px 0 12px;
+  color: #072146;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.form-field.full {
+  width: 100%;
+}
+
+.sale-detail-card {
+  margin-top: 18px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.sale-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.sale-detail-header h3 {
+  margin: 0;
+  color: #072146;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.sale-detail-header p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.total-pill {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #16a34a;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.info-grid div {
+  background: white;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.info-grid span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.info-grid strong {
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.sale-detail-card h4 {
+  margin: 18px 0 12px;
+  color: #1464f4;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: white;
+}
+
+.detail-table {
+  width: 100%;
+}
+
+.detail-table th {
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.detail-table td {
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.detail-table th,
+.detail-table td {
+  padding: 12px;
+}
+
+.info-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: #e3f2fd;
+  color: #0d47a1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.modal-actions button {
+  height: 44px;
+  border-radius: 999px;
+  padding: 0 22px;
+  font-weight: 800;
+}
+
+.modal-actions mat-icon {
+  margin-right: 6px;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  border-radius: 12px !important;
+}
+
+.payment-summary {
+
+  margin-top: 16px;
+
+  background: #dcfce7;
+
+  padding: 16px;
+
+  border-radius: 12px;
+}
+
+.payment-summary span {
+
+  color: #166534;
+}
+
+.payment-summary strong {
+
+  font-size: 22px;
+  color: #16a34a;
+}
+
+@media (max-width: 768px) {
+  .payment-modal {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .form-row,
+  .sale-detail-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
     width: 100%;
   }
-
-  .form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px; /* Espaciado entre filas */
-  }
-  
-  .form-row {
-    display: flex;
-    gap: 20px; /* Espaciado entre los form-fields */
-  }
-  
-  .form-field {
-    flex: 1; /* Hace que ambos campos ocupen el mismo espacio */
-    min-width: 200px; /* Asegura que no sean demasiado pequeños */
-  }
-  
-
-/* Estilo para la tarjeta del detalle de venta */
-mat-card {
-  background: #fafafa; /* fondo suave */
-  border: 1px solid #e0e0e0; /* borde ligero */
-  border-radius: 12px; /* esquinas redondeadas */
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* sombra sutil */
-  padding: 16px;
-  transition: transform 0.2s ease-in-out;
 }
-
-/* títulos dentro del mat-card */
-mat-card-title {
-  font-weight: 600;
-  color: #1976d2; /* azul Material */
-}
-
-mat-card-subtitle {
-  font-size: 14px;
-  color: #666;
-}
-
-/* texto dentro del detalle */
-mat-card-content p {
-  margin: 4px 0;
-  font-size: 14px;
-}
-
-/* Ajustes tabla Angular Material */
-table {
-  margin-top: 12px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-th.mat-header-cell {
-  background-color: #1976d2; /* azul Material */
-  color: white;
-  font-weight: 500;
-  text-align: center;
-}
-
-td.mat-cell, th.mat-header-cell {
-  padding: 8px 12px;
-  font-size: 14px;
-}
-
-td.mat-cell {
-  text-align: center;
-}
-
-/* Hover en filas */
-tr.mat-row:hover {
-  background-color: #f1f1f1;
-}
-

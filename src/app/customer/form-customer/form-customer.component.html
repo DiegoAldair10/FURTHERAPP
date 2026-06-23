@@ -1,45 +1,70 @@
-<h2 mat-dialog-title>Agregar Cliente</h2>
-<div mat-dialog-content>
+<div class="customer-modal">
+
+  <div class="modal-header">
+    <div class="header-icon">
+      <mat-icon>person_add</mat-icon>
+    </div>
+
+    <div>
+      <h2>Agregar cliente</h2>
+      <p>Completa la información para registrar un nuevo cliente</p>
+    </div>
+  </div>
+
   <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+
+    <div class="section-title">Datos personales</div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Apellido</mat-label>
         <input matInput formControlName="apellido" required />
       </mat-form-field>
     </div>
 
+    <div class="section-title">Contacto</div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Teléfono</mat-label>
         <input matInput formControlName="telefono" required />
       </mat-form-field>
     </div>
+
+    <div class="section-title">Dirección</div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Dirección</mat-label>
         <input matInput formControlName="direccion" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Ciudad</mat-label>
         <input matInput formControlName="ciudad" required />
       </mat-form-field>
-
     </div>
 
+    <mat-form-field appearance="outline" class="form-field full">
+      <mat-label>País</mat-label>
+      <input matInput formControlName="pais" required />
+    </mat-form-field>
+
+    <div class="section-title">Documento</div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Documento</mat-label>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Tipo de documento</mat-label>
         <mat-select formControlName="documento" required>
           <mat-option *ngFor="let doc of documentos" [value]="doc.nombre">
             {{ doc.nombre }}
@@ -47,25 +72,28 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Numero de documentos</mat-label>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Número de documento</mat-label>
         <input matInput formControlName="numeroDocumento" required />
       </mat-form-field>
-
     </div>
 
-    <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>País</mat-label>
-        <input matInput formControlName="pais" required />
-      </mat-form-field>
+    <div class="info-box">
+      <mat-icon>info</mat-icon>
+      Los campos marcados como obligatorios deben completarse antes de guardar.
     </div>
 
-    <div mat-dialog-actions align="end">
-      <button mat-button (click)="closeDialog()">Cancelar</button>
+    <div class="modal-actions">
+      <button mat-stroked-button type="button" (click)="closeDialog()">
+        Cancelar
+      </button>
+
       <button mat-raised-button color="primary" type="submit" [disabled]="customerForm.invalid">
-        Guardar
+        <mat-icon>save</mat-icon>
+        Guardar cliente
       </button>
     </div>
+
   </form>
+
 </div>

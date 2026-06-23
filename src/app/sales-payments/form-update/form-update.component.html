@@ -1,101 +1,149 @@
 <div class="pago-container">
 
-  <!-- ================= VISUAL ================= -->
-  <div class="pago-visual">
+  <div class="pago-content">
 
+    <!-- HEADER -->
     <div class="pago-header">
-      <h2>Comprobante de Pago</h2>
+
+      <div>
+        <h2>Comprobante de Pago</h2>
+        <span>
+          {{ salePayment.tipoComprobante }}
+          -
+          {{ salePayment.numeroComprobante }}
+        </span>
+      </div>
+
+      <div class="estado-pago pagada">
+        {{salePayment.estado}}
+      </div>
+
     </div>
 
     <!-- DATOS -->
     <div class="pago-card">
-      <h3>Datos</h3>
+
+      <h3>Información del Pago</h3>
 
       <div class="datos-grid">
-        <div><strong>Tipo de Comprobante:</strong> {{ salePayment.tipoComprobante }}</div>
-        <div><strong>Numero de Comprobante:</strong> {{ salePayment.numeroComprobante }}</div>
-        <div><strong>Cliente:</strong> {{ salePayment.clienteNombre }}</div>
-        <div><strong>Empleado:</strong> {{ salePayment.empleadoNombre }}</div>
-        <div><strong>Método de Pago:</strong> {{ salePayment.nombre }}</div>
-        <div><strong>Fecha:</strong> {{ salePayment.fecha_Pago | date: 'dd/MM/yyyy HH:mm' }}</div>
+
+        <div class="info-card">
+          <span>Cliente</span>
+          <strong>{{ salePayment.clienteNombre }}</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Empleado</span>
+          <strong>{{ salePayment.empleadoNombre }}</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Método de Pago</span>
+          <strong>{{ salePayment.nombre }}</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Fecha</span>
+          <strong>
+            {{ salePayment.fecha_Pago | date:'dd/MM/yyyy HH:mm' }}
+          </strong>
+        </div>
+
       </div>
+
     </div>
 
     <!-- DETALLE -->
     <div class="pago-card">
+
       <h3>Detalle de productos</h3>
 
       <div class="table-wrapper">
+
         <table>
+
           <thead>
             <tr>
               <th>Producto</th>
-              <th>Cantidad</th>
-              <th>Precio Unitario</th>
-              <th>Subtotal</th>
+              <th class="center">Cantidad</th>
+              <th class="right">Precio Unitario</th>
+              <th class="right">Subtotal</th>
             </tr>
           </thead>
+
           <tbody>
+
             <tr *ngFor="let d of salePayment.detalles">
-              <td>{{ d.producto?.nombre || d.productoNombre }}</td>
-              <td>{{ d.cantidad }}</td>
-              <td>S/{{ d.precioUnitario }}</td>
-              <td>S/{{ d.cantidad * d.precioUnitario }}</td>
+
+              <td>
+                {{ d.producto?.nombre || d.productoNombre }}
+              </td>
+
+              <td class="center">
+                {{ d.cantidad }}
+              </td>
+
+              <td class="right">
+                S/ {{ d.precioUnitario | number:'1.2-2' }}
+              </td>
+
+              <td class="right">
+                S/ {{ d.subtotal | number:'1.2-2' }}
+              </td>
+
             </tr>
+
           </tbody>
+
         </table>
+
       </div>
 
       <div class="total-box">
-        <div><span>Subtotal</span><span>S/{{ salePayment.totalVenta }}</span></div>
-        <div class="total"><span>Total</span><span>S/{{ salePayment.totalVenta }}</span></div>
 
-      </div>
-
-      <!-- BOTONES -->
-      <div class="pago-actions no-print">
-        <button mat-stroked-button (click)="cerrar($event)">Cerrar</button>
-        <button mat-raised-button color="primary" (click)="printPago()">Imprimir Pago</button>
-      </div>
-
-    </div>
-
-    <!-- ================= PRINT ================= -->
-    <div class="tabla-imprimir" style="display: none;">
-      <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-family: Roboto, sans-serif;">
-        <div class="pago-card">
-          <h3>Datos</h3>
-
-          <div class="datos-grid">
-            <div><strong>Tipo de Comprobante:</strong> {{ salePayment.tipoComprobante }}</div>
-            <div><strong>Numero de Comprobante:</strong> {{ salePayment.numeroComprobante }}</div>
-            <div><strong>Cliente:</strong> {{ salePayment.clienteNombre }}</div>
-            <div><strong>Empleado:</strong> {{ salePayment.empleadoNombre }}</div>
-            <div><strong>Método de Pago:</strong> {{ salePayment.nombre }}</div>
-            <div><strong>Fecha:</strong> {{ salePayment.fecha_Pago | date: 'dd/MM/yyyy HH:mm' }}</div>
-
-          </div>
+        <div>
+          <span>Subtotal</span>
+          <span>
+            S/ {{ salePayment.totalVenta | number:'1.2-2' }}
+          </span>
         </div>
 
-        <thead>
-          <tr>
-            <th style="border: 1px solid #ccc; padding: 6px;">Producto</th>
-            <th style="border: 1px solid #ccc; padding: 6px;">Cantidad</th>
-            <th style="border: 1px solid #ccc; padding: 6px;">Precio Unitario</th>
-            <th style="border: 1px solid #ccc; padding: 6px;">Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let d of salePayment.detalles">
-            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.producto?.nombre || d.productoNombre }}</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad }}</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.precioUnitario }}</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">{{ d.cantidad * d.precioUnitario }}</td>
-          </tr>
-        </tbody>
-      </table>
+        <div class="total">
+          <span>Total Pagado</span>
+          <span>
+            S/ {{ salePayment.totalVenta | number:'1.2-2' }}
+          </span>
+        </div>
 
+      </div>
 
     </div>
 
   </div>
+
+  <!-- BOTONES -->
+  <div class="pago-actions no-print">
+
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="cerrar($event)">
+
+      Cerrar
+
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="printPago()">
+
+      <mat-icon>print</mat-icon>
+
+      Imprimir Pago
+
+    </button>
+
+  </div>
+
+</div>

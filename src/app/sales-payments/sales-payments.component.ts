@@ -10,7 +10,6 @@ import Swal from 'sweetalert2';
 import { FormCreateComponent } from './form-create/form-create.component';
 import { FormUpdateComponent } from './form-update/form-update.component';
 
-
 @Component({
   selector: 'app-sales-payments',
   imports: [
@@ -28,23 +27,23 @@ export class SalesPaymentsComponent implements OnInit {
     'id',
     'venta',
     'metodoPago',
+    'estado',
     'monto',
     'fecha_Pago',
     'detalles',
     'actions',
   ];
 
-
   constructor(
     private salesPaymentsService: SalesPaymentsService,
     public dialog: MatDialog,
-    public dialogUpdate: MatDialog
+    public dialogUpdate: MatDialog,
   ) {}
 
   ngOnInit(): void {
     this.getSalesPayments();
   }
-  
+
   dataSource: SalesPayments[] = [];
   @ViewChild(MatTable) table!: MatTable<SalesPayments>;
 
@@ -56,36 +55,42 @@ export class SalesPaymentsComponent implements OnInit {
       },
       (error) => {
         console.error('Error al obtener ventas:', error);
-      }
+      },
     );
   }
 
   deleteSales(id: number, event: Event): void {
     (event.currentTarget as HTMLElement).blur();
+
     Swal.fire({
-      title: '¿Eliminar venta?',
-      text: '¡No podrás revertir esto!',
+      title: '¿Anular pago?',
+      text: 'El pago quedará marcado como ANULADO',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar',
+      confirmButtonText: 'Sí, anular',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
         this.salesPaymentsService.deleteSalesPayment(id).subscribe({
           next: () => {
-            Swal.fire('¡Eliminado!', 'El pago ha sido eliminada.', 'success');
-            this.dataSource = this.dataSource.filter((s) => s.pagosId !== id);
-            this.table.renderRows();
-          },
-          error: (err) => {
-            console.error('Error al eliminar el pago:', err);
             Swal.fire(
-              'Error',
-              err.message || 'No se pudo eliminar el pago.',
-              'error'
+              'Pago Anulado',
+              'El pago fue anulado correctamente',
+              'success',
             );
+
+            // RECARGAR DATOS
+            this.getSalesPayments();
+          },
+
+          error: (error) => {
+            let mensaje = 'No se pudo anular el pago';
+
+            if (error.error?.message) {
+              mensaje = error.error.message;
+            }
+
+            Swal.fire('Error', mensaje, 'error');
           },
         });
       }
@@ -102,7 +107,7 @@ export class SalesPaymentsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((salesPayment: SalesPayments) => {
       if (salesPayment) {
-        this.dataSource = [...this.dataSource, salesPayment];
+        this.getSalesPayments();
       }
     });
   }
@@ -114,17 +119,9 @@ export class SalesPaymentsComponent implements OnInit {
       width: '600px',
       data: { salesPayment },
     });
-
     dialogRef.afterClosed().subscribe((salesPayment: SalesPayments) => {
       if (salesPayment) {
-        const index = this.dataSource.findIndex(
-          (e) => e.pagosId === salesPayment.pagosId
-        );
-        if (index !== -1) {
-          this.dataSource[index] = salesPayment;
-          this.dataSource = [...this.dataSource];
-          this.table.renderRows();
-        }
+        this.getSalesPayments();
       }
     });
   }

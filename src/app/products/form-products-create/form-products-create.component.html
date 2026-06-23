@@ -1,57 +1,77 @@
-<h2 mat-dialog-title>Agregar Producto</h2>
-<div mat-dialog-content>
+<div class="product-modal">
+
+  <div class="modal-header">
+    <div class="header-icon">
+      <mat-icon>inventory_2</mat-icon>
+    </div>
+
+    <div>
+      <h2>Agregar producto</h2>
+      <p>Completa la información para registrar un nuevo producto</p>
+    </div>
+  </div>
+
   <form [formGroup]="productsForm" (ngSubmit)="onSubmit()">
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Nombre</mat-label>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Nombre del producto</mat-label>
         <input matInput formControlName="nombre" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Descripcíon</mat-label>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Descripción</mat-label>
         <input matInput formControlName="descripcion" required />
       </mat-form-field>
     </div>
 
+    <mat-form-field appearance="outline" class="form-field full">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="categoriaId" required>
+        <mat-option *ngFor="let cat of Categorys" [value]="cat.categoriaId">
+          {{ cat.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Categoría</mat-label>
-        <mat-select formControlName="categoriaId" required>
-          <mat-option *ngFor="let cat of Categorys" [value]="cat.categoriaId">
-            {{ cat.nombre }}
-          </mat-option>
-        </mat-select>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Precio de venta</mat-label>
+        <input matInput type="number" formControlName="precio_venta" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Costo promedio</mat-label>
+        <input matInput type="number" formControlName="costo_promedio" required />
       </mat-form-field>
     </div>
 
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Precio venta</mat-label>
-        <input matInput formControlName="precio_venta" required />
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Stock inicial</mat-label>
+        <input matInput type="number" formControlName="stock" required />
       </mat-form-field>
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Costo Promedio</mat-label>
-        <input matInput formControlName="costo_promedio" required />
-      </mat-form-field>
-    </div>
-    <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Stock</mat-label>
-        <input matInput formControlName="stock" required />
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Estado</mat-label>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Estado del producto</mat-label>
         <mat-select formControlName="estado" required>
           <mat-option value="Y">Activo</mat-option>
           <mat-option value="N">Inactivo</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <div mat-dialog-actions align="end">
-      <button mat-button (click)="closeDialog()">Cancelar</button>
+
+    <div class="modal-actions">
+      <button mat-button type="button" (click)="closeDialog()">
+        Cancelar
+      </button>
+
       <button mat-raised-button color="primary" type="submit" [disabled]="productsForm.invalid">
-        Guardar
+        <mat-icon>save</mat-icon>
+        Guardar producto
       </button>
     </div>
+
   </form>
+
 </div>

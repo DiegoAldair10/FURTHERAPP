@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Payment } from '../../model/payment';
 import { PaymentService } from '../../services/payment.service';
 import Swal from 'sweetalert2';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-form-update',
@@ -31,7 +32,8 @@ import Swal from 'sweetalert2';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-  ],
+    MatIcon
+],
   templateUrl: './form-update.component.html',
   styleUrl: './form-update.component.css',
 })

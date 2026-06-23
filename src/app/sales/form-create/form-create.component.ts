@@ -60,6 +60,7 @@ export class FormCreateComponent implements OnInit {
     { id: 1, nombre: 'FACTURA' },
     { id: 2, nombre: 'BOLETA' },
   ];
+openDialog: any;
 
   constructor(public dialogRef: MatDialogRef<FormCreateComponent>) {
     this.salesForm = this.fb.group({

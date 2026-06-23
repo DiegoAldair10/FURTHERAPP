@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
 import { MatSelectModule } from '@angular/material/select';
 import { Category } from '../../model/category';
 import { CategoryService } from '../../services/category.service';
+import { MatIcon } from "@angular/material/icon";
 
 
 @Component({
@@ -36,7 +37,8 @@ import { CategoryService } from '../../services/category.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-  ],
+    MatIcon,
+],
   templateUrl: './form-products-update.component.html',
   styleUrl: './form-products-update.component.css',
 })

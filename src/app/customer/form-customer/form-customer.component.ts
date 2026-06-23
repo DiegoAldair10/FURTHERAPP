@@ -15,6 +15,7 @@ import { CustomerService } from '../../services/customer.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-form-customer',
@@ -29,7 +30,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-  ],
+    MatIcon
+],
   templateUrl: './form-customer.component.html',
   styleUrls: ['./form-customer.component.css'],
 })

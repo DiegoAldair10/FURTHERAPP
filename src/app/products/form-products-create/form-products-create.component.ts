@@ -16,6 +16,7 @@ import { ProductService } from '../../services/product.service';
 import Swal from 'sweetalert2';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryService } from '../../services/category.service';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-form-products-create',
@@ -29,7 +30,8 @@ import { CategoryService } from '../../services/category.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-  ],
+    MatIcon
+],
   templateUrl: './form-products-create.component.html',
   styleUrl: './form-products-create.component.css',
 })

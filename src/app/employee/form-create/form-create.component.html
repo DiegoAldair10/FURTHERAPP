@@ -1,44 +1,144 @@
-<h2 mat-dialog-title>Agregar Empleado</h2>
-<div mat-dialog-content>
+<div class="employee-modal">
+
+  <div class="modal-header">
+
+    <div class="header-icon">
+      <mat-icon>badge</mat-icon>
+    </div>
+
+    <div>
+      <h2>Agregar Empleado</h2>
+      <p>
+        Registra un nuevo empleado en el sistema.
+      </p>
+    </div>
+
+  </div>
+
   <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+    <div class="section-title">
+      Información Personal
+    </div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" required />
+
+        <input
+          matInput
+          formControlName="nombre"
+          required />
+
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Apellido</mat-label>
-        <input matInput formControlName="apellido" required />
+
+        <input
+          matInput
+          formControlName="apellido"
+          required />
+
       </mat-form-field>
+
+    </div>
+
+    <div class="section-title">
+      Contacto
     </div>
 
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required />
+
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          required />
+
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono" required />
+
+        <input
+          matInput
+          formControlName="telefono"
+          required />
+
       </mat-form-field>
+
     </div>
+
+    <div class="section-title">
+      Cargo
+    </div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Cargo</mat-label>
-        <mat-select formControlName="cargo" required>
-          <mat-option *ngFor="let cargo of cargos" [value]="cargo.nombre">
+
+        <mat-select
+          formControlName="cargo"
+          required>
+
+          <mat-option
+            *ngFor="let cargo of cargos"
+            [value]="cargo.nombre">
+
             {{ cargo.nombre }}
+
           </mat-option>
+
         </mat-select>
+
       </mat-form-field>
+
     </div>
-    <div mat-dialog-actions align="end">
-      <button mat-button (click)="closeDialog()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="employeeForm.invalid">
-        Guardar
+
+    <div class="info-box">
+
+      <mat-icon>info</mat-icon>
+
+      El empleado podrá ser asignado a ventas y operaciones del sistema.
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="closeDialog()">
+
+        Cancelar
+
       </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="employeeForm.invalid">
+
+        <mat-icon>save</mat-icon>
+
+        Guardar Empleado
+
+      </button>
+
     </div>
+
   </form>
+
 </div>

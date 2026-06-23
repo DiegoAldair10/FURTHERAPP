@@ -1,36 +1,140 @@
-<div class="container">
-  <div class="demo-button-container">
-    <button mat-raised-button color="primary" (click)="openDialog()">Agregar Metodo de Pago
+<div class="payments-method-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Métodos de Pago</h1>
+      <p>
+        Administra los métodos de pago disponibles en el sistema.
+      </p>
+    </div>
+
+    <button
+      mat-raised-button
+      class="add-button"
+      (click)="openDialog()">
+
+      <mat-icon>add</mat-icon>
+
+      Agregar Método
+
     </button>
+
   </div>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let payment">{{ payment.metodoPagoId }}</td>
-    </ng-container>
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef>Nombre</th>
-      <td mat-cell *matCellDef="let payment">{{ payment.nombre }}</td>
-    </ng-container>
-    <ng-container matColumnDef="descripcion">
-      <th mat-header-cell *matHeaderCellDef>Descripción</th>
-      <td mat-cell *matCellDef="let payment">{{ payment.descripcion }}</td>
-    </ng-container>
+  <div class="table-card">
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
-      <td mat-cell *matCellDef="let payment">
-        <button mat-icon-button (click)="deleteCustomer(payment.metodoPagoId, $event)">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <button mat-icon-button (click)="openEditDialog(payment, $event)">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="payments-table">
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <!-- ID -->
+
+      <ng-container matColumnDef="id">
+
+        <th mat-header-cell *matHeaderCellDef>
+          ID
+        </th>
+
+        <td mat-cell *matCellDef="let payment">
+          #{{ payment.metodoPagoId }}
+        </td>
+
+      </ng-container>
+
+      <!-- NOMBRE -->
+
+      <ng-container matColumnDef="nombre">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Método
+        </th>
+
+        <td mat-cell *matCellDef="let payment">
+
+          <div class="payment-info">
+
+            <div class="payment-avatar">
+
+              {{ payment.nombre?.charAt(0) }}
+
+            </div>
+
+            <strong>
+              {{ payment.nombre }}
+            </strong>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <!-- DESCRIPCION -->
+
+      <ng-container matColumnDef="descripcion">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Descripción
+        </th>
+
+        <td mat-cell *matCellDef="let payment">
+
+          {{ payment.descripcion }}
+
+        </td>
+
+      </ng-container>
+
+      <!-- ACCIONES -->
+
+      <ng-container matColumnDef="actions">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Acciones
+        </th>
+
+        <td mat-cell *matCellDef="let payment">
+
+          <div class="actions">
+
+            <button
+              mat-icon-button
+              class="edit-btn"
+              (click)="openEditDialog(payment,$event)">
+
+              <mat-icon>edit</mat-icon>
+
+            </button>
+
+            <button
+              mat-icon-button
+              class="delete-btn"
+              (click)="deleteCustomer(payment.metodoPagoId,$event)">
+
+              <mat-icon>delete</mat-icon>
+
+            </button>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns">
+      </tr>
+
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+
+    </table>
+
+  </div>
+
 </div>

@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { SupplierService } from '../../services/supplier.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-form-create',
@@ -26,7 +27,8 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-  ],
+    MatIcon
+],
   templateUrl: './form-create.component.html',
   styleUrl: './form-create.component.css',
 })

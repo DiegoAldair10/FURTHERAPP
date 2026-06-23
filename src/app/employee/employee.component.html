@@ -1,49 +1,199 @@
-<div class="container">
-    <div class="demo-button-container">
-        <button mat-raised-button color="primary" (click)="openDialog()">Agregar Empleado
-        </button>
+<div class="employees-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Empleados</h1>
+      <p>Gestiona los empleados registrados en el sistema</p>
     </div>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let employee">{{ employee.empleadoId }}</td>
-        </ng-container>
-        <ng-container matColumnDef="nombre">
-            <th mat-header-cell *matHeaderCellDef>Nombre</th>
-            <td mat-cell *matCellDef="let employee">{{ employee.nombre + employee.apellido}}</td>
-        </ng-container>
-        <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let employee">{{ employee.email }}</td>
-        </ng-container>
-        <ng-container matColumnDef="telefono">
-            <th mat-header-cell *matHeaderCellDef>Telefono</th>
-            <td mat-cell *matCellDef="let employee">{{ employee.telefono }}</td>
-        </ng-container>
-        <ng-container matColumnDef="cargo">
-            <th mat-header-cell *matHeaderCellDef>Cargo</th>
-            <td mat-cell *matCellDef="let employee">{{ employee.cargo }}</td>
-        </ng-container>
-        <ng-container matColumnDef="fecha_Contratacion">
-            <th mat-header-cell *matHeaderCellDef>Contratación</th>
-            <td mat-cell *matCellDef="let employee">
-              {{ employee.fecha_Contratacion | date: 'dd/MM/yyyy' }}
-            </td>
-          </ng-container>
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Acciones</th>
-            <td mat-cell *matCellDef="let employee">
-                <button mat-icon-button (click)="deleteEmployees(employee.empleadoId, $event)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button (click)="openEditDialog(employee, $event)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+    <button
+      mat-raised-button
+      class="add-button"
+      (click)="openDialog()">
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <mat-icon>add</mat-icon>
+
+      Agregar Empleado
+
+    </button>
+
+  </div>
+
+  <div class="table-card">
+
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="employees-table">
+
+      <!-- ID -->
+
+      <ng-container matColumnDef="id">
+
+        <th mat-header-cell *matHeaderCellDef>
+          ID
+        </th>
+
+        <td mat-cell *matCellDef="let employee">
+          #{{ employee.empleadoId }}
+        </td>
+
+      </ng-container>
+
+      <!-- EMPLEADO -->
+
+      <ng-container matColumnDef="nombre">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Empleado
+        </th>
+
+        <td mat-cell *matCellDef="let employee">
+
+          <div class="employee-info">
+
+            <div class="employee-avatar">
+
+              {{ employee.nombre?.charAt(0) }}
+
+            </div>
+
+            <div>
+
+              <strong>
+                {{ employee.nombre }}
+                {{ employee.apellido }}
+              </strong>
+
+              <span>
+                {{ employee.email }}
+              </span>
+
+            </div>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <!-- EMAIL -->
+
+      <ng-container matColumnDef="email">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Email
+        </th>
+
+        <td mat-cell *matCellDef="let employee">
+
+          {{ employee.email }}
+
+        </td>
+
+      </ng-container>
+
+      <!-- TELEFONO -->
+
+      <ng-container matColumnDef="telefono">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Teléfono
+        </th>
+
+        <td mat-cell *matCellDef="let employee">
+
+          {{ employee.telefono }}
+
+        </td>
+
+      </ng-container>
+
+      <!-- CARGO -->
+
+      <ng-container matColumnDef="cargo">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Cargo
+        </th>
+
+        <td mat-cell *matCellDef="let employee">
+
+          <span class="cargo-badge">
+
+            {{ employee.cargo }}
+
+          </span>
+
+        </td>
+
+      </ng-container>
+
+      <!-- FECHA -->
+
+      <ng-container matColumnDef="fecha_Contratacion">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Contratación
+        </th>
+
+        <td mat-cell *matCellDef="let employee">
+
+          {{ employee.fecha_Contratacion | date:'dd/MM/yyyy' }}
+
+        </td>
+
+      </ng-container>
+
+      <!-- ACCIONES -->
+
+      <ng-container matColumnDef="actions">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Acciones
+        </th>
+
+        <td mat-cell *matCellDef="let employee">
+
+          <div class="actions">
+
+            <button
+              mat-icon-button
+              class="edit-btn"
+              (click)="openEditDialog(employee,$event)">
+
+              <mat-icon>edit</mat-icon>
+
+            </button>
+
+            <button
+              mat-icon-button
+              class="delete-btn"
+              (click)="deleteEmployees(employee.empleadoId,$event)">
+
+              <mat-icon>delete</mat-icon>
+
+            </button>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns">
+      </tr>
+
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+
     </table>
+
+  </div>
+
 </div>

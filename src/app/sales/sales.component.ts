@@ -29,6 +29,8 @@ export class SalesComponent implements OnInit {
     'cliente',
     'empleado',
     'fechaVenta',
+    'estado',
+    'estadoPago',
     'total',
     'detalles',
     'actions',
@@ -109,9 +111,10 @@ export class SalesComponent implements OnInit {
     (event.currentTarget as HTMLElement).blur(); // ✅ esto quitará el sombreado
 
     const dialogRef = this.dialog.open(FormUpdateComponent, {
-      width: '700px', // ancho fijo pero responsive
+     width: '700px', // ancho fijo pero responsive
       maxWidth: '90vw', // limite responsive
       maxHeight: '90vh', // límite de altura de la pantalla
+      panelClass: 'custom-dialog', // para aplicar estilos CSS específicos
 
       data: { venta: sale },
     });

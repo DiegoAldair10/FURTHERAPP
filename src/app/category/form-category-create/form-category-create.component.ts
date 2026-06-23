@@ -9,10 +9,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CategoryService } from '../../services/category.service';
 import Swal from 'sweetalert2';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-form-category-create',
-  imports: [  
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
@@ -21,7 +22,8 @@ import Swal from 'sweetalert2';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-  ],
+    MatIcon
+],
   templateUrl: './form-category-create.component.html',
   styleUrl: './form-category-create.component.css'
 })

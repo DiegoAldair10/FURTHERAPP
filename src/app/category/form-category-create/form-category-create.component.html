@@ -1,22 +1,83 @@
-<h2 mat-dialog-title>Agregar Categoria</h2>
-<div mat-dialog-content>
+<div class="category-modal">
+
+  <div class="modal-header">
+
+    <div class="header-icon">
+      <mat-icon>category</mat-icon>
+    </div>
+
+    <div>
+      <h2>Agregar Categoría</h2>
+      <p>Registra una nueva categoría para organizar los productos.</p>
+    </div>
+
+  </div>
+
   <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+
+    <div class="section-title">
+      Información General
+    </div>
+
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
+
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" required />
+
+        <input
+          matInput
+          formControlName="nombre"
+          required />
+
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="form-field">
+      <mat-form-field appearance="outline" class="form-field">
+
         <mat-label>Descripción</mat-label>
-        <input matInput formControlName="descripcion" required />
+
+        <input
+          matInput
+          formControlName="descripcion"
+          required />
+
       </mat-form-field>
+
     </div>
-    <div mat-dialog-actions align="end">
-      <button mat-button (click)="closeDialog()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit"  [disabled]="categoryForm.invalid">
-        Guardar
+
+    <div class="info-box">
+
+      <mat-icon>info</mat-icon>
+
+      Las categorías ayudan a organizar y clasificar los productos.
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="closeDialog()">
+
+        Cancelar
+
       </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="categoryForm.invalid">
+
+        <mat-icon>save</mat-icon>
+
+        Guardar Categoría
+
+      </button>
+
     </div>
+
   </form>
+
 </div>

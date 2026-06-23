@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import Swal from 'sweetalert2';
 import { Category } from '../../model/category';
 import { CategoryService } from '../../services/category.service';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-form-category-update',
@@ -22,7 +23,8 @@ import { CategoryService } from '../../services/category.service';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-  ],
+    MatIcon
+],
   templateUrl: './form-category-update.component.html',
   styleUrl: './form-category-update.component.css',
 })

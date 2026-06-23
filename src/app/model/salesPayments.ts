@@ -1,7 +1,7 @@
 import { DetailSale } from './detailSale';
 
 export interface  SalesPayments {
-  pagosId: number;
+  pagoId: number;
   ventaId: number;
   numeroComprobante: string;
   tipoComprobante: string;
