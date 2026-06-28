@@ -1,346 +1,352 @@
+/*==================================================
+  LAYOUT GENERAL & DASHBOARD
+==================================================*/
 .dashboard {
-padding: 32px 32px 90px;
-  background: #f5f7fb;
-  min-height: calc(100vh - 64px);
-  box-sizing: border-box;
-
+    padding: 32px;
+    padding-bottom: 60px; /* 👈 Agrega esto para dar espacio libre antes del final de la página */
+    background: #f5f7fb;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    box-sizing: border-box;
 }
 
+/*==================================================
+  HEADER & ACCIONES
+==================================================*/
 .dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
-.dashboard-header h1 {
-  margin: 0;
-  color: #072146;
-  font-size: 32px;
-  font-weight: 800;
+.header-info {
+    display: flex;
+    flex-direction: column;
 }
 
-.dashboard-header p {
-  margin: 8px 0 0;
-  color: #6b7280;
-  font-size: 16px;
+.welcome {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
 }
 
-.date-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #ffffff;
-  padding: 14px 20px;
-  border-radius: 16px;
-  color: #072146;
-  font-weight: 700;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+.header-info h1 {
+    margin: 0;
+    color: #072146;
+    font-size: 36px;
+    font-weight: 900;
 }
 
-.loading {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  color: #072146;
-  font-weight: 700;
+.header-info p {
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 14px;
 }
 
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
-  margin-bottom: 26px;
+.header-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
 }
 
-.summary-card {
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+.dashboard-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 12px 18px;
+    border-radius: 999px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, .08);
+    font-weight: 700;
+    color: #072146;
+    font-size: 14px;
 }
 
-.card-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 26px;
+/*==================================================
+  LOADING STATE
+==================================================*/
+.loading-card {
+    background: white;
+    border-radius: 18px;
+    padding: 26px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    color: #072146;
+    font-weight: 700;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, .08);
 }
 
-.icon-box {
-  width: 66px;
-  height: 66px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/*==================================================
+  KPI CARDS GRID
+==================================================*/
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-bottom: 28px;
 }
 
-.icon-box mat-icon {
-  font-size: 36px;
-  width: 36px;
-  height: 36px;
+.kpi-card {
+    background: #ffffff !important;
+    border-radius: 22px !important;
+    padding: 24px !important;
+    
+    /* Forzamos alineación en fila (Icono izquierda, texto derecha) */
+    display: flex !important;
+    flex-direction: row !important; 
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 20px !important;
+    
+    transition: transform .25s, box-shadow .25s;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, .08) !important;
+    border: none !important;
+    box-sizing: border-box !important;
 }
 
-.blue {
-  background: #e3f0ff;
-  color: #0d6efd;
+.kpi-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 35px rgba(15, 23, 42, .12) !important;
 }
 
-.green {
-  background: #dff7ea;
-  color: #16a34a;
+/* Contenedor del Icono (Caja de color) */
+.kpi-icon {
+    width: 68px !important;      /* Tamaño de la caja aumentado */
+    height: 68px !important;     /* Tamaño de la caja aumentado */
+    border-radius: 18px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;   /* Evita que se deforme o achique */
 }
 
-.orange {
-  background: #fff1d6;
-  color: #f59e0b;
+/* Icono de Angular Material Interno */
+.kpi-icon mat-icon {
+    font-size: 36px !important;  /* ¡Icono mucho más grande! */
+    width: 36px !important;      /* Forzado para que no se corte el vector */
+    height: 36px !important;     /* Forzado para que no se corte el vector */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
-.purple {
-  background: #efe3ff;
-  color: #7c3aed;
+/* Contenedor del Texto a la derecha */
+.kpi-info {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important; /* Alinea los textos a la izquierda */
+    text-align: left !important;
 }
 
-.card-info p {
-  margin: 0;
-  color: #64748b;
-  font-weight: 700;
+.kpi-info span {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
 }
 
-.card-info h2 {
-  margin: 8px 0 4px;
-  color: #072146;
-  font-size: 30px;
-  font-weight: 900;
+.kpi-info h2 {
+    margin: 4px 0 !important;
+    color: #072146;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.2;
 }
 
-.card-info span {
-  color: #2563eb;
-  font-size: 14px;
-  font-weight: 700;
+.kpi-info small {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 24px;
-  margin-bottom: 26px;
+/* Colores de fondo de los iconos */
+.blue { background: #e7f1ff !important; color: #0d6efd !important; }
+.green { background: #dff7ea !important; color: #16a34a !important; }
+.orange { background: #fff4df !important; color: #f59e0b !important; }
+.purple { background: #efe6ff !important; color: #7c3aed !important; }
+
+/*==================================================
+  SEGUNDA Y TERCERA FILA (Grids estructurales)
+==================================================*/
+.dashboard-grid, 
+.tables-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 22px;
+    margin-bottom: 28px;
 }
 
+/* Estilo unificado de tarjetas contenedoras */
 .chart-card,
-.category-card,
+.finance-card,
+.table-card,
 .activity-card {
-  border-radius: 20px;
-  padding: 26px;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.07);
+    border-radius: 22px !important;
+    background: #ffffff !important;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, .08) !important;
+    overflow: hidden;
+    border: none !important;
 }
 
-.chart-card h3,
-.category-card h3,
-.activity-card h3 {
-  margin: 0 0 24px;
-  color: #072146;
-  font-weight: 900;
+/* Cabeceras de tarjetas */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 24px;
+    border-bottom: 1px solid #eef2f7;
 }
 
-.bars {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.card-header h3 {
+    margin: 0;
+    color: #072146;
+    font-size: 18px;
+    font-weight: 800;
 }
 
-.bar-row {
-  display: grid;
-  grid-template-columns: 110px 1fr 60px;
-  align-items: center;
-  gap: 16px;
-  color: #334155;
-  font-weight: 700;
+.card-header p {
+    margin: 6px 0 0 0;
+    color: #64748b;
+    font-size: 13px;
 }
 
-.bar-bg {
-  width: 100%;
-  height: 14px;
-  background: #e5eaf3;
-  border-radius: 999px;
-  overflow: hidden;
+/*==================================================
+  CONTENEDORES ESPECÍFICOS
+==================================================*/
+/* Marcador de posición del gráfico */
+.chart-placeholder {
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fafcff;
+    font-size: 110px;        /* Aumentado de 64px a 110px para que llene la tarjeta */
+    color: #d5dce8;
+    width: 100%;
+    box-sizing: border-box;
+    opacity: 0.7;           /* Un toque sutil de transparencia estilo marca de agua */
+    animation: pulse 2s infinite ease-in-out; /* Animación suave para que se mueva */
 }
 
-.bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  max-width: 100%;
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
-.blue-bar {
-  background: #0d6efd;
+/* Resumen financiero ítems */
+.finance-card { padding-bottom: 10px; }
+
+.finance-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid #edf2f7;
+    transition: background .20s;
 }
 
-.green-bar {
-  background: #16a34a;
+.finance-item:last-child { border-bottom: none; }
+.finance-item:hover { background: #f8fafc; }
+
+.finance-item span { color: #64748b; font-weight: 600; font-size: 14px; }
+.finance-item strong { color: #072146; font-size: 18px; font-weight: 900; }
+
+/*==================================================
+  TABLAS DE DATOS
+==================================================*/
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.orange-bar {
-  background: #f59e0b;
+.dashboard-table thead { background: #f8fafc; }
+
+.dashboard-table th {
+    padding: 16px 24px;
+    text-align: left;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
 }
 
-.purple-bar {
-  background: #7c3aed;
+.dashboard-table td {
+    padding: 18px 24px;
+    border-top: 1px solid #eef2f7;
+    color: #334155;
+    font-size: 14px;
 }
 
-.category-card {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  align-items: center;
-  gap: 20px;
+.dashboard-table tbody tr { transition: background .20s; }
+.dashboard-table tbody tr:hover { background: #f8fafc; }
+
+/* Badges / Estados Modernos */
+.status {
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.category-card h3 {
-  grid-column: span 2;
+.success { background: #dcfce7; color: #16a34a; }
+.warning { background: #fff7d6; color: #ca8a04; }
+.danger  { background: #fee2e2; color: #dc2626; }
+
+/*==================================================
+  ACTIVIDAD RECIENTE
+==================================================*/
+.activity-card {
+    padding-bottom: 10px;
+    max-height: 410px; /* Ajusta este valor para que se alinee con la altura de tu tabla */
+    overflow-y: auto;  /* Muestra scrollbar solo si es necesario */
+}
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 24px;
+    border-bottom: 1px solid #eef2f7;
+    transition: background .20s;
 }
 
-.donut {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: conic-gradient(
-    #0d6efd 0 25%,
-    #16a34a 25% 50%,
-    #f59e0b 50% 75%,
-    #7c3aed 75% 100%
-  );
-  position: relative;
-}
-
-.donut::after {
-  content: '';
-  width: 76px;
-  height: 76px;
-  background: #ffffff;
-  border-radius: 50%;
-  position: absolute;
-  inset: 52px;
-}
-
-.legend p {
-  display: flex;
-  justify-content: space-between;
-  gap: 22px;
-  color: #334155;
-  font-weight: 700;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-}
-
-.blue-dot {
-  background: #0d6efd;
-}
-
-.green-dot {
-  background: #16a34a;
-}
-
-.orange-dot {
-  background: #f59e0b;
-}
-
-.purple-dot {
-  background: #7c3aed;
-}
-
-.activity-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.activity-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-  border-top: 1px solid #edf0f5;
-}
-
-.activity-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
+.activity-item:last-child { border-bottom: none; }
+.activity-item:hover { background: #f8fafc; }
 
 .activity-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: #e3f0ff;
-  color: #0d6efd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #e7f1ff;
+    color: #1464f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
 }
 
-.activity-left h4 {
-  margin: 0;
-  color: #072146;
-  font-weight: 800;
-}
-
-.activity-left p {
-  margin: 4px 0 0;
-  color: #64748b;
-}
-
-.status {
-  background: #dff7ea;
-  color: #16a34a;
-  padding: 7px 14px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-@media (max-width: 1200px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 700px) {
-  .dashboard {
-    padding: 18px;
-  }
-
-  .dashboard-header {
+.activity-info {
+    flex: 1;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
+}
 
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
+.activity-info strong { color: #072146; font-size: 14px; font-weight: 800; }
+.activity-info span { margin-top: 4px; color: #64748b; font-size: 13px; }
 
-  .category-card {
-    grid-template-columns: 1fr;
-  }
-
-  .category-card h3 {
-    grid-column: span 1;
-  }
-
-  .activity-row {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
+.activity-status {
+    background: #e2e8f0;
+    color: #475569;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
 }

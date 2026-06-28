@@ -6,22 +6,57 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { DashboardService } from '../services/dashboard.service';
+import { Dashboard } from '../model/dashboard';import {
+  NgApexchartsModule,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexStroke,
+  ApexDataLabels,
+  ApexGrid,
+  ApexTooltip,
+} from 'ng-apexcharts';
+export type ChartOptions = {
+
+  series: ApexAxisChartSeries;
+
+  chart: ApexChart;
+
+  xaxis: ApexXAxis;
+
+  stroke: ApexStroke;
+
+  dataLabels: ApexDataLabels;
+
+  grid: ApexGrid;
+
+  tooltip: ApexTooltip;
+
+  colors: string[];
+};
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule,
+        CommonModule,
     MatCardModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    NgApexchartsModule,
+    NgApexchartsModule,
   ],
+
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
+  public chartOptions!: Partial<ChartOptions>;
 
+  nombreUsuario = 'Administrador';
   loading = true;
+
+  dashboard!: Dashboard;
 
   totalProductos = 0;
   totalClientes = 0;
@@ -40,60 +75,58 @@ export class DashboardComponent implements OnInit {
   cargarDashboard(): void {
     this.loading = true;
 
-    this.dashboardService.getDashboardData().subscribe({
-      next: (data) => {
-        this.totalProductos = data.productos?.length || 0;
-        this.totalClientes = data.clientes?.length || 0;
-        this.totalVentas = data.ventas?.length || 0;
-        this.totalUsuarios = data.usuarios?.length || 0;
+    this.dashboardService.getDashboard().subscribe({
+      next: (data: Dashboard) => {
+        this.dashboard = data;
 
-        this.montoVentas = this.calcularMontoVentas(data.ventas || []);
+        this.totalProductos = data.totalProductos;
+
+        this.totalClientes = data.totalClientes;
+
+        this.totalVentas = data.totalVentas;
+
+        this.totalUsuarios = data.totalUsuarios;
+
+        this.montoVentas = data.montoVentas;
 
         this.actividades = [
           {
-            icon: 'shopping_cart',
-            titulo: 'Productos registrados',
-            descripcion: `${this.totalProductos} productos en el sistema`,
-            estado: 'Activo'
+            icon: 'inventory_2',
+            titulo: 'Productos',
+            descripcion: `${this.totalProductos} productos registrados`,
+            estado: 'Activo',
           },
+
           {
             icon: 'groups',
-            titulo: 'Clientes registrados',
-            descripcion: `${this.totalClientes} clientes en el sistema`,
-            estado: 'Activo'
+            titulo: 'Clientes',
+            descripcion: `${this.totalClientes} clientes registrados`,
+            estado: 'Activo',
           },
+
           {
-            icon: 'attach_money',
-            titulo: 'Ventas realizadas',
-            descripcion: `${this.totalVentas} ventas registradas`,
-            estado: 'Activo'
+            icon: 'point_of_sale',
+            titulo: 'Ventas',
+            descripcion: `${this.totalVentas} ventas realizadas`,
+            estado: 'Activo',
           },
+
           {
             icon: 'manage_accounts',
-            titulo: 'Usuarios registrados',
-            descripcion: `${this.totalUsuarios} usuarios en el sistema`,
-            estado: 'Activo'
-          }
+            titulo: 'Usuarios',
+            descripcion: `${this.totalUsuarios} usuarios registrados`,
+            estado: 'Activo',
+          },
         ];
 
         this.loading = false;
       },
-      error: (error) => {
-        console.error('Error cargando dashboard:', error);
-        this.loading = false;
-      }
-    });
-  }
 
-  calcularMontoVentas(ventas: any[]): number {
-    return ventas.reduce((total, venta) => {
-      return total + Number(
-        venta.total ||
-        venta.monto ||
-        venta.totalVenta ||
-        venta.precioTotal ||
-        0
-      );
-    }, 0);
+      error: (error: any) => {
+        console.error('Error cargando dashboard', error);
+
+        this.loading = false;
+      },
+    });
   }
 }

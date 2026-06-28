@@ -10,8 +10,10 @@ import { CategoryComponent } from './category/category.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { PerfilDetailsComponent } from './perfil-details/perfil-details.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'clientes', component: CustomerComponent },
   { path: 'empleados', component: EmployeeComponent },
@@ -22,5 +24,7 @@ export const routes: Routes = [
   { path: 'pago', component: SalesPaymentsComponent },
   { path: 'categoria', component: CategoryComponent },
   { path: 'usuario', component: UserComponent },
-  {path: 'dashboard',component: DashboardComponent},
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'perfil', component: PerfilDetailsComponent },
+  { path: '**', redirectTo: 'login' },
 ];

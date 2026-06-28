@@ -1,33 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
+import { Dashboard } from '../model/dashboard';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
 
-  private baseUrl = 'http://localhost:8090';
+ private url =
+    'http://localhost:8090/api/dashboard';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient
+  ) {}
 
-  private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+  getDashboard():
+    Observable<Dashboard> {
 
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
+    return this.http.get<Dashboard>(
+      this.url
+    );
+
   }
 
-  getDashboardData(): Observable<any> {
-    const headers = this.getHeaders();
-
-    return forkJoin({
-      productos: this.http.get<any[]>(`${this.baseUrl}/api/productos`, { headers }),
-      clientes: this.http.get<any[]>(`${this.baseUrl}/api/clientes`, { headers }),
-      ventas: this.http.get<any[]>(`${this.baseUrl}/api/ventas`, { headers }),
-      usuarios: this.http.get<any[]>(`${this.baseUrl}/users`, { headers })
-    });
-  }
 }

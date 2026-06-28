@@ -6,4 +6,11 @@ export interface Usuario {
   password: string;
   estado: number;
   roles: Role[];
+  empleadoId?: number;
+
+  empleado?: {
+    empleadoId: number;
+    nombre: string;
+    apellido: string;
+  };
 }
