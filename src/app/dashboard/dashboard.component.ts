@@ -6,7 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { DashboardService } from '../services/dashboard.service';
-import { Dashboard } from '../model/dashboard';import {
+import { Dashboard } from '../model/dashboard';
+
+import {
   NgApexchartsModule,
   ApexAxisChartSeries,
   ApexChart,
@@ -15,9 +17,11 @@ import { Dashboard } from '../model/dashboard';import {
   ApexDataLabels,
   ApexGrid,
   ApexTooltip,
+  ApexFill,
+  ApexMarkers,
 } from 'ng-apexcharts';
-export type ChartOptions = {
 
+export type ChartOptions = {
   series: ApexAxisChartSeries;
 
   chart: ApexChart;
@@ -33,40 +37,104 @@ export type ChartOptions = {
   tooltip: ApexTooltip;
 
   colors: string[];
+
+  fill: ApexFill;
+
+  markers: ApexMarkers;
 };
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-        CommonModule,
+    CommonModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
     NgApexchartsModule,
-    NgApexchartsModule,
   ],
-
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
-  public chartOptions!: Partial<ChartOptions>;
+  public chartOptions: Partial<ChartOptions>;
 
   nombreUsuario = 'Administrador';
+
   loading = true;
 
   dashboard!: Dashboard;
 
   totalProductos = 0;
+
   totalClientes = 0;
+
   totalVentas = 0;
+
   totalUsuarios = 0;
+
   montoVentas = 0;
 
   actividades: any[] = [];
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService) {
+    this.chartOptions = {
+      series: [
+        {
+          name: 'Ventas',
+          data: [1500, 2800, 1900, 3200, 4100, 3600, 5000],
+        },
+      ],
+
+      chart: {
+        type: 'area',
+        height: 340,
+        toolbar: {
+          show: false,
+        },
+        zoom: {
+          enabled: false,
+        },
+      },
+
+      colors: ['#1464F4'],
+
+      stroke: {
+        curve: 'smooth',
+        width: 4,
+      },
+
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.45,
+          opacityTo: 0.05,
+          stops: [0, 100],
+        },
+      },
+
+      markers: {
+        size: 5,
+      },
+
+      dataLabels: {
+        enabled: false,
+      },
+
+      xaxis: {
+        categories: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+      },
+
+      grid: {
+        borderColor: '#ECEFF5',
+      },
+
+      tooltip: {
+        enabled: true,
+      },
+    };
+  }
 
   ngOnInit(): void {
     this.cargarDashboard();
@@ -106,8 +174,8 @@ export class DashboardComponent implements OnInit {
 
           {
             icon: 'point_of_sale',
-            titulo: 'Ventas',
-            descripcion: `${this.totalVentas} ventas realizadas`,
+            titulo: `${this.totalVentas} Ventas`,
+            descripcion: `Monto vendido S/ ${this.montoVentas}`,
             estado: 'Activo',
           },
 
@@ -119,13 +187,37 @@ export class DashboardComponent implements OnInit {
           },
         ];
 
+        // NUEVO
+        this.cargarGrafico();
         this.loading = false;
       },
 
-      error: (error: any) => {
-        console.error('Error cargando dashboard', error);
+      error: (err) => {
+        console.error(err);
 
         this.loading = false;
+      },
+    });
+  }
+
+  private cargarGrafico(): void {
+    this.dashboardService.getVentasMes().subscribe({
+      next: (ventas) => {
+        this.chartOptions = {
+          ...this.chartOptions,
+          series: [
+            {
+              name: 'Ventas',
+              data: ventas.map(v => v.total),
+            },
+          ],
+          xaxis: {
+            categories: ventas.map(v => v.mes),
+          },
+        };
+      },
+      error: (err) => {
+        console.error('Error cargando gráfico', err);
       },
     });
   }

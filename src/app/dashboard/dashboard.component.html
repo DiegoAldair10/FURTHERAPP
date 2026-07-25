@@ -82,7 +82,14 @@
             <mat-icon>more_vert</mat-icon>
           </button>
         </div>
-        <div class="chart-placeholder">📈</div>
+        <div class="chart-container">
+
+          <apx-chart [series]="$any(chartOptions.series)" [chart]="$any(chartOptions.chart)" [xaxis]="$any(chartOptions.xaxis)"
+            [stroke]="$any(chartOptions.stroke)" [colors]="$any(chartOptions.colors)" [grid]="$any(chartOptions.grid)"
+            [tooltip]="$any(chartOptions.tooltip)" [dataLabels]="$any(chartOptions.dataLabels)">
+          </apx-chart>
+
+        </div>
       </mat-card>
 
       <mat-card class="finance-card">

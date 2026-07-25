@@ -22,6 +22,13 @@ export class DashboardService {
       this.url
     );
 
+    
   }
+
+  getVentasMes(): Observable<any[]> {
+  return this.http.get<any[]>(
+    this.url + '/ventas-mes'
+  );
+}
 
 }
