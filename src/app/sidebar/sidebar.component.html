@@ -5,7 +5,6 @@
     <mat-nav-list>
 
       <!-- GENERAL -->
-
       <div class="menu-section">
         <span class="menu-title" style="color: white;">GENERAL</span>
       </div>
@@ -16,7 +15,6 @@
       </a>
 
       <!-- OPERACIONES -->
-
       <div class="menu-section">
         <span class="menu-title" style="color: white;">OPERACIONES</span>
       </div>
@@ -31,6 +29,11 @@
         <span class="font">Ventas</span>
       </a>
 
+      <a mat-list-item routerLink="/compras" routerLinkActive="active">
+        <mat-icon>shopping_cart</mat-icon>
+        <span class="font">Compras</span>
+      </a>
+
       <a mat-list-item routerLink="/clientes" routerLinkActive="active">
         <mat-icon>groups</mat-icon>
         <span class="font">Clientes</span>
@@ -41,8 +44,34 @@
         <span class="font">Pagos</span>
       </a>
 
-      <!-- SOLO ADMIN -->
+      <!-- INVENTARIO CON SUBMENÚ FLOTANTE LATERAL -->
+      <div class="has-flyout-menu">
+        <a mat-list-item routerLink="/inventario" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+          class="inventario-link">
+          <mat-icon>inventory_2</mat-icon>
+          <span class="font">Inventario</span>
+          <mat-icon class="arrow-icon">chevron_right</mat-icon>
+        </a>
 
+        <!-- Submenú Flotante idéntico a la imagen -->
+        <div class="flyout-panel">
+
+          <a routerLink="/inventory-reports"  routerLinkActive="active" class="flyout-item">
+            <mat-icon>sync_alt</mat-icon>
+            <span>Kardex</span>
+          </a>
+          <a routerLink="" class="flyout-item">
+            <mat-icon>inventory</mat-icon>
+            <span>Stock Actual</span>
+          </a>
+          <a routerLink="" class="flyout-item">
+            <mat-icon>bar_chart</mat-icon>
+            <span>Reportes</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- SOLO ADMIN -->
       @if (authService.isAdmin()) {
 
       <div class="menu-section">

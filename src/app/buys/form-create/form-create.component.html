@@ -1,0 +1,124 @@
+<div class="sale-modal">
+
+  <div class="modal-header">
+    <div class="header-icon">
+      <mat-icon>shopping_cart</mat-icon>
+    </div>
+
+    <div>
+      <h2>Crear compra</h2>
+      <p>Registra una nueva compra a un proveedor</p>
+    </div>
+  </div>
+
+  <form [formGroup]="buysForm" (ngSubmit)="onSubmit()">
+
+    <div class="section-title">Comprobante</div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Tipo de comprobante</mat-label>
+        <mat-select formControlName="tipoComprobante">
+          <mat-option *ngFor="let tipo of comprobantes" [value]="tipo.nombre">
+            {{ tipo.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field small">
+        <mat-label>Serie</mat-label>
+        <input matInput formControlName="serie" placeholder="Ej. F001" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field small">
+        <mat-label>Número</mat-label>
+        <input matInput formControlName="numero" placeholder="Ej. 000002" />
+      </mat-form-field>
+    </div>
+
+    <div class="section-title">Datos de la compra</div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field full">
+        <mat-label>Proveedor</mat-label>
+        <mat-select formControlName="proveedor">
+          <mat-option *ngFor="let prov of proveedores" [value]="prov">
+            {{ prov.nombre || prov.razonSocial || prov.proveedorNombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Moneda</mat-label>
+        <mat-select formControlName="moneda">
+          <mat-option value="PEN">Soles (PEN)</mat-option>
+          <mat-option value="USD">Dólares (USD)</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="section-title">Productos de la Compra</div>
+
+    <div formArrayName="detalles" class="details-list">
+      <div
+        *ngFor="let detalle of detalles.controls; let i = index"
+        [formGroupName]="i"
+        class="detalle-card">
+
+        <div class="detalle-title">
+          <span>Producto {{ i + 1 }}</span>
+          <button 
+            type="button" 
+            mat-icon-button 
+            color="warn" 
+            (click)="eliminarDetalle(i)"
+            *ngIf="detalles.length > 1"
+            title="Eliminar este producto">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Producto</mat-label>
+            <mat-select formControlName="producto">
+              <mat-option *ngFor="let product of products" [value]="product">
+                {{ product.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field small">
+            <mat-label>Cantidad</mat-label>
+            <input matInput type="number" formControlName="cantidad" min="1" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field small">
+            <mat-label>Precio Unitario</mat-label>
+            <input matInput type="number" formControlName="precioUnitario" step="0.01" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        <button mat-stroked-button type="button" (click)="agregarDetalle()">
+          <mat-icon>add</mat-icon>
+          Agregar producto
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button mat-stroked-button type="button" (click)="closeDialog()">
+        Cancelar
+      </button>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="buysForm.invalid">
+        <mat-icon>save</mat-icon>
+        Guardar compra
+      </button>
+    </div>
+
+  </form>
+
+</div>

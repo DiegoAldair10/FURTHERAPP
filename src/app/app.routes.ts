@@ -11,6 +11,9 @@ import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PerfilDetailsComponent } from './perfil-details/perfil-details.component';
+import { InventoryComponent } from './inventory/inventory.component';
+import { InventoryReportsComponent } from './inventory-reports/inventory-reports.component';
+import { BuysComponent } from './buys/buys.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -22,9 +25,12 @@ export const routes: Routes = [
   { path: 'ventas', component: SalesComponent },
   { path: 'metodos-pago', component: PaymentComponent },
   { path: 'pago', component: SalesPaymentsComponent },
+  { path: 'compras', component: BuysComponent },
   { path: 'categoria', component: CategoryComponent },
   { path: 'usuario', component: UserComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'perfil', component: PerfilDetailsComponent },
+  { path: 'inventario', component: InventoryComponent },
+  { path: 'inventory-reports', component: InventoryReportsComponent },
   { path: '**', redirectTo: 'login' },
 ];

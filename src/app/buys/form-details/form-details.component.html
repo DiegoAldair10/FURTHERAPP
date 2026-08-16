@@ -1,0 +1,160 @@
+<div class="pago-container" *ngIf="compra">
+
+    <div class="pago-content">
+
+        <!-- HEADER -->
+        <div class="pago-header">
+
+            <div>
+                <h2>Detalle de Compra #{{ compra.compraId }}</h2>
+                <span>
+                    {{ compra.tipoComprobante || 'COMPROBANTE' }}
+                    <ng-container *ngIf="compra.serie">
+                        - {{ compra.serie }}-{{ compra.numero }}
+                    </ng-container>
+                </span>
+            </div>
+
+            <div class="estado-pago pagada">
+                <span class="estado-venta" [ngClass]="{
+          'borrador': compra.estado === 'BORRADOR' || compra.estado === 'PENDIENTE',
+          'emitida': compra.estado === 'EMITIDA' || compra.estado === 'COMPLETADA',
+          'anulada': compra.estado === 'ANULADA' || compra.estado === 'CANCELADA'
+        }">
+                    {{ compra.estado }}
+                </span>
+            </div>
+
+        </div>
+
+        <!-- DATOS DE LA COMPRA -->
+        <div class="pago-card">
+
+            <h3>Información de la Compra</h3>
+
+            <div class="datos-grid">
+
+                <div class="info-card">
+                    <span>Proveedor</span>
+                    <strong>
+                        {{ compra.proveedorNombre || compra.proveedorId }}
+                    </strong>
+                </div>
+
+                <div class="info-card">
+                    <span>Estado de Pago</span>
+                    <strong>{{ compra.estadoPago || 'REGISTRADA' }}</strong>
+                </div>
+
+                <div class="info-card">
+                    <span>Fecha de Compra</span>
+                    <strong>{{ compra.fechaCompra | date:'dd/MM/yyyy HH:mm' }}</strong>
+                </div>
+
+                <div class="info-card">
+                    <span>Moneda</span>
+                    <strong>{{ compra.moneda || 'PEN' }}</strong>
+                </div>
+
+                <div class="info-card">
+                    <span>Estado Registro</span>
+                    <strong>{{ compra.estado }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- DETALLE DE PRODUCTOS -->
+        <div class="pago-card">
+
+            <h3>Detalle de productos</h3>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th class="center">Cantidad</th>
+                            <th class="right">Precio Unitario</th>
+                            <th class="right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let d of compra.detalles">
+
+                            <!-- AQUÍ ESTÁ EL CAMBIO PRINCIPAL -->
+                            <td>
+                                {{ d.producto?.nombre || d.productoNombre || 'Producto #' + d.productoId }}
+                            </td>
+
+                            <td class="center">
+                                {{ d.cantidad }}
+                            </td>
+
+                            <td class="right">
+                                {{ getSimboloMoneda() }} {{ d.precioUnitario | number:'1.2-2' }}
+                            </td>
+
+                            <td class="right">
+                                {{ getSimboloMoneda() }} {{ d.subtotal | number:'1.2-2' }}
+                            </td>
+
+                        </tr>
+                        <!-- Mensaje si la lista de detalles está vacía o no ha cargado -->
+                        <tr *ngIf="!compra.detalles || compra.detalles.length === 0">
+                            <td colspan="4" style="text-align: center; color: #888; padding: 15px;">
+                                No hay detalles registrados para esta compra.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- TOTALES -->
+            <div class="total-box">
+
+                <div>
+                    <span>Subtotal</span>
+                    <span>
+                        {{ getSimboloMoneda() }} {{ (compra.subtotal || 0) | number:'1.2-2' }}
+                    </span>
+                </div>
+
+                <div class="total">
+                    <span>IGV 18%</span>
+                    <span>
+                        {{ getSimboloMoneda() }} {{ (compra.igv || 0) | number:'1.2-2' }}
+                    </span>
+                </div>
+
+                <div class="total">
+                    <span>Total Compra</span>
+                    <span>
+                        {{ getSimboloMoneda() }} {{ (compra.totalCompra || 0) | number:'1.2-2' }}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTONES -->
+    <div class="pago-actions no-print">
+
+        <button mat-stroked-button color="primary" (click)="cerrar($event)">
+            Cerrar
+        </button>
+
+        <button mat-raised-button color="primary" (click)="printBoleta()">
+            <mat-icon>print</mat-icon>
+            Imprimir Detalle de Compra
+        </button>
+
+    </div>
+
+</div>

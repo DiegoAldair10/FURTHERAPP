@@ -1,0 +1,266 @@
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="dashboard-header">
+    <div class="header-info">
+      <span class="welcome">Panel de Control</span>
+      <h1>Inventario</h1>
+      <p>Gestión de stock y movimientos recientes del sistema</p>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpi-grid">
+
+    <div class="kpi-card">
+      <div class="kpi-icon blue">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+
+      <div class="kpi-info">
+        <span>Stock Actual</span>
+        <h2>{{ dashboard.stockActual || 0 }}</h2>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon green">
+        <mat-icon>arrow_downward</mat-icon>
+      </div>
+
+      <div class="kpi-info">
+        <span>Entradas Hoy</span>
+        <h2>{{ dashboard.entradasHoy || 0 }}</h2>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon red">
+        <mat-icon>arrow_upward</mat-icon>
+      </div>
+
+      <div class="kpi-info">
+        <span>Salidas Hoy</span>
+        <h2>{{ dashboard.salidasHoy || 0 }}</h2>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon orange">
+        <mat-icon>warning_amber</mat-icon>
+      </div>
+
+      <div class="kpi-info">
+        <span>Productos Stock Bajo</span>
+        <h2>{{ dashboard.productosStockBajo || 0 }}</h2>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRAFICOS -->
+  <div class="dashboard-grid">
+
+    <!-- Entradas vs Salidas -->
+    <div class="chart-card">
+
+      <div class="card-header">
+        <h3>Entradas vs Salidas</h3>
+      </div>
+
+      <div class="chart-container">
+
+        <apx-chart
+          *ngIf="movimientosChart"
+          [series]="movimientosChart.series"
+          [chart]="movimientosChart.chart"
+          [stroke]="movimientosChart.stroke"
+          [xaxis]="movimientosChart.xaxis"
+          [legend]="movimientosChart.legend"
+          [dataLabels]="movimientosChart.dataLabels">
+        </apx-chart>
+
+      </div>
+
+    </div>
+
+    <!-- Stock por categoría -->
+    <div class="chart-card">
+
+      <div class="card-header">
+        <h3>Stock por Categoría</h3>
+      </div>
+
+      <div class="chart-container">
+
+        <apx-chart
+          *ngIf="stockChart"
+          [series]="stockChart.series"
+          [chart]="stockChart.chart"
+          [labels]="stockChart.labels"
+          [legend]="stockChart.legend">
+        </apx-chart>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TABLAS -->
+  <div class="tables-grid">
+
+    <!-- PRODUCTOS STOCK BAJO -->
+    <div class="table-card scrollable-card">
+
+      <div class="card-header">
+
+        <div>
+          <h3>Productos con Stock Bajo</h3>
+          <p>Listado de productos que requieren reabastecimiento</p>
+        </div>
+
+      </div>
+
+      <table class="dashboard-table">
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+            <th>Producto</th>
+            <th style="text-align:right">Stock</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let producto of productosStock">
+
+            <td>{{ producto.productoId }}</td>
+
+            <td>
+
+              <strong>{{ producto.nombre }}</strong>
+
+            </td>
+
+            <td style="text-align:right">
+
+              <span
+                class="status"
+                [ngClass]="{
+                    'warning': producto.stock>2,
+                    'danger': producto.stock<=2
+                }">
+
+                {{ producto.stock }}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+          <tr *ngIf="productosStock.length==0">
+
+            <td colspan="3" style="text-align:center">
+
+              No existen productos con stock bajo.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- ÚLTIMOS MOVIMIENTOS -->
+    <div class="activity-card scrollable-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>Últimos Movimientos</h3>
+
+          <p>Actividad reciente del inventario</p>
+
+        </div>
+
+      </div>
+
+      <div
+        class="activity-item"
+        *ngFor="let mov of ultimosMovimientos">
+
+        <div
+          class="activity-icon"
+          [ngClass]="{
+            'green': mov.tipoMov=='ENTRADA',
+            'red': mov.tipoMov=='SALIDA'
+          }">
+
+          <mat-icon>
+
+            {{ mov.tipoMov=='ENTRADA'
+                ? 'arrow_downward'
+                : 'arrow_upward' }}
+
+          </mat-icon>
+
+        </div>
+
+        <div class="activity-info">
+
+          <strong>{{ mov.producto }}</strong>
+
+          <span>
+
+            {{ mov.tipoMov }}
+
+            ·
+
+            {{ mov.origen }}
+
+          </span>
+
+          <small>
+
+            {{ mov.fecha | date:'dd/MM/yyyy HH:mm' }}
+
+          </small>
+
+        </div>
+
+        <span class="activity-status">
+
+          {{ mov.cantidad }}
+
+        </span>
+
+      </div>
+
+      <div
+        class="activity-item"
+        *ngIf="ultimosMovimientos.length==0">
+
+        <div class="activity-info">
+
+          No existen movimientos registrados.
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

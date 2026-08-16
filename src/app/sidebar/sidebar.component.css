@@ -24,10 +24,9 @@ mat-nav-list a:hover {
 }
 
 mat-nav-list a.active {
-  background: #1464f4;
-  box-shadow: 0 8px 20px rgba(20, 100, 244, 0.35);
+  background: #1464f4 !important;
+  box-shadow: 0 8px 20px rgba(20, 100, 244, 0.35) !important;
 }
-
 mat-icon {
   color: white;
   margin-right: 12px;
@@ -37,4 +36,98 @@ mat-icon {
   color: white !important;
   font-weight: 700;
   font-size: 14px;
+}/* Permite que el submenú flotante salga por el borde derecho sin ser cortado */
+::ng-deep .mat-drawer-inner-container {
+  overflow: visible !important;
+}
+
+mat-sidenav {
+  overflow: visible !important;
+}
+
+/* Contenedor relativo */
+.has-flyout-menu {
+  position: relative;
+  display: block;
+}
+
+/* Ajuste de espacio de la flechita 'chevron_right' */
+.inventario-link {
+  display: flex !important;
+  align-items: center;
+}
+
+.arrow-icon {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
+}
+
+/* SUBMENÚ FLOTANTE (Oculto por defecto) */
+.flyout-panel {
+  position: absolute;
+  top: 0;
+  left: 100%; /* Se ubica exactamente a la derecha de la sidebar */
+  margin-left: 12px; /* Distancia entre el botón y el submenú */
+  width: 185px;
+  background-color: #031730; /* Azul muy oscuro idéntico al de tu imagen */
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* Transición suave para aparecer */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-8px);
+  transition: all 0.2s ease-in-out;
+  z-index: 9999;
+}
+
+/* Puentes invisibles para no perder el mouse al desplazarlo al submenú */
+.flyout-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -15px;
+  width: 15px;
+  height: 100%;
+}
+
+/* MOSTRAR AL PASAR EL CURSOR (HOVER) */
+.has-flyout-menu:hover .flyout-panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* Opciones / Enlaces del submenú flotante */
+.flyout-item {
+  display: flex;
+  align-items: center;
+  padding: 0px 12px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  border-radius: 8px;
+  margin: 2px 0;
+  transition: background-color 0.2s ease;
+}
+
+.flyout-item:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.flyout-item mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  color: #b0bec5;
 }

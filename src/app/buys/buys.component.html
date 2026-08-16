@@ -1,0 +1,188 @@
+<div class="sales-page">
+
+  <!-- CABECERA -->
+  <div class="page-header">
+    <div>
+      <h1>Compras</h1>
+      <p>Gestiona las compras registradas en el sistema</p>
+    </div>
+
+    <button mat-raised-button class="add-button" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+      Crear Compra
+    </button>
+  </div>
+
+  <!-- TABLA -->
+  <div class="table-card">
+
+    <table mat-table [dataSource]="dataSource" class="sales-table">
+
+      <!-- COMPRA ID -->
+      <ng-container matColumnDef="compraId">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let buy">
+          #{{ buy.compraId }}
+        </td>
+      </ng-container>
+
+      <!-- PROVEEDOR (Opción Directa) -->
+      <ng-container matColumnDef="proveedor">
+        <th mat-header-cell *matHeaderCellDef> Proveedor </th>
+        <td mat-cell *matCellDef="let buy">
+          <div class="entity-info">
+
+            <div class="entity-avatar">
+              {{ (buy.proveedor?.nombre || buy.proveedorNombre || buy.nombreProveedor || buy.proveedor ||
+              'P').toString().charAt(0) }}
+            </div>
+
+            <div>
+              <strong>
+                {{ buy.proveedor?.nombre || buy.proveedorNombre || buy.nombreProveedor || buy.proveedor || 'Sin
+                Proveedor' }}
+              </strong>
+
+              <span *ngIf="buy.tipoComprobante">
+                {{ buy.tipoComprobante }} ({{ buy.serie }}-{{ buy.numero }})
+              </span>
+            </div>
+
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- PRODUCTO (Opción Directa) -->
+      <ng-container matColumnDef="productos">
+        <th mat-header-cell *matHeaderCellDef> Productos </th>
+        <td mat-cell *matCellDef="let buy">
+          <div class="entity-info" *ngIf="buy.detalles && buy.detalles.length > 0">
+
+            <!-- Avatar: Toma la inicial del primer producto -->
+            <div class="entity-avatar">
+              {{ (buy.detalles[0].producto?.nombre || buy.detalles[0].productoNombre || 'P').charAt(0) }}
+            </div>
+
+            <div>
+              <!-- Nombre del primer producto -->
+              <strong>
+                {{ buy.detalles[0].producto?.nombre || buy.detalles[0].productoNombre || ('Producto #' +
+                buy.detalles[0].productoId) }}
+              </strong>
+
+              <!-- Si tiene más de 1 producto en la misma compra -->
+              <span *ngIf="buy.detalles.length > 1" style="font-size: 11px; color: #666; display: block;">
+                + {{ buy.detalles.length - 1 }} producto(s) más
+              </span>
+            </div>
+
+          </div>
+
+          <!-- Si la compra no tiene detalles aún -->
+          <span *ngIf="!buy.detalles || buy.detalles.length === 0" style="color: #999;">
+            Sin productos
+          </span>
+        </td>
+      </ng-container>
+
+
+      <!-- FECHA COMPRA -->
+      <ng-container matColumnDef="fechaCompra">
+        <th mat-header-cell *matHeaderCellDef> Fecha </th>
+        <td mat-cell *matCellDef="let buy">
+          {{ buy.fechaCompra | date:'dd/MM/yyyy HH:mm' }}
+        </td>
+      </ng-container>
+
+      <!-- TOTAL COMPRA -->
+      <ng-container matColumnDef="totalCompra">
+        <th mat-header-cell *matHeaderCellDef> Total </th>
+        <td mat-cell *matCellDef="let buy">
+          <span class="money-badge">
+            {{ buy.moneda === 'PEN' ? 'S/' : '$' }} {{ buy.totalCompra | number:'1.2-2' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- ESTADO -->
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let buy">
+          <span class="status-badge" [ngClass]="{
+              'success': buy.estado === 'EMITIDA' || buy.estado === 'COMPLETADA',
+              'warning': buy.estado === 'PENDIENTE' || buy.estado === 'BORRADOR',
+              'danger': buy.estado === 'ANULADA' || buy.estado === 'CANCELADA'
+            }">
+            {{ buy.estado }}
+          </span>
+        </td>
+      </ng-container>
+
+
+      <!-- ESTADO PAGO -->
+
+      <ng-container matColumnDef="estadoPago">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Pago
+        </th>
+
+        <td mat-cell *matCellDef="let buy">
+
+          <span class="status-badge" [ngClass]="{
+              'success': buy.estadoPago === 'PAGADA',
+              'warning': buy.estadoPago === 'PENDIENTE',
+              'info': buy.estadoPago === 'PARCIAL'
+            }">
+
+            {{ buy.estadoPago }}
+
+          </span>
+
+        </td>
+
+      </ng-container>
+
+      <!-- DETALLE -->
+
+      <ng-container matColumnDef="detalles">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Detalle
+        </th>
+
+        <td mat-cell *matCellDef="let buy">
+          <button mat-icon-button class="view-btn" (click)="openDetailsDialog(buy, $event)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+
+        </td>
+
+      </ng-container>
+
+      <!-- ACCIONES -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let buy">
+          <div class="actions">
+            <!-- Editar -->
+            <button mat-icon-button class="edit-btn" (click)="openEditDialog(buy, $event)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <!-- Eliminar -->
+            <button mat-icon-button class="delete-btn" (click)="deletePurchases(buy.compraId, $event)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+  </div>
+
+</div>
